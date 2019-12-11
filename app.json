@@ -1,0 +1,33 @@
+{
+  "name": "continous-auth",
+  "description": "Safely enable 2FA on your CI published packages",
+  "scripts": {
+  },
+  "env": {
+    "SLACK_CLIENT_ID": {
+      "required": true
+    },
+    "SLACK_CLIENT_SECRET": {
+      "required": true
+    },
+    "SLACK_SIGNING_SECRET": {
+      "required": true
+    },
+    "SESSION_SECRET": {
+      "required": true
+    },
+    "GITHUB_CLIENT_ID": {
+      "required": true
+    },
+    "GITHUB_CLIENT_SECRET": {
+      "required": true
+    }
+  },
+  "formation": {},
+  "addons": [],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}

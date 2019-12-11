@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CircleCIRequesterConfig /> Should render a GenericAccessTokenRequesterConfig 1`] = `
+<GenericAccessTokenRequesterConfig
+  originalAccessToken=""
+  project={
+    Object {
+      "enabled": true,
+      "id": "123",
+      "repoName": "my-repo",
+      "repoOwner": "my-owner",
+      "requester_circleCI": null,
+      "requester_travisCI": null,
+      "responder_slack": null,
+      "secret": "my_secret",
+    }
+  }
+  requesterName="Circle CI"
+  setProject={[Function]}
+  slug="circleci"
+>
+  <withTheme(Heading)
+    marginBottom={8}
+    size={400}
+  >
+    Circle CI Access Token
+  </withTheme(Heading)>
+  <withTheme(Paragraph)
+    marginBottom={4}
+  >
+    You can generate an access token in your
+     
+    <a
+      href="https://circleci.com/gh/my-owner/my-repo/edit#api"
+      rel="noreferrer noopener"
+      target="_blank"
+    >
+      Circle CI Project Settings
+    </a>
+    . The token must have the "All" scope.
+  </withTheme(Paragraph)>
+</GenericAccessTokenRequesterConfig>
+`;

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GenericAccessTokenRequesterConfig /> Should render a TextInput for the access token 1`] = `
+<withTheme(Pane)>
+  <withTheme(Pane)>
+    <p>
+      Children
+    </p>
+    <withTheme(TextInput)
+      disabled={false}
+      onChange={[Function]}
+      type="password"
+      value=""
+    />
+  </withTheme(Pane)>
+</withTheme(Pane)>
+`;

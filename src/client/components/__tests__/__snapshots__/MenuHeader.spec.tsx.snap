@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MenuHeader /> Should render a logo 1`] = `
+<withTheme(Pane)
+  className="container"
+>
+  <CFALogo
+    className="logo"
+  />
+  <span
+    className="productName"
+  >
+    CFA
+  </span>
+  <Link
+    className="item active"
+    to="/"
+  >
+    Dashboard
+  </Link>
+  <a
+    className="item"
+    href="https://docs.continuousauth.dev"
+    target="_blank"
+  >
+    Documentation
+  </a>
+  <div
+    className="item warning"
+  >
+    <withTheme(Icon)
+      color="warning"
+      icon="warning-sign"
+      marginRight={8}
+    />
+    CFA is open-source and does not have formal support
+  </div>
+  <withTheme(Pane)
+    className="right"
+  >
+    <withTheme(Avatar)
+      isSolid={true}
+      name="?"
+      size={24}
+    />
+    <span>
+      ?
+    </span>
+  </withTheme(Pane)>
+  <span />
+</withTheme(Pane)>
+`;

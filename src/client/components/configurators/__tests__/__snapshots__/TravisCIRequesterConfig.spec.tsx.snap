@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TravisCIRequesterConfig /> Should render a GenericAccessTokenRequesterConfig 1`] = `
+<GenericAccessTokenRequesterConfig
+  originalAccessToken=""
+  project={
+    Object {
+      "enabled": true,
+      "id": "123",
+      "repoName": "my-repo",
+      "repoOwner": "my-owner",
+      "requester_circleCI": null,
+      "requester_travisCI": null,
+      "responder_slack": null,
+      "secret": "my_secret",
+    }
+  }
+  requesterName="Travis CI"
+  setProject={[Function]}
+  slug="travisci"
+>
+  <withTheme(Heading)
+    marginBottom={8}
+    size={400}
+  >
+    Travis CI Access Token
+  </withTheme(Heading)>
+  <withTheme(Paragraph)
+    marginBottom={4}
+  >
+    You can get your access token in your Travis CI
+     
+    <a
+      href="https://travis-ci.org/account/preferences"
+      rel="noreferrer noopener"
+      target="_blank"
+    >
+      Account Settings
+    </a>
+    .
+  </withTheme(Paragraph)>
+</GenericAccessTokenRequesterConfig>
+`;

@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  cfa_db:
+    image: postgres
+    container_name: cfa.postgres
+    environment:
+      - POSTGRES_DB=cfa
+      - POSTGRES_USER=cfa-user
+      - POSTGRES_PASSWORD=cfa-pass
+    volumes:
+      - ./docker/db:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+  cfa_redis:
+    image: redis
+    container_name: cfa.redis
+    ports:
+      - "6379:6379"

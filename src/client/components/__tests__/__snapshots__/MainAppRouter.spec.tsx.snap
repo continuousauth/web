@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MainAppRouter /> Should render a router 1`] = `
+<BrowserRouter>
+  <withRouter(MenuHeaderInner) />
+  <Switch>
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/"
+    />
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/project/:projectId"
+    />
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/oauth_result/slack"
+    />
+    <Route
+      component={[Function]}
+    />
+  </Switch>
+</BrowserRouter>
+`;

@@ -1,0 +1,32 @@
+steps-test: &steps-test
+  steps:
+    - checkout
+    - restore_cache:
+        keys:
+          - v1-dependencies-{{ arch }}-{{ checksum "yarn.lock" }}
+          - v1-dependencies-{{ arch }}
+    - run: yarn --frozen-lockfile
+    - save_cache:
+        paths:
+          - node_modules
+        key: v1-dependencies-{{ arch }}-{{ checksum "yarn.lock" }}
+    - run:
+        name: Run tests
+        command: yarn test:ci --maxWorkers=2
+        environment:
+          JEST_JUNIT_OUTPUT_DIR: "reports/junit"
+    - store_test_results:
+        path: "reports/junit"
+
+version: 2
+jobs:
+  test-linux-12:
+    docker:
+      - image: circleci/node:12
+    <<: *steps-test
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test-linux-12

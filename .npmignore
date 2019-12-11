@@ -1,0 +1,13 @@
+src
+lib/server
+*.log
+tsconfig.json
+.env*
+docker
+app.json
+.prettierrc.json
+docker-compose.yml
+docs
+coverage
+jest.config.js
+__tests__

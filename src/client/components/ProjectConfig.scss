@@ -1,0 +1,39 @@
+.loadingText {
+  color: #1F4160;
+}
+
+.wrapper {
+  margin: 24px auto;
+  padding-left: 22px;
+  padding-right: 22px;
+  width: 100%;
+  max-width: 800px;
+
+  .configContainer {
+    box-shadow: 0 0 0 2px rgba(0,0,0,.03);
+    margin-bottom: 20px;
+    background: #fff;
+
+    .header {
+      align-items: center;
+      border-bottom: 2px solid #f3f3f3;
+      display: flex;
+      margin-bottom: 12px;
+      padding: 8px 11px;
+      font-weight: 500;
+      color: #606060;
+      font-size: 14px;
+
+      >:first-child {
+        flex: 1;
+      }
+    }
+
+    .inner {
+      display: flex;
+      flex-direction: column;
+      font-size: 13px;
+      padding: 0 11px 12px;
+    }
+  }
+}

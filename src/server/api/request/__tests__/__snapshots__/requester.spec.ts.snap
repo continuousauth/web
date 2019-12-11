@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`requester endpoint creator with request auth bypassed creating a request with an existing project should create an OTPRequest for a project that is configured and has valid metadata 1`] = `
+Object {
+  "errorReason": null,
+  "errored": null,
+  "projectId": 123,
+  "requestMetadata": Object {
+    "metadata": 321,
+  },
+  "responded": null,
+  "response": null,
+  "responseMetadata": Object {},
+  "state": "requested",
+  "userThatResponded": null,
+  "validated": null,
+}
+`;

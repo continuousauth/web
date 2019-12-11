@@ -1,0 +1,85 @@
+.loadingText {
+  color: #1F4160;
+}
+
+.rocket {
+  height: 196px;
+}
+
+.rocketTextHeader {
+  margin-top: 32px;
+  font-size: 22px;
+  color: #1F4160;
+}
+
+.rocketText {
+  margin-top: 0;
+  font-size: 16px;
+  color: #1F4160;
+}
+
+.projectList {
+  margin: 0 auto;
+  padding-left: 22px;
+  padding-right: 22px;
+  width: 100%;
+  max-width: 700px;
+
+  .projectCard {
+    box-shadow: 0 0 0 2px rgba(0,0,0,.03);
+    margin-bottom: 20px;
+    background: #fff;
+
+    .projectHeader {
+      align-items: center;
+      border-bottom: 2px solid #f3f3f3;
+      display: flex;
+      margin-bottom: 12px;
+      padding: 8px 11px;
+      font-weight: 500;
+      color: #606060;
+      font-size: 14px;
+    }
+
+    .configRow {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      font-size: 13px;
+      padding: 0 11px 12px;
+
+      .configIcon {
+        height: 16px;
+        margin: 0 8px;
+      }
+    }
+
+    .errorRow {
+      border-bottom: 2px solid #f3f3f3;
+      margin-bottom: 12px;
+    }
+
+    .projectFooter {
+      border-top: 2px solid #f3f3f3;
+      padding: 5px 0;
+      text-align: center;
+
+      a {
+        background: transparent;
+        border: 0;
+        border-radius: 3px;
+        color: #24292e;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 5px 12px;
+        display: inline-block;
+        text-decoration: none;
+
+        &:hover {
+          background-color: rgba(67, 90, 111, 0.06);
+        }
+      }
+    }
+  }
+}

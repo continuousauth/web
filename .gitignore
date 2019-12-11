@@ -1,0 +1,9 @@
+node_modules
+lib
+*.log
+.env
+docker
+coverage
+tsconfig.tsbuildinfo
+public_out
+junit.xml

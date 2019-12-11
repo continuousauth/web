@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RequesterConfig /> Should render 1`] = `
+<withTheme(Pane)>
+  <withTheme(Heading)
+    marginBottom={8}
+  >
+    Requester
+  </withTheme(Heading)>
+  <withTheme(Pane)>
+    <withTheme(Alert)
+      intent="none"
+      isRemoveable={true}
+      onRemove={[Function]}
+      title="What is a Requester?"
+    >
+      A Requester is how your automation asks CFA for a 2FA token. This is normally your CI provider, E.g. Circle CI.
+    </withTheme(Alert)>
+  </withTheme(Pane)>
+  <withTheme(Pane)
+    marginY={8}
+  >
+    <Tablist>
+      <withTheme(Tab)
+        isSelected={false}
+        onSelect={[Function]}
+        style={
+          Object {
+            "paddingLeft": 28,
+            "position": "relative",
+          }
+        }
+      >
+        <CircleCILogo
+          className="tabIcon"
+        />
+         Circle CI
+      </withTheme(Tab)>
+      <withTheme(Tab)
+        isSelected={false}
+        onSelect={[Function]}
+        style={
+          Object {
+            "paddingLeft": 28,
+            "position": "relative",
+          }
+        }
+      >
+        <TravisCILogo
+          className="tabIcon"
+        />
+         Travis CI
+      </withTheme(Tab)>
+      <withTheme(Tab)
+        disabled={true}
+      >
+        More Coming Soon...
+      </withTheme(Tab)>
+    </Tablist>
+  </withTheme(Pane)>
+  <withTheme(Pane)
+    className="configBox"
+    marginY={8}
+  >
+    <withTheme(Paragraph)>
+      No Requester has been configured, choose one to get started!
+    </withTheme(Paragraph)>
+  </withTheme(Pane)>
+</withTheme(Pane)>
+`;
