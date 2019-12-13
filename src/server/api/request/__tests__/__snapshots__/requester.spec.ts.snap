@@ -2,7 +2,6 @@
 
 exports[`requester endpoint creator with request auth bypassed creating a request with an existing project should create an OTPRequest for a project that is configured and has valid metadata 1`] = `
 Object {
-  "createdAt": 2019-12-13T03:49:34.775Z,
   "errorReason": null,
   "errored": null,
   "projectId": 123,
@@ -13,7 +12,6 @@ Object {
   "response": null,
   "responseMetadata": Object {},
   "state": "requested",
-  "updatedAt": 2019-12-13T03:49:34.775Z,
   "userThatResponded": null,
   "validated": null,
 }

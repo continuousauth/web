@@ -1,11 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
 
-require('dotenv-safe').load();
+require('dotenv-safe').config();
 
-const {
-  BundleAnalyzerPlugin
-} = require('webpack-bundle-analyzer');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const rules = require('./webpack.rules');
@@ -17,7 +15,7 @@ module.exports = {
   entry: [
     ...(process.env.NODE_ENV === 'production' ? [] : ['react-hot-loader/patch']),
     './src/client/polyfill.ts',
-    './src/client/index.tsx'
+    './src/client/index.tsx',
   ],
   devtool: process.env.WEBPACK_DEVTOOL || 'eval-source-map',
   output: {
@@ -55,7 +53,7 @@ module.exports = {
       templateParameters: {},
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new webpack.EnvironmentPlugin(['SLACK_CLIENT_ID'])
+    new webpack.EnvironmentPlugin(['SLACK_CLIENT_ID']),
   ],
 };
 

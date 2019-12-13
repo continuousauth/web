@@ -1,34 +1,43 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
-const isProd = (process.env.NODE_ENV === 'production');
-const baseCacheDir = path.resolve(__dirname, 'node_modules', '.build-cache', isProd ? 'prod' : 'dev');
-
-const envSpecificCSSLoader = () => (
-  isProd ?
-  MiniCssExtractPlugin.loader : {
-    loader: 'style-loader',
-    options: {
-      sourceMap: true,
-    },
-  }
+const isProd = process.env.NODE_ENV === 'production';
+const baseCacheDir = path.resolve(
+  __dirname,
+  'node_modules',
+  '.build-cache',
+  isProd ? 'prod' : 'dev',
 );
 
-module.exports = [{
+const envSpecificCSSLoader = () =>
+  isProd
+    ? MiniCssExtractPlugin.loader
+    : {
+        loader: 'style-loader',
+        options: {
+          // sourceMap: true,
+        },
+      };
+
+module.exports = [
+  {
     test: /\.tsx?$/,
     exclude: /(node_modules|bower_components|public_out\/)/,
-    loaders: [{
-      loader: 'cache-loader',
-      options: {
-        cacheDirectory: path.resolve(baseCacheDir, 'ts'),
+    loaders: [
+      {
+        loader: 'cache-loader',
+        options: {
+          cacheDirectory: path.resolve(baseCacheDir, 'ts'),
+        },
       },
-    }, {
-      loader: 'ts-loader',
-      options: {
-        configFile: 'tsconfig.public.json',
-        transpileOnly: true
+      {
+        loader: 'ts-loader',
+        options: {
+          configFile: 'tsconfig.public.json',
+          transpileOnly: true,
+        },
       },
-    }, ],
+    ],
   },
   {
     test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
@@ -50,10 +59,7 @@ module.exports = [{
   },
   {
     test: /\.css$/,
-    loaders: [
-      envSpecificCSSLoader(),
-      'css-loader',
-    ],
+    loaders: [envSpecificCSSLoader(), 'css-loader'],
   },
   {
     test: /\.scss$/,
