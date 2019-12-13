@@ -1,6 +1,8 @@
 # CFA: Continuous Factor Authentication
 
-This bot is responsible for safely requesting and delivering a 2FA token for an `npm publish` command running on CI through `semantic-release`.
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/continuousauth/web/CI?label=CI&logo=github&style=for-the-badge)
+
+This service is responsible for safely requesting and delivering a 2FA token to an arbitrary CI job. Typically though a tool like `semantic-release`.
 
 ## Usage
 
@@ -33,8 +35,8 @@ The following environment variables need to be set:
  * `GITHUB_CLIENT_SECRET`: GitHub token that allows `electron-bot` to clone `electron`
  * `GITHUB_CLIENT_ID`: Same GitHub token as above
  * `SESSION_SECRET`: Secret to use for web UI session tokens
+ * `DATABASE_URL`: In prod, use this to set a postgres connection URL
 
 Optional variables:
 
  * `DEBUG`: Used by tons of modules used by the bot, set it to `*` for verbose output
- * `DATABASE_URL`: In prod, use this to set a postgres connection URL
