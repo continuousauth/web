@@ -25,6 +25,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.12.0",
     "@fortawesome/free-solid-svg-icons": "^5.12.0",
     "@fortawesome/react-fontawesome": "^0.1.8",
+    "@sentry/browser": "^5.10.2",
     "@types/bluebird": "^3.5.29",
     "@types/body-parser": "^1.17.1",
     "@types/compression": "^1.0.1",
@@ -91,6 +92,7 @@
   },
   "dependencies": {
     "@octokit/rest": "^16.35.0",
+    "@sentry/node": "^5.10.2",
     "@slack/bolt": "^1.4.1",
     "compression": "^1.7.4",
     "connect-redis": "^4.0.3",

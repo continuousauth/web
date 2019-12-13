@@ -51,6 +51,7 @@ module.exports = {
       templateParameters: {},
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.EnvironmentPlugin(['SENTRY_FE_DSN']),
   ],
 };
 

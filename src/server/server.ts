@@ -1,10 +1,10 @@
+import * as Sentry from '@sentry/node';
 import { App, ExpressReceiver } from '@slack/bolt';
 import * as debug from 'debug';
 import * as dotenv from 'dotenv-safe';
 import * as express from 'express';
-import * as Joi from 'joi';
 import * as morgan from 'morgan';
-import { validate } from './helpers/_middleware';
+
 import { createA } from './helpers/a';
 import { SlackInstall, withTransaction } from './db/models';
 
@@ -12,6 +12,9 @@ const d = debug('cfa:server:core');
 const a = createA(d);
 
 dotenv.config();
+if (process.env.SENTRY_DSN) {
+  Sentry.init({ dsn: process.env.SENTRY_DSN, environment: process.env.CFA_ENV || 'development' });
+}
 
 const receiverOpts = {
   signingSecret: process.env.SLACK_SIGNING_SECRET!,
@@ -26,6 +29,10 @@ const boltReceiver = new ExpressReceiver(receiverOpts);
 const boltApp = (boltReceiver as any).app as express.Application;
 
 export const app = express();
+if (process.env.SENTRY_DSN) {
+  app.use(Sentry.Handlers.requestHandler());
+}
+
 export const bolt = new App({
   receiver: boltReceiver,
   authorize: authorizeTeam,

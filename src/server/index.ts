@@ -1,5 +1,6 @@
 import { app } from './server';
 
+import * as Sentry from '@sentry/node';
 import * as bodyParser from 'body-parser';
 import * as compression from 'compression';
 import * as debug from 'debug';
@@ -59,6 +60,10 @@ if (process.mainModule === module) {
   d('booting CFA');
   getSequelizeInstance()
     .then(() => {
+      if (process.env.SENTRY_DSN) {
+        app.use(Sentry.Handlers.errorHandler());
+      }
+
       app.listen(port, () => {
         d('CFA server running on port:', port);
       });
