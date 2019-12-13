@@ -11,7 +11,7 @@ import { SlackInstall, withTransaction } from './db/models';
 const d = debug('cfa:server:core');
 const a = createA(d);
 
-dotenv.load();
+dotenv.config();
 
 const receiverOpts = {
   signingSecret: process.env.SLACK_SIGNING_SECRET!,
