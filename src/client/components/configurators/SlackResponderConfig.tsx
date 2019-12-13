@@ -27,7 +27,7 @@ const linkOptions = {
 };
 
 export function SlackResponderConfig({ project, setProject }: Props) {
-  const createLinkerTask = useAsyncTaskFetch<{ id: string }>(
+  const createLinkerTask = useAsyncTaskFetch<{ linker: { id: string }; slackClientId: string }>(
     `/api/project/${project.id}/config/responders/slack`,
     linkOptions,
     defaultBodyReader,
@@ -147,7 +147,7 @@ export function SlackResponderConfig({ project, setProject }: Props) {
               display: 'block',
               marginTop: 8,
             }}
-            href={`https://slack.com/oauth/authorize?client_id=${process.env.SLACK_CLIENT_ID}&scope=bot,commands,team:read`}
+            href={`https://slack.com/oauth/authorize?client_id=${createLinkerTask.result.slackClientId}&scope=bot,commands,team:read`}
             target="_blank"
             rel="noreferrer noopener"
           >
@@ -164,7 +164,7 @@ export function SlackResponderConfig({ project, setProject }: Props) {
           Run{' '}
           <Code>
             /cfa-link{process.env.NODE_ENV === 'production' ? '' : '-dev'}{' '}
-            {createLinkerTask.result.id}
+            {createLinkerTask.result.linker.id}
           </Code>{' '}
           in the channel you want to link to CFA
         </ListItem>

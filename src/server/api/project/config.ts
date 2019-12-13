@@ -175,7 +175,10 @@ export function configRoutes() {
           );
         });
 
-        res.json(linker);
+        res.json({
+          linker,
+          slackClientId: process.env.SLACK_CLIENT_ID,
+        });
       },
     ),
   );

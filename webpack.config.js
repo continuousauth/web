@@ -1,8 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 
-require('dotenv-safe').config();
-
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -53,7 +51,6 @@ module.exports = {
       templateParameters: {},
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new webpack.EnvironmentPlugin(['SLACK_CLIENT_ID']),
   ],
 };
 
