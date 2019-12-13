@@ -2,9 +2,10 @@ import * as debug from 'debug';
 import * as express from 'express';
 import * as Octokit from '@octokit/rest';
 
-import { Project, CircleCIRequesterConfig, SlackResponderConfig } from '../../db/models';
+import { Project } from '../../db/models';
 import { createA } from '../../helpers/a';
-import { ReposResponse, SimpleProject, SimpleRepo } from '../../../common/types';
+import { SimpleProject, SimpleRepo } from '../../../common/types';
+import { Op } from 'sequelize';
 
 const d = debug('cfa:server:api:repo');
 const a = createA(d);
@@ -42,7 +43,7 @@ export function repoRoutes() {
       const configured = await Project.findAll({
         where: {
           id: {
-            $in: reposWithAdmin.map(r => r.id),
+            [Op.in]: reposWithAdmin.map(r => r.id),
           },
           enabled: true,
         },

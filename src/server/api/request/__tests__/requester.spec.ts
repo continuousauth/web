@@ -109,21 +109,30 @@ describe('requester endpoint creator', () => {
         secret: 'very scret thing',
       });
       await project.save();
-      const circleConfig = new CircleCIRequesterConfig({
-        accessToken: '123',
-      });
-      await circleConfig.save({ returning: true });
+      const circleConfig = await CircleCIRequesterConfig.create(
+        {
+          accessToken: '123',
+        },
+        {
+          returning: true,
+        },
+      );
+      // await circleConfig.save({ returning: true });
       project.requester_circleCI_id = circleConfig.id;
-      const slackConfig = new SlackResponderConfig({
-        teamName: 'my team',
-        teamId: 'my team id',
-        teamIcon: 'team icon',
-        channelName: 'my channel',
-        channelId: 'channel id',
-        enterpriseId: 'enterprise id',
-        usernameToMention: '@me',
-      });
-      await slackConfig.save({ returning: true });
+      const slackConfig = await SlackResponderConfig.create(
+        {
+          teamName: 'my team',
+          teamId: 'my team id',
+          teamIcon: 'team icon',
+          channelName: 'my channel',
+          channelId: 'channel id',
+          enterpriseId: 'enterprise id',
+          usernameToMention: '@me',
+        },
+        {
+          returning: true,
+        },
+      );
       project.responder_slack_id = slackConfig.id;
       await project.save();
       const response = await request(router)
@@ -231,7 +240,7 @@ describe('requester endpoint creator', () => {
           await request(router).post('/123/test');
           const requests = await OTPRequest.findAll();
           expect(requests).toHaveLength(1);
-          const { id, proof, requested, ...strippedRequest } = requests[0].get();
+          const { id, proof, requested, ...strippedRequest } = requests[0].get() as OTPRequest;
           expect(strippedRequest).toMatchSnapshot();
         });
 

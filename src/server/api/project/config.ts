@@ -70,7 +70,7 @@ export function configRoutes() {
           await project.resetAllRequesters(t);
           project.requester_circleCI_id = config.id;
           await project.save({ transaction: t });
-          return await Project.findByPrimary(project.id, {
+          return await Project.findByPk(project.id, {
             include: Project.allIncludes,
             transaction: t,
           });
@@ -131,7 +131,7 @@ export function configRoutes() {
           await project.resetAllRequesters(t);
           project.requester_travisCI_id = config.id;
           await project.save({ transaction: t });
-          return await Project.findByPrimary(project.id, {
+          return await Project.findByPk(project.id, {
             include: Project.allIncludes,
             transaction: t,
           });

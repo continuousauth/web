@@ -286,7 +286,7 @@ const migrationFns: ((t: Transaction, qI: QueryInterface) => Promise<void>)[] = 
         Project.getTableName() as string,
         'requester_travisCI_id',
         {
-          type: Sequelize.UUID,
+          type: DataType.UUID,
           references: {
             model: 'TravisCIRequesterConfig',
             key: 'id',
@@ -305,7 +305,7 @@ const migrationFns: ((t: Transaction, qI: QueryInterface) => Promise<void>)[] = 
         OTPRequest.getTableName() as string,
         'userThatResponded',
         {
-          type: Sequelize.TEXT,
+          type: DataType.TEXT,
           allowNull: true,
         },
         {
@@ -338,25 +338,23 @@ const initializeInstance = async (sequelize: Sequelize) => {
 
 const create = async () => {
   const parsed = url.parse(process.env.DATABASE_URL!);
-  const opts = {
+  const sequelize = new Sequelize({
     dialect: 'postgres',
     database: parsed.pathname!.slice(1),
     username: parsed.auth!.split(':')[0],
     password: parsed.auth!.split(':')[1],
-    host: parsed.hostname,
+    host: parsed.hostname!,
     port: parseInt(parsed.port!, 10),
     ssl: process.env.NO_DB_SSL ? false : true,
     pool: {
       max: 20,
       min: 0,
       idle: 10000,
-      handleDisconnects: true,
     },
     dialectOptions: {
       ssl: process.env.NO_DB_SSL ? false : true,
     },
-  } as any;
-  const sequelize = new Sequelize(opts);
+  });
   await initializeInstance(sequelize);
 
   return sequelize;

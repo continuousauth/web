@@ -131,7 +131,7 @@ bolt.command(
       });
     }
 
-    const linker = await SlackResponderLinker.findByPrimary(linkerId, {
+    const linker = await SlackResponderLinker.findByPk(linkerId, {
       include: [Project],
     });
     if (!linker)
@@ -260,7 +260,7 @@ bolt.command(
         });
       }
 
-      const request: OTPRequest<unknown, any> | null = await OTPRequest.findByPrimary(requestId);
+      const request: OTPRequest<unknown, any> | null = await OTPRequest.findByPk(requestId);
       if (!request) {
         return respond({
           response_type: 'ephemeral',

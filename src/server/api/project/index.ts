@@ -42,7 +42,7 @@ export function projectRoutes() {
         });
         const repo: Octokit.ReposGetResponse = repoResponse.data;
 
-        const existingProject = await Project.findByPrimary(req.body.repoId);
+        const existingProject = await Project.findByPk(req.body.repoId);
         if (existingProject) {
           existingProject.repoName = repo.name;
           existingProject.repoOwner = repo.owner.login;
@@ -121,13 +121,15 @@ export function projectRoutes() {
         if (!project) return;
 
         res.json(
-          (await OTPRequest.findAll({
-            where: {
-              projectId: project.id,
-            },
-          }))
+          (
+            await OTPRequest.findAll({
+              where: {
+                projectId: project.id,
+              },
+            })
+          )
             .map(req => {
-              const simpleReq = req.get();
+              const simpleReq = req.get() as OTPRequest;
               delete simpleReq.proof;
               delete simpleReq.requestMetadata;
               delete simpleReq.responseMetadata;
