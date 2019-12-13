@@ -192,9 +192,9 @@ declare module 'joi' {
     items<T extends mappedSchema>(
       type: T,
     ): this extends ArraySchema<infer O>
-      ? (O extends Box<infer oT, infer oR>
-          ? ArraySchema<BoxType<O, oT | extractType<T>>>
-          : ArraySchema<Box<extractType<T>, false>>)
+      ? O extends Box<infer oT, infer oR>
+        ? ArraySchema<BoxType<O, oT | extractType<T>>>
+        : ArraySchema<Box<extractType<T>, false>>
       : ArraySchema<Box<extractType<T>, false>>;
 
     required(): ArraySchema<BoxReq<N, true>>;
@@ -214,27 +214,27 @@ declare module 'joi' {
     keys<T extends mappedSchemaMap>(
       schema: T,
     ): this extends ObjectSchema<infer O>
-      ? (O extends Box<infer oT, infer oR>
-          ? ObjectSchema<BoxType<O, oT & extractMap<T>>>
-          : ObjectSchema<Box<extractMap<T>, false>>)
+      ? O extends Box<infer oT, infer oR>
+        ? ObjectSchema<BoxType<O, oT & extractMap<T>>>
+        : ObjectSchema<Box<extractMap<T>, false>>
       : ObjectSchema<Box<extractMap<T>, false>>;
 
     pattern<S extends StringSchema, T extends mappedSchema>(
       pattern: S,
       schema: T,
     ): this extends ObjectSchema<infer O>
-      ? (O extends Box<infer oT, infer oR>
-          ? ObjectSchema<BoxType<O, oT | extractMap<{ [key in extractType<S>]: T }>>>
-          : ObjectSchema<Box<extractMap<{ [key in extractType<S>]: T }>, false>>)
+      ? O extends Box<infer oT, infer oR>
+        ? ObjectSchema<BoxType<O, oT | extractMap<{ [key in extractType<S>]: T }>>>
+        : ObjectSchema<Box<extractMap<{ [key in extractType<S>]: T }>, false>>
       : ObjectSchema<Box<extractMap<{ [key in extractType<S>]: T }>, false>>;
 
     pattern<T extends mappedSchema>(
       pattern: RegExp,
       schema: T,
     ): this extends ObjectSchema<infer O>
-      ? (O extends Box<infer oT, infer oR>
-          ? ObjectSchema<BoxType<O, oT | extractMap<{ [key: string]: T }>>>
-          : ObjectSchema<Box<extractMap<{ [key: string]: T }>, false>>)
+      ? O extends Box<infer oT, infer oR>
+        ? ObjectSchema<BoxType<O, oT | extractMap<{ [key: string]: T }>>>
+        : ObjectSchema<Box<extractMap<{ [key: string]: T }>, false>>
       : ObjectSchema<Box<extractMap<{ [key: string]: T }>, false>>;
 
     // this extends ObjectSchema<infer O>
@@ -264,17 +264,17 @@ declare module 'joi' {
     try<T extends mappedSchema[]>(
       ...values: T
     ): this extends AlternativesSchema<infer O>
-      ? (O extends Box<infer oT, infer oR>
-          ? AlternativesSchema<BoxType<O, oT | extractType<T>>>
-          : AlternativesSchema<Box<extractType<T>, false>>)
+      ? O extends Box<infer oT, infer oR>
+        ? AlternativesSchema<BoxType<O, oT | extractType<T>>>
+        : AlternativesSchema<Box<extractType<T>, false>>
       : AlternativesSchema<Box<extractType<T>, false>>;
 
     try<T extends mappedSchema[]>(
       values: T,
     ): this extends AlternativesSchema<infer O>
-      ? (O extends Box<infer oT, infer oR>
-          ? AlternativesSchema<BoxType<O, oT | extractType<T>>>
-          : AlternativesSchema<Box<extractType<T>, false>>)
+      ? O extends Box<infer oT, infer oR>
+        ? AlternativesSchema<BoxType<O, oT | extractType<T>>>
+        : AlternativesSchema<Box<extractType<T>, false>>
       : AlternativesSchema<Box<extractType<T>, false>>;
 
     try(...types: SchemaLike[]): this;
@@ -296,11 +296,9 @@ declare module 'joi' {
       ref: R,
       defs: T,
     ): this extends AlternativesSchema<infer O>
-      ? (O extends Box<infer oT, infer oR>
-          ? AlternativesSchema<
-              BoxType<O, oT | extractType<T['then']> | extractType<T['otherwise']>>
-            >
-          : AlternativesSchema<Box<extractType<T['then']> | extractType<T['otherwise']>, false>>)
+      ? O extends Box<infer oT, infer oR>
+        ? AlternativesSchema<BoxType<O, oT | extractType<T['then']> | extractType<T['otherwise']>>>
+        : AlternativesSchema<Box<extractType<T['then']> | extractType<T['otherwise']>, false>>
       : AlternativesSchema<Box<extractType<T['then']> | extractType<T['otherwise']>, false>>;
   }
 
@@ -320,15 +318,21 @@ declare module 'joi' {
 
   // Required | Optional properties engine
   type FilterVoid<T extends string | number | symbol, O extends any> = {
-    [K in T extends (string | number | symbol)
-      ? (O[T] extends (null | undefined | void) ? never : T)
+    [K in T extends string | number | symbol
+      ? O[T] extends null | undefined | void
+        ? never
+        : T
       : never]: O[K];
   };
 
   type MarkRequired<T, B> = {
     [K in keyof T]: T[K] extends BoxedPrimitive<infer D>
-      ? (D['R'] extends B ? T[K] : void)
-      : (B extends false ? T[K] : void);
+      ? D['R'] extends B
+        ? T[K]
+        : void
+      : B extends false
+      ? T[K]
+      : void;
   };
 
   type Required<T> = FilterVoid<keyof T, MarkRequired<T, true>>;

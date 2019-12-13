@@ -14,7 +14,7 @@ const fakeLocation = (path: string) => {
   window.location = {
     pathname: path,
   } as any;
-}
+};
 
 describe('<MenuHeader />', () => {
   it('Should render a logo', () => {
@@ -64,20 +64,20 @@ describe('isPathActive', () => {
   it('should be true for exact matches', () => {
     fakeLocation('/abc');
     expect(isPathActive('/abc', true)).toBe(true);
-  })
+  });
 
   it('should be false for child paths if exact is enabled', () => {
     fakeLocation('/abc/def');
     expect(isPathActive('/abc', true)).toBe(false);
-  })
+  });
 
   it('should be true for exact matches even if exact is disabled', () => {
     fakeLocation('/abc');
     expect(isPathActive('/abc', false)).toBe(true);
-  })
+  });
 
   it('should be true for child paths if exact is disabled', () => {
     fakeLocation('/abc/def');
     expect(isPathActive('/abc', false)).toBe(true);
-  })
-})
+  });
+});

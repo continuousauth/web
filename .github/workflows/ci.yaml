@@ -22,3 +22,5 @@ jobs:
         run: yarn --frozen-lockfile
       - name: Run Tests
         run: yarn test:ci --maxWorkers=2
+      - name: Run Linter
+        run: yarn prettier:check
