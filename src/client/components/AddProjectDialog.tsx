@@ -62,7 +62,7 @@ export function AddProjectDialog({ isOpen, onClose, repos }: Props) {
       confirmLabel="Add"
       isConfirmDisabled={!selectedOwner || !selectedRepo || createProjectTask.error}
       isConfirmLoading={creatingProject}
-      onConfirm={createProjectTask.start}
+      onConfirm={() => createProjectTask.start()}
       shouldCloseOnOverlayClick={!creatingProject}
       shouldCloseOnEscapePress={!creatingProject}
     >

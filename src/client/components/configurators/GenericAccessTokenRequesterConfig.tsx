@@ -77,7 +77,7 @@ export function GenericAccessTokenRequesterConfig({
             marginLeft={8}
             isLoading={saving}
             disabled={createRequesterTask.error}
-            onClick={createRequesterTask.start}
+            onClick={() => createRequesterTask.start()}
           >
             Save
           </Button>
