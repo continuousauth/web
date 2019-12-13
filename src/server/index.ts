@@ -7,6 +7,7 @@ import * as express from 'express';
 import * as session from 'express-session';
 import * as connectRedis from 'connect-redis';
 import * as path from 'path';
+import * as redis from 'redis';
 
 import { apiRoutes } from './api';
 import passport = require('passport');
@@ -17,12 +18,18 @@ const RedisStore = connectRedis(session);
 
 app.use(compression());
 
+const redisClient = redis.createClient({
+  url: process.env.REDIS_URL,
+});
+redisClient.unref();
+redisClient.on('error', console.error);
+
 app.use(
   '/api',
   bodyParser.json(),
   session({
     store: new RedisStore({
-      url: process.env.REDIS_URL,
+      client: redisClient,
     }),
     secret: process.env.SESSION_SECRET!,
     resave: false,
