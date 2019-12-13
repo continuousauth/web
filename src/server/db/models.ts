@@ -15,7 +15,9 @@ import {
 import { QueryInterface, Transaction } from 'sequelize';
 import * as url from 'url';
 
-@Table
+const tableOptions = { freezeTableName: true, timestamps: false };
+
+@Table(tableOptions)
 export class Project extends Model<Project> {
   /**
    * Project ID maps to GitHub repository id
@@ -85,7 +87,7 @@ export class Project extends Model<Project> {
   }
 }
 
-@Table
+@Table(tableOptions)
 export class CircleCIRequesterConfig extends Model<CircleCIRequesterConfig> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
@@ -97,7 +99,7 @@ export class CircleCIRequesterConfig extends Model<CircleCIRequesterConfig> {
   accessToken: string;
 }
 
-@Table
+@Table(tableOptions)
 export class TravisCIRequesterConfig extends Model<TravisCIRequesterConfig> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
@@ -109,7 +111,7 @@ export class TravisCIRequesterConfig extends Model<TravisCIRequesterConfig> {
   accessToken: string;
 }
 
-@Table
+@Table(tableOptions)
 export class SlackResponderConfig extends Model<SlackResponderConfig> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
@@ -148,7 +150,7 @@ export class SlackResponderConfig extends Model<SlackResponderConfig> {
 /**
  * Used as a middle-table to create a SlackResponderConfig
  */
-@Table
+@Table(tableOptions)
 export class SlackResponderLinker extends Model<SlackResponderLinker> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
@@ -164,7 +166,7 @@ export class SlackResponderLinker extends Model<SlackResponderLinker> {
   project: Project;
 }
 
-@Table
+@Table(tableOptions)
 export class SlackInstall extends Model<SlackInstall> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
@@ -194,7 +196,7 @@ export class SlackInstall extends Model<SlackInstall> {
   enterpriseId: string;
 }
 
-@Table
+@Table(tableOptions)
 export class OTPRequest<Req = unknown, Res = unknown> extends Model<OTPRequest<Req, Res>> {
   static generateProof() {
     return crypto

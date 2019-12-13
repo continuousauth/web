@@ -240,14 +240,7 @@ describe('requester endpoint creator', () => {
           await request(router).post('/123/test');
           const requests = await OTPRequest.findAll();
           expect(requests).toHaveLength(1);
-          const {
-            id,
-            proof,
-            requested,
-            createdAt,
-            updatedAt,
-            ...strippedRequest
-          } = requests[0].get() as OTPRequest;
+          const { id, proof, requested, ...strippedRequest } = requests[0].get() as OTPRequest;
           expect(strippedRequest).toMatchSnapshot();
         });
 
