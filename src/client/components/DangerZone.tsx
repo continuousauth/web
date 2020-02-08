@@ -98,7 +98,7 @@ export function DangerZone({ project, setProject }: Props) {
         This action is not easily reversable, please double check this is actually what you want to
         do.
       </Dialog>
-      <Alert intent="danger" title="Dange Zone">
+      <Alert intent="danger" title="Danger Zone">
         Watch out! The options below are scary and do bad things, please double check before you go
         clicking them.
       </Alert>
