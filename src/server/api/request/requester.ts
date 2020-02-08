@@ -86,6 +86,8 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
     ),
   );
 
+  router.post(`/:projectId/${requester.slug}/test`, (req, res) => res.json({ ok: true }));
+
   router.post(
     `/:projectId/${requester.slug}`,
     validate(
