@@ -94,6 +94,8 @@
     "@octokit/rest": "^16.35.0",
     "@sentry/node": "^5.10.2",
     "@slack/bolt": "^1.4.1",
+    "@types/yauzl": "^2.9.1",
+    "azure-devops-node-api": "^10.1.1",
     "compression": "^1.7.4",
     "connect-redis": "^4.0.3",
     "cross-env": "^6.0.3",
@@ -111,7 +113,8 @@
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.21.2",
     "sequelize-typescript": "^1.1.0",
-    "uuid": "^3.3.3"
+    "uuid": "^3.3.3",
+    "yauzl": "^2.10.0"
   },
   "heroku-run-build-script": true
 }
