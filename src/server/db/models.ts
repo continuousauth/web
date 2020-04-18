@@ -66,6 +66,7 @@ export class Project extends Model<Project> {
   responder_slack: SlackResponderConfig | null;
   responder_slack_id: string | null;
 
+  @BelongsTo(() => AzureDevOpsRequesterConfig, 'requester_AzureDevOps_id')
   requester_AzureDevOps: AzureDevOpsRequesterConfig | null;
   requester_AzureDevOps_id: string | null;
 
@@ -339,6 +340,25 @@ const migrationFns: ((t: Transaction, qI: QueryInterface) => Promise<void>)[] = 
       );
     }
   },
+  async function addAzureDevOpsRequesterDataAndForeignKey(t: Transaction, queryInterface: QueryInterface) {
+    const table: any = await queryInterface.describeTable(Project.getTableName());
+    if (!table.requester_AzureDevOps_id) {
+      await queryInterface.addColumn(
+        Project.getTableName() as string,
+        'requester_AzureDevOps_id',
+        {
+          type: DataType.UUID,
+          references: {
+            model: 'AzureDevOpsRequesterConfig',
+            key: 'id',
+          },
+        },
+        {
+          transaction: t,
+        },
+      );
+    }
+  },
 ];
 
 const initializeInstance = async (sequelize: Sequelize) => {
@@ -346,6 +366,7 @@ const initializeInstance = async (sequelize: Sequelize) => {
     Project,
     CircleCIRequesterConfig,
     TravisCIRequesterConfig,
+    AzureDevOpsRequesterConfig,
     SlackResponderConfig,
     SlackResponderLinker,
     OTPRequest,

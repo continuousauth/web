@@ -1,5 +1,3 @@
-import * as azdev from "azure-devops-node-api";
-
 import * as yauzl from "yauzl";
 import * as fs from 'fs';
 
