@@ -144,7 +144,7 @@ export class AzureDevOpsRequester implements Requester<AzureDevOpsRequesterConfi
 }
 
 /**
- * Get the logs from an Azure Dev Ops Release pipeline. They come in a zip file with multiple log files in it - 1 per phase. 
+ * Get the logs from an Azure Dev Ops Release pipeline. They come in a zip file with multiple log files in it - 1 per phase task. 
  * Reject if could not reach the organization/project/releaseDef or there were no runs/logs in that release 
  * @param config  
  * @param releaseId 
