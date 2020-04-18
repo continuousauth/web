@@ -128,17 +128,25 @@ export class AzureDevOpsRequester implements Requester<AzureDevOpsRequesterConfi
         request: OTPRequest<AzDOOTPRequestMetadata, unknown>,
         config: AzureDevOpsRequesterConfig
     ): Promise<boolean> {
-        return getLogs(config, request.requestMetadata.releaseId)
-            .then(({ logs, skippedFor }) => {
-                const proved = logs.includes(request.proof);
-                if (!proved && skippedFor && skippedFor.length > 0) {
-                    console.warn('The proof was not found, but there were skipped log file entries!');
-                }
-                return proved;
-            })
-            .catch(e => {
+
+        async function attemptValidateProof(attempts: number) {
+            if (attempts <= 0) {
                 return false;
-            });
+            }
+
+            const again = async () => {
+                await new Promise(r => setTimeout(r, 5000));
+                return attemptValidateProof(attempts - 1);
+            };
+
+            return getLogs(config, request.requestMetadata.releaseId)
+                .then(({ logs }) => logs.includes(request.proof) ? true : again())
+                .catch(e => {
+                    return again();
+                });
+        }
+
+        return attemptValidateProof(3);
     }
 
 }
@@ -163,7 +171,12 @@ export function getLogs(
     const instance = getAxiosForConfig(config);
 
     return instance.get<NodeJS.ReadableStream>(`release/releases/${releaseId}/logs`, { responseType: 'stream' })
-        .then(logs => storeZippedLogsToTempFile(logs.data))
+        .then(logs => {
+            if (logs.status != 200) {
+                throw new Error('logs missing');
+            }
+            return storeZippedLogsToTempFile(logs.data);
+        })
         .then(({ zipFileName, cleanUp }) => readLogs(zipFileName, cleanUp));
 }
 
