@@ -1,21 +1,56 @@
-import * as yauzl from "yauzl";
-import * as fs from 'fs';
-
-import { Requester } from './Requester';
-import { OTPRequest, Project, AzureDevOpsRequesterConfig } from '../db/models';
-import { Request, Response } from 'express';
-import * as Joi from 'joi';
 import axios from 'axios';
+import { Request, Response } from 'express';
+import * as fs from 'fs';
+import * as Joi from 'joi';
+import * as yauzl from 'yauzl';
+import { AzureDevOpsRequesterConfig, OTPRequest, Project } from '../db/models';
+import { RequestInformation } from '../responders/Responder';
+import { AllowedState, Requester } from './Requester';
+
 
 export interface AzDOOTPRequestMetadata {
     releaseId: number;
 }
 
+/**
+ * based on https://docs.microsoft.com/en-us/rest/api/azure/devops/release/releases/get%20release?view=azure-devops-rest-5.1#referencelinks 
+ * */
+export interface AzDORelease {
+    id: number;
+    name: string;
+    operationStatus:
+    | 'phaseInProgress'
+    | 'all'
+    | 'approved'
+    | 'canceled'
+    | 'cancelling'
+    | 'deferred'
+    | 'evaluatingGates'
+    | 'gateFailed'
+    | 'manualInterventionPending'
+    | 'pending'
+    | 'phaseCanceled'
+    | 'phaseFailed'
+    | 'phaseInProgress'
+    | 'phasePartiallySucceeded'
+    | 'phaseSucceeded'
+    | 'queued'
+    | 'queuedForAgent'
+    | 'queuedForPipeline'
+    | 'rejected'
+    | 'scheduled'
+    | 'undefined';
+    _links: { self: { href: string }, web: { href: string } };
+}
+
 export const getAxiosForConfig = (config: AzureDevOpsRequesterConfig) =>
     axios.create({
+        // based on https://docs.microsoft.com/en-us/rest/api/azure/devops/release/releases/get%20release?view=azure-devops-rest-5.1
         baseURL: `https://vsrm.dev.azure.com/${config.organizationName}/${config.projectName}/_apis/`,
         headers: {
+            // based on https://docs.microsoft.com/en-us/rest/api/azure/devops/?view=azure-devops-rest-5.1#assemble-the-request
             Authorization: `Basic ${Buffer.from(`PAT:${this.token}`).toString('base64')}`,
+            // based on the same request sent by the azure-devops-node-api  see https://github.com/microsoft/azure-devops-node-api/blob/dcf730b1426fb559d6fe2715223d4a7f3b56ef27/api/handlers/personalaccesstoken.ts#L7 which in turn uses https://github.com/microsoft/typed-rest-client/blob/master/lib/handlers/personalaccesstoken.ts
             'X-TFS-FedAuthRedirect': 'Suppress'
         },
         validateStatus: () => true,
@@ -33,32 +68,62 @@ const validateMetadataObject = (object: any) => {
 
 export class AzureDevOpsRequester implements Requester<AzureDevOpsRequesterConfig, AzDOOTPRequestMetadata>{
 
-    slug: string = "azuredevops-release";
+    slug: string = 'azuredevops-release';
 
     getConfigForProject(project: Project): AzureDevOpsRequesterConfig | null {
         return project.requester_AzureDevOps || null;
     }
     async metadataForInitialRequest(req: Request, res: Response): Promise<AzDOOTPRequestMetadata | null> {
-        const valid = validateMetadataObject(req.body);
+        const result = validateMetadataObject(req.body);
 
-        if (valid.error) {
+        if (result.error) {
             res.status(400).json({
                 error: 'Request Validation Error',
-                message: valid.error.message,
+                message: result.error.message,
             });
             return null;
         }
-        return { releaseId: valid.value.releaseId };
+        return { releaseId: result.value.releaseId };
     }
-    validateActiveRequest(request: OTPRequest<AzDOOTPRequestMetadata, unknown>, config: AzureDevOpsRequesterConfig): Promise<import("./Requester").AllowedState> {
-        throw new Error('Method not implemented.');
+    async validateActiveRequest(request: OTPRequest<AzDOOTPRequestMetadata, unknown>, config: AzureDevOpsRequesterConfig): Promise<AllowedState> {
+        const axios = getAxiosForConfig(config);
+        const response = await axios.get<AzDORelease>(`release/releases/${request.requestMetadata.releaseId}`);
+
+        if (response.status !== 200) {
+            return {
+                ok: false,
+                error: "Release with id " + request.requestMetadata.releaseId + " does not exist!"
+            }
+        }
+
+        if (response.data.operationStatus != 'phaseInProgress') {
+            return {
+                ok: false,
+                error: "Release with id " + request.requestMetadata.releaseId + " is not in progress!"
+            }
+        }
+
+        return {
+            ok: true
+        }
     }
     isOTPRequestValidForRequester(request: OTPRequest<unknown, unknown>): Promise<OTPRequest<AzDOOTPRequestMetadata, unknown> | null> {
-        throw new Error('Method not implemented.');
+        const result = validateMetadataObject(request);
+        return result.error ? null : request as any;
     }
-    getRequestInformationToPassOn(request: OTPRequest<AzDOOTPRequestMetadata, unknown>): Promise<import("../responders/Responder").RequestInformation> {
-        throw new Error('Method not implemented.');
+
+    async getRequestInformationToPassOn(request: OTPRequest<AzDOOTPRequestMetadata, unknown>): Promise<RequestInformation> {
+        const { project } = request;
+
+        const axios = getAxiosForConfig(project.requester_AzureDevOps!);
+        const release = await axios.get<AzDORelease>(`release/releases/${request.requestMetadata.releaseId}`);
+
+        return {
+            description: `Azure DevOps Release ${project.repoOwner}/${project.repoName}#${request.requestMetadata.releaseId}`,
+            url: release.data._links.web.href
+        }
     }
+
     validateProofForRequest(
         request: OTPRequest<AzDOOTPRequestMetadata, unknown>,
         config: AzureDevOpsRequesterConfig
@@ -79,11 +144,10 @@ export class AzureDevOpsRequester implements Requester<AzureDevOpsRequesterConfi
 }
 
 /**
- * Get the logs from an Azure Dev Ops Release pipeline. Reject if could not reach the organization/project/releaseDef or there were no runs/logs in that release 
+ * Get the logs from an Azure Dev Ops Release pipeline. They come in a zip file with multiple log files in it - 1 per phase. 
+ * Reject if could not reach the organization/project/releaseDef or there were no runs/logs in that release 
  * @param config  
  * @param releaseId 
- * @returns ✅ A promise resolved with the logs along with errors for skipped log task entries (AzDO logs out individual task logs vs single stdout output - see https://dev.azure.com/gparlakov/Scuri/_releaseProgress?_a=release-environment-logs&releaseId=58&environmentId=87)
- * @returns ❌ A promise rejected for cases when it could not reach the organization/project/releaseDef or there were no runs/logs in that release.
  * @example 
  * // See release definition https://dev.azure.com/gparlakov/Scuri/_release?definitionId=1&view=mine&_a=releases
  * // and release run https://dev.azure.com/gparlakov/Scuri/_releaseProgress?_a=release-environment-logs&releaseId=58&environmentId=87 
@@ -103,11 +167,11 @@ export function getLogs(
         .then(({ zipFileName, cleanUp }) => readLogs(zipFileName, cleanUp));
 }
 
-function storeZippedLogsToTempFile(l: NodeJS.ReadableStream): Promise<{ zipFileName: string, cleanUp: () => void }> {
+function storeZippedLogsToTempFile(logsZipped: NodeJS.ReadableStream): Promise<{ zipFileName: string, cleanUp: () => void }> {
     return new Promise((res, rej) => {
         const zipFileName = `./logs${Date.now()}.zip`;
 
-        l.pipe(fs.createWriteStream(zipFileName))
+        logsZipped.pipe(fs.createWriteStream(zipFileName))
             .on('error', error => {
                 rej(error)
             })
@@ -168,7 +232,7 @@ function readLogs(zipFileName: string, cleanUp: () => void): Promise<{ logs: str
                                     // skip this one - could not read it from zip
                                     zipfile.readEntry();
                                 });
-                                readStream.on("end", function () {
+                                readStream.on('end', function () {
                                     zipfile.readEntry();
                                 });
                             }
@@ -176,7 +240,7 @@ function readLogs(zipFileName: string, cleanUp: () => void): Promise<{ logs: str
                     }
                 });
 
-                zipfile.once("end", function () {
+                zipfile.once('end', function () {
                     zipfile.close();
                     cleanUp();
                     res({ logs: Buffer.concat(chunks).toString('utf8'), skippedFor: es });

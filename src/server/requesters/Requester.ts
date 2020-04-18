@@ -5,12 +5,12 @@ import { RequestInformation } from '../responders/Responder';
 
 export type AllowedState =
   | {
-      ok: true;
-    }
+    ok: true;
+  }
   | {
-      ok: false;
-      error: string;
-    };
+    ok: false;
+    error: string;
+  };
 
 export interface Requester<RequesterConfig, MetadataType> {
   /**
@@ -65,7 +65,7 @@ export interface Requester<RequesterConfig, MetadataType> {
   ): Promise<boolean>;
   /**
    * This should run a JOI validator on the request.requestMetadata property, if it's invalid
-   * return false, otherwise return true.
+   * return null, otherwise return the validated request object.
    *
    * This is designed to handle the requester/responder for a project being modified with an
    * OTP request being inflight.

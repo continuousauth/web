@@ -87,7 +87,7 @@ export class Project extends Model<Project> {
   }
 
   static get allIncludes() {
-    return [CircleCIRequesterConfig, TravisCIRequesterConfig, SlackResponderConfig];
+    return [CircleCIRequesterConfig, TravisCIRequesterConfig, SlackResponderConfig, AzureDevOpsRequesterConfig];
   }
 }
 
