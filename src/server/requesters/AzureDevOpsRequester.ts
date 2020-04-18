@@ -7,10 +7,21 @@ import { Requester } from './Requester';
 import { OTPRequest, Project, AzureDevOpsRequesterConfig } from '../db/models';
 import { Request, Response } from 'express';
 import * as Joi from 'joi';
+import axios from 'axios';
 
 export interface AzDOOTPRequestMetadata {
     releaseId: number;
 }
+
+export const getAxiosForConfig = (config: AzureDevOpsRequesterConfig) =>
+    axios.create({
+        baseURL: `https://vsrm.dev.azure.com/${config.organizationName}/${config.projectName}/_apis/`,
+        headers: {
+            Authorization: `Basic ${Buffer.from(`PAT:${this.token}`).toString('base64')}`,
+            'X-TFS-FedAuthRedirect': 'Suppress'
+        },
+        validateStatus: () => true,
+    });
 
 
 const validateMetadataObject = (object: any) => {
@@ -52,59 +63,45 @@ export class AzureDevOpsRequester implements Requester<AzureDevOpsRequesterConfi
     }
     validateProofForRequest(
         request: OTPRequest<AzDOOTPRequestMetadata, unknown>,
-        {
-            organizationName,
-            projectName,
-            accessToken
-        }: AzureDevOpsRequesterConfig
+        config: AzureDevOpsRequesterConfig
     ): Promise<boolean> {
-        return getLogs(
-            organizationName,
-            projectName,
-            request.requestMetadata.releaseId,
-            accessToken
-        )
+        return getLogs(config, request.requestMetadata.releaseId)
             .then(({ logs, skippedFor }) => {
                 const proved = logs.includes(request.proof);
                 if (!proved && skippedFor && skippedFor.length > 0) {
-                    console.log('The proof was not found, but there were skipped log file entries!')
+                    console.warn('The proof was not found, but there were skipped log file entries!');
                 }
                 return proved;
             })
             .catch(e => {
                 return false;
-            })
+            });
     }
 
 }
 
 /**
  * Get the logs from an Azure Dev Ops Release pipeline. Reject if could not reach the organization/project/releaseDef or there were no runs/logs in that release 
- * @param organizationName 
- * @param projectName 
- * @param releaseDefinitionId 
- * @param token 
+ * @param config  
+ * @param releaseId 
  * @returns ✅ A promise resolved with the logs along with errors for skipped log task entries (AzDO logs out individual task logs vs single stdout output - see https://dev.azure.com/gparlakov/Scuri/_releaseProgress?_a=release-environment-logs&releaseId=58&environmentId=87)
  * @returns ❌ A promise rejected for cases when it could not reach the organization/project/releaseDef or there were no runs/logs in that release.
  * @example 
  * // See release definition https://dev.azure.com/gparlakov/Scuri/_release?definitionId=1&view=mine&_a=releases
  * // and release run https://dev.azure.com/gparlakov/Scuri/_releaseProgress?_a=release-environment-logs&releaseId=58&environmentId=87 
- * organizationName === 'gparlakov';
- * projectName === 'scuri';
- * releaseDefinitionId === 1  
+ * config.organizationName === 'gparlakov';
+ * config.projectName === 'scuri';
+ * config.accessToken = 'easasdasdasdasdasda12d2312d13ed1d'; 
+ * releaseId === 58  
  */
 export function getLogs(
-    organizationName: string,
-    projectName: string,
-    releaseId: number,
-    token: string
+    config: AzureDevOpsRequesterConfig,
+    releaseId: number
 ): Promise<{ logs: string, skippedFor: Error[] }> {
-    const authHandler = azdev.getPersonalAccessTokenHandler(token);
-    const orgUrl = `https://dev.azure.com/${organizationName}`;
-    const connection = new azdev.WebApi(orgUrl, authHandler);
-    return connection.getReleaseApi()
-        .then(releaseApi => releaseApi.getLogs(projectName, releaseId))
-        .then(logs => storeZippedLogsToTempFile(logs))
+    const instance = getAxiosForConfig(config);
+
+    return instance.get<NodeJS.ReadableStream>(`release/releases/${releaseId}/logs`, { responseType: 'stream' })
+        .then(logs => storeZippedLogsToTempFile(logs.data))
         .then(({ zipFileName, cleanUp }) => readLogs(zipFileName, cleanUp));
 }
 
