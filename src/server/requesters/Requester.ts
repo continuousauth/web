@@ -65,7 +65,7 @@ export interface Requester<RequesterConfig, MetadataType> {
   ): Promise<boolean>;
   /**
    * This should run a JOI validator on the request.requestMetadata property, if it's invalid
-   * return null, otherwise return the validated request object.
+   * return null, otherwise return the request object.
    *
    * This is designed to handle the requester/responder for a project being modified with an
    * OTP request being inflight.
