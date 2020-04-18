@@ -3,44 +3,66 @@ import * as azdev from "azure-devops-node-api";
 import * as yauzl from "yauzl";
 import * as fs from 'fs';
 
-import { IReleaseApi } from 'azure-devops-node-api/ReleaseApi';
 import { Requester } from './Requester';
-import { OTPRequest } from '../db/models';
+import { OTPRequest, Project, AzureDevOpsRequesterConfig } from '../db/models';
+import { Request, Response } from 'express';
+import * as Joi from 'joi';
 
-export interface AzDOProject {
-    organizationName: string,
-    projectName: string,
-    releaseDefinitionId: number,
-    token: string
+export interface AzDOOTPRequestMetadata {
+    releaseId: number;
 }
 
 
+const validateMetadataObject = (object: any) => {
+    return Joi.validate(object, {
+        releaseId: Joi.number()
+            .min(1)
+            .integer()
+            .required(),
+    });
+};
 
-export class AzureDevOpsRequester implements Requester<any, AzDOProject>{
-    slug: string = "azdo";
-    getConfigForProject(project: import("../db/models").Project) {
+export class AzureDevOpsRequester implements Requester<AzureDevOpsRequesterConfig, AzDOOTPRequestMetadata>{
+
+    slug: string = "azuredevops-release";
+
+    getConfigForProject(project: Project): AzureDevOpsRequesterConfig | null {
+        return project.requester_AzureDevOps || null;
+    }
+    async metadataForInitialRequest(req: Request, res: Response): Promise<AzDOOTPRequestMetadata | null> {
+        const valid = validateMetadataObject(req.body);
+
+        if (valid.error) {
+            res.status(400).json({
+                error: 'Request Validation Error',
+                message: valid.error.message,
+            });
+            return null;
+        }
+        return { releaseId: valid.value.releaseId };
+    }
+    validateActiveRequest(request: OTPRequest<AzDOOTPRequestMetadata, unknown>, config: AzureDevOpsRequesterConfig): Promise<import("./Requester").AllowedState> {
         throw new Error('Method not implemented.');
     }
-    metadataForInitialRequest(req: import("express").Request<import("express-serve-static-core").ParamsDictionary, any, any, import("express-serve-static-core").Query>, res: import("express").Response<any>): Promise<any> {
+    isOTPRequestValidForRequester(request: OTPRequest<unknown, unknown>): Promise<OTPRequest<AzDOOTPRequestMetadata, unknown> | null> {
         throw new Error('Method not implemented.');
     }
-    validateActiveRequest(request: import("../db/models").OTPRequest<any, unknown>, config: any): Promise<import("./Requester").AllowedState> {
+    getRequestInformationToPassOn(request: OTPRequest<AzDOOTPRequestMetadata, unknown>): Promise<import("../responders/Responder").RequestInformation> {
         throw new Error('Method not implemented.');
     }
     validateProofForRequest(
-        request: OTPRequest<any, unknown>,
+        request: OTPRequest<AzDOOTPRequestMetadata, unknown>,
         {
             organizationName,
             projectName,
-            releaseDefinitionId,
-            token
-        }: AzDOProject
+            accessToken
+        }: AzureDevOpsRequesterConfig
     ): Promise<boolean> {
         return getLogs(
             organizationName,
             projectName,
-            releaseDefinitionId,
-            token
+            request.requestMetadata.releaseId,
+            accessToken
         )
             .then(({ logs, skippedFor }) => {
                 const proved = logs.includes(request.proof);
@@ -52,12 +74,6 @@ export class AzureDevOpsRequester implements Requester<any, AzDOProject>{
             .catch(e => {
                 return false;
             })
-    }
-    isOTPRequestValidForRequester(request: import("../db/models").OTPRequest<unknown, unknown>): Promise<import("../db/models").OTPRequest<any, unknown> | null> {
-        throw new Error('Method not implemented.');
-    }
-    getRequestInformationToPassOn(request: import("../db/models").OTPRequest<any, unknown>): Promise<import("../responders/Responder").RequestInformation> {
-        throw new Error('Method not implemented.');
     }
 
 }
@@ -80,30 +96,14 @@ export class AzureDevOpsRequester implements Requester<any, AzDOProject>{
 export function getLogs(
     organizationName: string,
     projectName: string,
-    releaseDefinitionId: number,
+    releaseId: number,
     token: string
 ): Promise<{ logs: string, skippedFor: Error[] }> {
     const authHandler = azdev.getPersonalAccessTokenHandler(token);
     const orgUrl = `https://dev.azure.com/${organizationName}`;
     const connection = new azdev.WebApi(orgUrl, authHandler);
-    let release: IReleaseApi;
     return connection.getReleaseApi()
-        .then(r => {
-            release = r;
-            return r;
-        })
-        .then(() => release.getReleaseDefinition(projectName, releaseDefinitionId))
-        .then(relDefinition => {
-            const id = relDefinition.lastRelease!.id;
-            if (id == null || id <= 0) {
-                throw new Error("No releases with that definition")
-            }
-            return id;
-
-        })
-        .then(id =>
-            release.getLogs(projectName, id)
-        )
+        .then(releaseApi => releaseApi.getLogs(projectName, releaseId))
         .then(logs => storeZippedLogsToTempFile(logs))
         .then(({ zipFileName, cleanUp }) => readLogs(zipFileName, cleanUp));
 }

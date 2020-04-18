@@ -66,6 +66,9 @@ export class Project extends Model<Project> {
   responder_slack: SlackResponderConfig | null;
   responder_slack_id: string | null;
 
+  requester_AzureDevOps: AzureDevOpsRequesterConfig | null;
+  requester_AzureDevOps_id: string | null;
+
   public async resetAllRequesters(t: Transaction) {
     this.requester_circleCI_id = null;
     await this.save({ transaction: t });
@@ -109,6 +112,26 @@ export class TravisCIRequesterConfig extends Model<TravisCIRequesterConfig> {
   @AllowNull(false)
   @Column(DataType.STRING)
   accessToken: string;
+}
+
+@Table(tableOptions)
+export class AzureDevOpsRequesterConfig extends Model<AzureDevOpsRequesterConfig> {
+  @PrimaryKey
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
+  id: string;
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  accessToken: string;
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  organizationName: string;
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  projectName: string;
 }
 
 @Table(tableOptions)
