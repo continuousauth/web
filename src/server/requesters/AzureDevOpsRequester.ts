@@ -1,20 +1,19 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { Request, Response } from 'express';
-import * as fs from 'fs';
 import * as Joi from 'joi';
 import * as yauzl from 'yauzl';
 import { AzureDevOpsRequesterConfig, OTPRequest, Project } from '../db/models';
 import { RequestInformation } from '../responders/Responder';
 import { AllowedState, Requester } from './Requester';
 
-export interface AzDOOTPRequestMetadata {
+export interface AzureDevOpsRequestMetadata {
   releaseId: number;
 }
 
 /**
  * based on https://docs.microsoft.com/en-us/rest/api/azure/devops/release/releases/get%20release?view=azure-devops-rest-5.1#referencelinks
  * */
-export interface AzDORelease {
+export interface AzureDevOpsRelease {
   id: number;
   name: string;
   operationStatus:
@@ -42,7 +41,8 @@ export interface AzDORelease {
   _links: { self: { href: string }; web: { href: string } };
 }
 
-export const getAxiosForConfig = (config: AzureDevOpsRequesterConfig) =>
+export type GetAxiosForConfigFn = (c: AzureDevOpsRequesterConfig) => AxiosInstance;
+export const getAxiosForConfig: GetAxiosForConfigFn = (config: AzureDevOpsRequesterConfig) =>
   axios.create({
     // based on https://docs.microsoft.com/en-us/rest/api/azure/devops/release/releases/get%20release?view=azure-devops-rest-5.1
     baseURL: `https://vsrm.dev.azure.com/${config.organizationName}/${config.projectName}/_apis/`,
@@ -65,8 +65,13 @@ const validateMetadataObject = (object: any) => {
 };
 
 export class AzureDevOpsRequester
-  implements Requester<AzureDevOpsRequesterConfig, AzDOOTPRequestMetadata> {
+  implements Requester<AzureDevOpsRequesterConfig, AzureDevOpsRequestMetadata> {
   slug: string = 'azuredevops-release';
+
+  constructor(
+    /** exposed for testing purposes - uses the local axios config fn in production and can be chaged for tests */
+    private getAxiosForConfig: GetAxiosForConfigFn = getAxiosForConfig,
+  ) {}
 
   getConfigForProject(project: Project): AzureDevOpsRequesterConfig | null {
     return project.requester_AzureDevOps || null;
@@ -74,9 +79,8 @@ export class AzureDevOpsRequester
   async metadataForInitialRequest(
     req: Request,
     res: Response,
-  ): Promise<AzDOOTPRequestMetadata | null> {
+  ): Promise<AzureDevOpsRequestMetadata | null> {
     const result = validateMetadataObject(req.body);
-
     if (result.error) {
       res.status(400).json({
         error: 'Request Validation Error',
@@ -87,11 +91,11 @@ export class AzureDevOpsRequester
     return { releaseId: result.value.releaseId };
   }
   async validateActiveRequest(
-    request: OTPRequest<AzDOOTPRequestMetadata, unknown>,
+    request: OTPRequest<AzureDevOpsRequestMetadata, unknown>,
     config: AzureDevOpsRequesterConfig,
   ): Promise<AllowedState> {
-    const axios = getAxiosForConfig(config);
-    const response = await axios.get<AzDORelease>(
+    const axios = this.getAxiosForConfig(config);
+    const response = await axios.get<AzureDevOpsRelease>(
       `release/releases/${request.requestMetadata.releaseId}`,
     );
 
@@ -113,20 +117,21 @@ export class AzureDevOpsRequester
       ok: true,
     };
   }
+
   isOTPRequestValidForRequester(
     request: OTPRequest<unknown, unknown>,
-  ): Promise<OTPRequest<AzDOOTPRequestMetadata, unknown> | null> {
-    const result = validateMetadataObject(request);
+  ): Promise<OTPRequest<AzureDevOpsRequestMetadata, unknown> | null> {
+    const result = validateMetadataObject(request.requestMetadata);
     return result.error ? null : (request as any);
   }
 
   async getRequestInformationToPassOn(
-    request: OTPRequest<AzDOOTPRequestMetadata, unknown>,
+    request: OTPRequest<AzureDevOpsRequestMetadata, unknown>,
   ): Promise<RequestInformation> {
     const { project } = request;
 
-    const axios = getAxiosForConfig(project.requester_AzureDevOps!);
-    const release = await axios.get<AzDORelease>(
+    const axios = this.getAxiosForConfig(project.requester_AzureDevOps!);
+    const release = await axios.get<AzureDevOpsRelease>(
       `release/releases/${request.requestMetadata.releaseId}`,
     );
 
@@ -137,7 +142,7 @@ export class AzureDevOpsRequester
   }
 
   validateProofForRequest(
-    request: OTPRequest<AzDOOTPRequestMetadata, unknown>,
+    request: OTPRequest<AzureDevOpsRequestMetadata, unknown>,
     config: AzureDevOpsRequesterConfig,
   ): Promise<boolean> {
     async function attemptValidateProof(attempts: number) {
