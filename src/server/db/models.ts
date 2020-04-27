@@ -66,6 +66,10 @@ export class Project extends Model<Project> {
   responder_slack: SlackResponderConfig | null;
   responder_slack_id: string | null;
 
+  @BelongsTo(() => AzureDevOpsRequesterConfig, 'requester_AzureDevOps_id')
+  requester_AzureDevOps: AzureDevOpsRequesterConfig | null;
+  requester_AzureDevOps_id: string | null;
+
   public async resetAllRequesters(t: Transaction) {
     this.requester_circleCI_id = null;
     await this.save({ transaction: t });
@@ -83,7 +87,7 @@ export class Project extends Model<Project> {
   }
 
   static get allIncludes() {
-    return [CircleCIRequesterConfig, TravisCIRequesterConfig, SlackResponderConfig];
+    return [CircleCIRequesterConfig, TravisCIRequesterConfig, SlackResponderConfig, AzureDevOpsRequesterConfig];
   }
 }
 
@@ -109,6 +113,26 @@ export class TravisCIRequesterConfig extends Model<TravisCIRequesterConfig> {
   @AllowNull(false)
   @Column(DataType.STRING)
   accessToken: string;
+}
+
+@Table(tableOptions)
+export class AzureDevOpsRequesterConfig extends Model<AzureDevOpsRequesterConfig> {
+  @PrimaryKey
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
+  id: string;
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  accessToken: string;
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  organizationName: string;
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  projectName: string;
 }
 
 @Table(tableOptions)
@@ -316,6 +340,25 @@ const migrationFns: ((t: Transaction, qI: QueryInterface) => Promise<void>)[] = 
       );
     }
   },
+  async function addAzureDevOpsRequesterDataAndForeignKey(t: Transaction, queryInterface: QueryInterface) {
+    const table: any = await queryInterface.describeTable(Project.getTableName());
+    if (!table.requester_AzureDevOps_id) {
+      await queryInterface.addColumn(
+        Project.getTableName() as string,
+        'requester_AzureDevOps_id',
+        {
+          type: DataType.UUID,
+          references: {
+            model: 'AzureDevOpsRequesterConfig',
+            key: 'id',
+          },
+        },
+        {
+          transaction: t,
+        },
+      );
+    }
+  },
 ];
 
 const initializeInstance = async (sequelize: Sequelize) => {
@@ -323,6 +366,7 @@ const initializeInstance = async (sequelize: Sequelize) => {
     Project,
     CircleCIRequesterConfig,
     TravisCIRequesterConfig,
+    AzureDevOpsRequesterConfig,
     SlackResponderConfig,
     SlackResponderLinker,
     OTPRequest,
