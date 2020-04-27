@@ -71,6 +71,7 @@ export class AzureDevOpsRequester
   constructor(
     /** exposed for testing purposes - uses the local axios config fn in production and can be chaged for tests */
     private getAxiosForConfig: GetAxiosForConfigFn = getAxiosForConfig,
+    private proofAttemptTimeout: number = 5000,
   ) {}
 
   getConfigForProject(project: Project): AzureDevOpsRequesterConfig | null {
@@ -145,22 +146,24 @@ export class AzureDevOpsRequester
     request: OTPRequest<AzureDevOpsRequestMetadata, unknown>,
     config: AzureDevOpsRequesterConfig,
   ): Promise<boolean> {
+    const instance = this.getAxiosForConfig(config);
+    const timeout = this.proofAttemptTimeout;
     async function attemptValidateProof(attempts: number) {
       if (attempts <= 0) return false;
 
       const again = async () => {
-        await new Promise(r => setTimeout(r, 5000));
+        await new Promise(r => setTimeout(r, timeout));
         return attemptValidateProof(attempts - 1);
       };
 
       try {
-        const { logs } = await getLogs(config, request.requestMetadata.releaseId);
-
+        const { logs } = await getLogs(instance, request.requestMetadata.releaseId);
         const proofLocatedInLogs = logs.includes(request.proof);
-        return proofLocatedInLogs ? true : again();
-      } catch {
+        return proofLocatedInLogs ? true : await again();
+      } catch (e) {
+        console.log('AzureDevOpsRequester:validateProofForRequest', e);
         // could not connect to endpoint/logs were not available
-        return again();
+        return await again();
       }
     }
 
@@ -182,11 +185,9 @@ export class AzureDevOpsRequester
  * releaseId === 58
  */
 export async function getLogs(
-  config: AzureDevOpsRequesterConfig,
+  instance: AxiosInstance,
   releaseId: number,
 ): Promise<{ logs: string; skippedFor: Error[] }> {
-  const instance = getAxiosForConfig(config);
-
   const logs = await instance.get<NodeJS.ReadableStream>(`release/releases/${releaseId}/logs`, {
     responseType: 'stream',
   });

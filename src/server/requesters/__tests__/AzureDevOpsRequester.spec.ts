@@ -1,16 +1,17 @@
-import {
-  AzureDevOpsRequester,
-  GetAxiosForConfigFn,
-  AzureDevOpsRelease,
-  AzureDevOpsRequestMetadata,
-} from '../AzureDevOpsRequester';
-import { Project, OTPRequest, AzureDevOpsRequesterConfig } from '../../db/models';
+import { AxiosInstance, AxiosResponse } from 'axios';
+import { Request, Response } from 'express';
+import * as fs from 'fs';
 import { Request as JestRequest } from 'jest-express/lib/request';
 import { Response as JestResponse } from 'jest-express/lib/response';
-import { Request, Response } from 'express';
-import { AxiosInstance, AxiosResponse } from 'axios';
+import { AzureDevOpsRequesterConfig, OTPRequest, Project } from '../../db/models';
+import {
+  AzureDevOpsRelease,
+  AzureDevOpsRequester,
+  AzureDevOpsRequestMetadata,
+  GetAxiosForConfigFn,
+} from '../AzureDevOpsRequester';
 
-describe('createA', () => {
+describe('AzureDevOpsRequester', () => {
   it('should have the correct slug', () => {
     const requester = setup().build();
 
@@ -161,55 +162,107 @@ describe('createA', () => {
     expect(result).toBeNull();
   });
 
-  // it('when getRequestInformationToPassOn is called it should', () => {
-  //   // arrange
-  //   const { build } = setup().default();
-  //   const c = build();
-  //   // act
-  //   c.getRequestInformationToPassOn();
-  //   // assert
-  //   // expect(c).toEqual
-  // });
+  it('when getRequestInformationToPassOn is called it should parse the Azure DevOps release info and use the web href from its links', async () => {
+    // arrange
+    const { build } = setup()
+      .default()
+      .withAzDOResponse({ _links: { web: { href: 'http://my-release' } } } as AzureDevOpsRelease);
+    const c = build();
+    // act
+    const d = await c.getRequestInformationToPassOn({
+      project: { repoOwner: 'me', repoName: 'some repo' } as Project,
+      requestMetadata: { releaseId: 1 },
+    } as OTPRequest<AzureDevOpsRequestMetadata, unknown>);
+    // assert
+    expect(d).toEqual({
+      description: 'Azure DevOps Release me/some repo#1',
+      url: 'http://my-release',
+    });
+  });
 
-  // it('when validateProofForRequest is called it should', () => {
-  //   // arrange
-  //   const { build } = setup().default();
-  //   const c = build();
-  //   // act
-  //   c.validateProofForRequest();
-  //   // assert
-  //   // expect(c).toEqual
-  // });
+  it('when validateProofForRequest is called and logs contains the proof `npm` it should return true', async () => {
+    // arrange
+    const { build } = setup()
+      .default()
+      .withAzDOLogsResponseContainingTheWord_npm();
+    const c = build();
+
+    const request = { requestMetadata: { releaseId: 1 }, proof: 'npm' } as OTPRequest<
+      AzureDevOpsRequestMetadata,
+      unknown
+    >;
+    const config = {} as AzureDevOpsRequesterConfig;
+
+    // act
+    const valid = await c.validateProofForRequest(request, config);
+    // assert
+    expect(valid).toEqual(true);
+  });
+
+  it('when validateProofForRequest is called and logs does not contain the proof `random41231313string` it should return false', async () => {
+    // arrange
+    const { build } = setup()
+      .default()
+      .withAzDOLogsResponseContainingTheWord_npm();
+    const c = build();
+
+    const request = {
+      requestMetadata: { releaseId: 1 },
+      proof: 'random41231313string',
+    } as OTPRequest<AzureDevOpsRequestMetadata, unknown>;
+    const config = {} as AzureDevOpsRequesterConfig;
+
+    // act
+    const valid = await c.validateProofForRequest(request, config);
+    // assert
+    expect(valid).toEqual(false);
+  });
 });
 
 function setup() {
   let req = (new JestRequest() as unknown) as Request;
   let res = (new JestResponse() as unknown) as Response;
 
-  let axiosMockResponse = {} as AxiosResponse<AzureDevOpsRelease>;
+  let axiosMockResponse = () => ({} as AxiosResponse<any>);
   const getAxiosForConfigMock: GetAxiosForConfigFn = () =>
     (({
-      get: () => Promise.resolve(axiosMockResponse),
+      get: () => {
+        return Promise.resolve(axiosMockResponse());
+      },
     } as unknown) as AxiosInstance);
 
   let isAxiosResponse = <T>(x: any): x is AxiosResponse<T> => {
     return x != null && 'status' in x && x.status > 0;
   };
 
+  let retryTimeout = 1;
+
   const builder = {
     req,
     res,
     withAzDOResponse(x: AzureDevOpsRelease | AxiosResponse<AzureDevOpsRelease>) {
       axiosMockResponse = isAxiosResponse(x)
-        ? x
-        : ({ status: 200, data: x } as AxiosResponse<AzureDevOpsRelease>);
+        ? () => x
+        : () => ({ status: 200, data: x } as AxiosResponse<AzureDevOpsRelease>);
       return builder;
+    },
+    withAzDOLogsResponseContainingTheWord_npm() {
+      axiosMockResponse = () =>
+        ({
+          status: 200,
+          data: builder.getLogsZipStreamWhichContainsTheWord_npm(),
+        } as AxiosResponse<any>);
+
+      return builder;
+    },
+    getLogsZipStreamWhichContainsTheWord_npm() {
+      return fs.createReadStream(__dirname + '/logs');
     },
     default() {
       return builder;
     },
     build() {
-      return new AzureDevOpsRequester(getAxiosForConfigMock);
+      return new AzureDevOpsRequester(getAxiosForConfigMock, retryTimeout);
     },
   };
 
