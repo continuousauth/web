@@ -375,7 +375,11 @@ const create = async () => {
       idle: 10000,
     },
     dialectOptions: {
-      ssl: process.env.NO_DB_SSL ? false : true,
+      ssl: process.env.NO_DB_SSL
+        ? false
+        : {
+            rejectUnauthorized: false,
+          },
     },
   });
   await initializeInstance(sequelize);
