@@ -113,30 +113,20 @@ describe('requester endpoint creator', () => {
         defaultBranch: 'main',
       });
       await project.save();
-      const circleConfig = await CircleCIRequesterConfig.create(
-        {
-          accessToken: '123',
-        },
-        {
-          returning: true,
-        },
-      );
+      const circleConfig = await CircleCIRequesterConfig.create({
+        accessToken: '123',
+      });
       // await circleConfig.save({ returning: true });
       project.requester_circleCI_id = circleConfig.id;
-      const slackConfig = await SlackResponderConfig.create(
-        {
-          teamName: 'my team',
-          teamId: 'my team id',
-          teamIcon: 'team icon',
-          channelName: 'my channel',
-          channelId: 'channel id',
-          enterpriseId: 'enterprise id',
-          usernameToMention: '@me',
-        },
-        {
-          returning: true,
-        },
-      );
+      const slackConfig = await SlackResponderConfig.create({
+        teamName: 'my team',
+        teamId: 'my team id',
+        teamIcon: 'team icon',
+        channelName: 'my channel',
+        channelId: 'channel id',
+        enterpriseId: 'enterprise id',
+        usernameToMention: '@me',
+      });
       project.responder_slack_id = slackConfig.id;
       await project.save();
       const response = await request(router)

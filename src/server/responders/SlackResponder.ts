@@ -166,7 +166,6 @@ bolt.command(
         },
         {
           transaction: t,
-          returning: true,
         },
       );
       payload.team_id;
