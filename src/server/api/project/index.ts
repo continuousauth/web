@@ -61,6 +61,7 @@ export function projectRoutes() {
           repoName: repo.name,
           repoOwner: repo.owner.login,
           secret: generateNewSecret(256),
+          defaultBranch: repo.default_branch,
         });
         res.status(201).json(project);
       },

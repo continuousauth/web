@@ -72,11 +72,11 @@ export class CircleCIRequester
 
     const build = buildResponse.data;
 
-    // Must be on master
-    if (build.branch !== 'master')
+    // Must be on the default branch
+    if (build.branch !== project.defaultBranch)
       return {
         ok: false,
-        error: 'CircleCI build is not for the master branch',
+        error: 'CircleCI build is not for the default branch',
       };
 
     // Trigger must be GitHub

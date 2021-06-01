@@ -127,11 +127,11 @@ export class TravisCIRequester
         error: 'Travis CI build does not match the initially provided build number',
       };
 
-    // Must be on master
-    if (build.branch.name !== 'master')
+    // Must be on the default branch
+    if (build.branch.name !== request.project.defaultBranch)
       return {
         ok: false,
-        error: 'Travis CI build is not for the master branch',
+        error: 'Travis CI build is not for the default branch',
       };
 
     // Trigger must be a GitHub push

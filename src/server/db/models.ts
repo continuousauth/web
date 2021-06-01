@@ -54,6 +54,10 @@ export class Project extends Model<Project> {
   @Column(DataType.STRING({ length: 256 }))
   secret: string;
 
+  @AllowNull(false)
+  @Column(DataType.TEXT)
+  defaultBranch: string;
+
   @BelongsTo(() => CircleCIRequesterConfig, 'requester_circleCI_id')
   requester_circleCI: CircleCIRequesterConfig | null;
   requester_circleCI_id: string | null;
@@ -309,6 +313,23 @@ const migrationFns: ((t: Transaction, qI: QueryInterface) => Promise<void>)[] = 
         {
           type: DataType.TEXT,
           allowNull: true,
+        },
+        {
+          transaction: t,
+        },
+      );
+    }
+  },
+  async function addProjectDefaultBranchAttribute(t: Transaction, queryInterface: QueryInterface) {
+    const table: any = await queryInterface.describeTable(Project.getTableName());
+    if (!table.defaultBranch) {
+      await queryInterface.addColumn(
+        Project.getTableName() as string,
+        'defaultBranch',
+        {
+          type: DataType.TEXT,
+          allowNull: false,
+          defaultValue: 'master',
         },
         {
           transaction: t,

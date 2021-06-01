@@ -34,7 +34,7 @@ hypthetical CI service this would include:
 
 * Require the POST body include the build number
 * Ensure that build is running
-* Ensure that build is on the default branch (master) of the repository
+* Ensure that build is on the default branch of the repository
 * Ensure that build was naturally triggered (not manually triggered by a user)
 * Ensure (if possible) that users can't ssh into the build job while it's running
 or that no user has connected to the job.
