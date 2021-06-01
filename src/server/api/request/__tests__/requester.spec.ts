@@ -56,6 +56,7 @@ describe('requester endpoint creator', () => {
         repoName: 'cfa',
         repoOwner: 'electron',
         secret: 'very scret thing',
+        defaultBranch: 'main',
       });
       await project.save();
       const response = await request(router)
@@ -73,6 +74,7 @@ describe('requester endpoint creator', () => {
         repoName: 'cfa',
         repoOwner: 'electron',
         secret: 'very scret thing',
+        defaultBranch: 'main',
       });
       await project.save();
       const response = await request(router)
@@ -90,6 +92,7 @@ describe('requester endpoint creator', () => {
         repoName: 'cfa',
         repoOwner: 'electron',
         secret: 'very scret thing',
+        defaultBranch: 'main',
       });
       await project.save();
       const response = await request(router)
@@ -107,6 +110,7 @@ describe('requester endpoint creator', () => {
         repoName: 'cfa',
         repoOwner: 'electron',
         secret: 'very scret thing',
+        defaultBranch: 'main',
       });
       await project.save();
       const circleConfig = await CircleCIRequesterConfig.create(
@@ -204,6 +208,7 @@ describe('requester endpoint creator', () => {
             repoName: 'cfa',
             repoOwner: 'electron',
             secret: 'very scret thing',
+            defaultBranch: 'main',
           });
           await project.save();
         });
@@ -337,6 +342,7 @@ describe('requester endpoint creator', () => {
           repoName: 'cfa',
           repoOwner: 'electron',
           secret: 'very scret thing',
+          defaultBranch: 'main',
         });
         await project.save();
       });
@@ -467,6 +473,7 @@ describe('requester endpoint creator', () => {
           repoName: 'cfa',
           repoOwner: 'electron',
           secret: 'very scret thing',
+          defaultBranch: 'main',
         });
         await project.save();
       });

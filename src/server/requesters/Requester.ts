@@ -42,7 +42,7 @@ export interface Requester<RequesterConfig, MetadataType> {
   /**
    * This method should ensure that based on the metadata for this OTPRequest
    * the request is valid, active and not being spoofed.  i.e. the CI build is
-   * still running, on the master branch, etc.
+   * still running, on the default_branch branch, etc.
    *
    * Check the existing implementations for a better idea of what this method should do
    *
