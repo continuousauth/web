@@ -111,14 +111,19 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
         // Do not send a response here as metadataForInitialRequest will send the response
         if (!requestMetadata) return;
 
-        const newRequest = await OTPRequest.create({
-          projectId: project.id,
-          state: 'requested',
-          requested: new Date(),
-          requestMetadata,
-          responseMetadata: {},
-          proof: OTPRequest.generateProof(),
-        });
+        const newRequest = await OTPRequest.create(
+          {
+            projectId: project.id,
+            state: 'requested',
+            requested: new Date(),
+            requestMetadata,
+            responseMetadata: {},
+            proof: OTPRequest.generateProof(),
+          },
+          {
+            returning: true,
+          },
+        );
         // Fetch with includes
         const completeRequest = (await getFullRequest(`${project.id}`, newRequest.id))!;
         const request = await requester.isOTPRequestValidForRequester(completeRequest);

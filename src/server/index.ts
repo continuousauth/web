@@ -60,7 +60,6 @@ if (process.mainModule === module) {
   d('booting CFA');
   getSequelizeInstance()
     .then(() => {
-      d('Got sequelize instance');
       if (process.env.SENTRY_DSN) {
         app.use(Sentry.Handlers.errorHandler());
       }

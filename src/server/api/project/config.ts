@@ -59,9 +59,14 @@ export function configRoutes() {
         }
 
         const newProject = await withTransaction(async t => {
-          const config = await CircleCIRequesterConfig.create({
-            accessToken: req.body.accessToken,
-          });
+          const config = await CircleCIRequesterConfig.create(
+            {
+              accessToken: req.body.accessToken,
+            },
+            {
+              returning: true,
+            },
+          );
           await project.resetAllRequesters(t);
           project.requester_circleCI_id = config.id;
           await project.save({ transaction: t });
@@ -115,9 +120,14 @@ export function configRoutes() {
         }
 
         const newProject = await withTransaction(async t => {
-          const config = await TravisCIRequesterConfig.create({
-            accessToken: req.body.accessToken,
-          });
+          const config = await TravisCIRequesterConfig.create(
+            {
+              accessToken: req.body.accessToken,
+            },
+            {
+              returning: true,
+            },
+          );
           await project.resetAllRequesters(t);
           project.requester_travisCI_id = config.id;
           await project.save({ transaction: t });
@@ -160,6 +170,7 @@ export function configRoutes() {
             },
             {
               transaction: t,
+              returning: true,
             },
           );
         });
