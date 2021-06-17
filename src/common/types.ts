@@ -9,6 +9,7 @@ export interface SimpleRepo {
   id: string;
   repoName: string;
   repoOwner: string;
+  defaultBranch: string;
 }
 
 export interface SimpleProject extends SimpleRepo {
@@ -50,7 +51,10 @@ export const projectIsMissingConfig = (
   project: Any<
     Pick<
       FullProject,
-      Exclude<keyof FullProject, 'secret' | 'enabled' | 'id' | 'repoName' | 'repoOwner'>
+      Exclude<
+        keyof FullProject,
+        'secret' | 'enabled' | 'id' | 'repoName' | 'repoOwner' | 'defaultBranch'
+      >
     >
   >,
 ) => {

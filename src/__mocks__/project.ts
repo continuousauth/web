@@ -9,4 +9,5 @@ export const mockProject = (): FullProject => ({
   id: '123',
   repoName: 'my-repo',
   repoOwner: 'my-owner',
+  defaultBranch: 'main',
 });

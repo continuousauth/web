@@ -104,7 +104,11 @@ export function Dashboard() {
           .map(repo => (
             <Pane key={repo.id} className={styles.projectCard}>
               <Pane className={styles.projectHeader}>
-                {repo.repoOwner}/{repo.repoName}
+                <Tooltip content={`Default branch: ${repo.defaultBranch}`} position={Position.LEFT}>
+                  <span>
+                    {repo.repoOwner}/{repo.repoName}
+                  </span>
+                </Tooltip>
               </Pane>
               {projectIsMissingConfig(repo) ? (
                 <Pane
