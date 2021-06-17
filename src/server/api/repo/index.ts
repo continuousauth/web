@@ -60,7 +60,8 @@ export function repoRoutes() {
       const configuredMapped: SimpleProject[] = await Promise.all(
         configured.map(async p => {
           const actualDefaultBranch = reposWithAdmin.find(r => r.id === p.id)!.defaultBranch;
-          if (p.defaultBranch !== actualDefaultBranch) {
+          console.log(p.repoOwner, p.repoName, actualDefaultBranch, p.defaultBranch);
+          if (actualDefaultBranch && p.defaultBranch !== actualDefaultBranch) {
             p.defaultBranch = actualDefaultBranch;
             await p.save();
           }
