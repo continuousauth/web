@@ -19,8 +19,10 @@ const RedisStore = connectRedis(session);
 
 app.use(compression());
 
+const REDIS_URL = (process.env.REDIS_URL || '').replace('redis://h:', 'redis://:');
+
 const redisClient = redis.createClient({
-  url: process.env.REDIS_URL,
+  url: REDIS_URL,
 });
 redisClient.unref();
 redisClient.on('error', console.error);
