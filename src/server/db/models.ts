@@ -62,10 +62,6 @@ export class Project extends Model<Project> {
   requester_circleCI: CircleCIRequesterConfig | null;
   requester_circleCI_id: string | null;
 
-  @BelongsTo(() => TravisCIRequesterConfig, 'requester_travisCI_id')
-  requester_travisCI: CircleCIRequesterConfig | null;
-  requester_travisCI_id: string | null;
-
   @BelongsTo(() => SlackResponderConfig, 'responder_slack_id')
   responder_slack: SlackResponderConfig | null;
   responder_slack_id: string | null;
@@ -87,24 +83,12 @@ export class Project extends Model<Project> {
   }
 
   static get allIncludes() {
-    return [CircleCIRequesterConfig, TravisCIRequesterConfig, SlackResponderConfig];
+    return [CircleCIRequesterConfig, SlackResponderConfig];
   }
 }
 
 @Table(tableOptions)
 export class CircleCIRequesterConfig extends Model<CircleCIRequesterConfig> {
-  @PrimaryKey
-  @Default(DataType.UUIDV4)
-  @Column(DataType.UUID)
-  id: string;
-
-  @AllowNull(false)
-  @Column(DataType.STRING)
-  accessToken: string;
-}
-
-@Table(tableOptions)
-export class TravisCIRequesterConfig extends Model<TravisCIRequesterConfig> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
@@ -285,25 +269,6 @@ export class OTPRequest<Req = unknown, Res = unknown> extends Model<OTPRequest<R
 }
 
 const migrationFns: ((t: Transaction, qI: QueryInterface) => Promise<void>)[] = [
-  async function addTravisCIRequesterForeignKey(t: Transaction, queryInterface: QueryInterface) {
-    const table: any = await queryInterface.describeTable(Project.getTableName());
-    if (!table.requester_travisCI_id) {
-      await queryInterface.addColumn(
-        Project.getTableName() as string,
-        'requester_travisCI_id',
-        {
-          type: DataType.UUID,
-          references: {
-            model: 'TravisCIRequesterConfig',
-            key: 'id',
-          },
-        },
-        {
-          transaction: t,
-        },
-      );
-    }
-  },
   async function addUserThatRespondedAttribute(t: Transaction, queryInterface: QueryInterface) {
     const table: any = await queryInterface.describeTable(OTPRequest.getTableName());
     if (!table.userThatResponded) {
@@ -343,7 +308,6 @@ const initializeInstance = async (sequelize: Sequelize) => {
   sequelize.addModels([
     Project,
     CircleCIRequesterConfig,
-    TravisCIRequesterConfig,
     SlackResponderConfig,
     SlackResponderLinker,
     OTPRequest,

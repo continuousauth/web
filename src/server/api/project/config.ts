@@ -3,14 +3,13 @@ import * as debug from 'debug';
 import * as express from 'express';
 import * as Joi from 'joi';
 
-import { validate, hasAdminAccessToTargetRepo } from '../../helpers/_middleware';
+import { validate } from '../../helpers/_middleware';
 import { createA } from '../../helpers/a';
 import {
   Project,
   SlackResponderLinker,
   withTransaction,
   CircleCIRequesterConfig,
-  TravisCIRequesterConfig,
 } from '../../db/models';
 import { getProjectFromIdAndCheckPermissions } from './_safe';
 
@@ -107,67 +106,6 @@ export function configRoutes() {
           );
           await project.resetAllRequesters(t);
           project.requester_circleCI_id = config.id;
-          await project.save({ transaction: t });
-          return await Project.findByPk(project.id, {
-            include: Project.allIncludes,
-            transaction: t,
-          });
-        });
-
-        res.json(newProject);
-      },
-    ),
-  );
-
-  router.post(
-    '/:id/config/requesters/travisci',
-    validate(
-      {
-        a,
-        params: {
-          id: Joi.number()
-            .integer()
-            .required(),
-        },
-        body: {
-          accessToken: Joi.string()
-            .min(1)
-            .required(),
-        },
-      },
-      async (req, res) => {
-        const project = await getProjectFromIdAndCheckPermissions(req.params.id, req, res);
-        if (!project) return;
-
-        const response = await axios.get(
-          `https://api.travis-ci.org/repo/${project.repoOwner}%2F${project.repoName}`,
-          {
-            headers: {
-              'Travis-API-Version': '3',
-              Authorization: `token ${req.body.accessToken}`,
-            },
-            validateStatus: () => true,
-          },
-        );
-
-        if (response.status !== 200) {
-          return res.status(401).json({
-            error:
-              'That token is not valid for the current project, or the repository is not configured on Travis CI',
-          });
-        }
-
-        const newProject = await withTransaction(async t => {
-          const config = await TravisCIRequesterConfig.create(
-            {
-              accessToken: req.body.accessToken,
-            },
-            {
-              returning: true,
-            },
-          );
-          await project.resetAllRequesters(t);
-          project.requester_travisCI_id = config.id;
           await project.save({ transaction: t });
           return await Project.findByPk(project.id, {
             include: Project.allIncludes,

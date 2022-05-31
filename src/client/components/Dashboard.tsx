@@ -21,7 +21,6 @@ import { CircleCILogo } from './icons/CircleCI';
 import { SlackLogo } from './icons/Slack';
 import { Link } from 'react-router-dom';
 import { cx, projectHasAnyConfig, defaultFetchInit, defaultBodyReader } from '../utils';
-import { TravisCILogo } from './icons/TravisCI';
 
 export function Dashboard() {
   const reposFetch = useFetch<ReposResponse>('/api/repos', defaultFetchInit, defaultBodyReader);
@@ -145,15 +144,6 @@ export function Dashboard() {
                   </Tooltip>
                   <CircleCILogo className={styles.configIcon} />
                   <span>CircleCI</span>
-                </Pane>
-              ) : null}
-              {repo.requester_travisCI ? (
-                <Pane className={styles.configRow}>
-                  <Tooltip content="CFA Requester" position={Position.LEFT}>
-                    <CircleArrowRightIcon color="success" />
-                  </Tooltip>
-                  <TravisCILogo className={styles.configIcon} />
-                  <span>Travis CI</span>
                 </Pane>
               ) : null}
               {repo.responder_slack ? (
