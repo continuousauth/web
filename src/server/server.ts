@@ -26,7 +26,7 @@ const receiverOpts = {
 };
 const boltReceiver = new ExpressReceiver(receiverOpts);
 
-const boltApp = (boltReceiver as any).app as express.Application;
+const boltApp = boltReceiver.app;
 
 export const app = express();
 if (process.env.SENTRY_DSN) {
@@ -52,7 +52,7 @@ app.get(
     let access: any;
     try {
       const accessResult = await bolt.client.oauth.access({
-        code: req.query.code,
+        code: req.query.code as string,
         client_id: process.env.SLACK_CLIENT_ID!,
         client_secret: process.env.SLACK_CLIENT_SECRET!,
       });
@@ -121,16 +121,17 @@ app.get(
 );
 
 export async function authorizeTeam(opts: {
-  teamId: string;
+  teamId?: string;
   enterpriseId?: string;
 }): Promise<{
   botToken: string;
   botId: string;
   botUserId: string;
 }> {
+  if (!opts.teamId && !opts.enterpriseId) throw new Error('Not installed');
   const install = await SlackInstall.findOne({
     where: {
-      teamId: opts.teamId,
+      teamId: opts.teamId || '',
       enterpriseId: opts.enterpriseId || '',
     },
   });

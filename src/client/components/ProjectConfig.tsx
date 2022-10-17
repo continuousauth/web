@@ -5,7 +5,7 @@ import { Icon, Pane, Spinner, Tooltip, toaster } from 'evergreen-ui';
 
 import { FullProject } from '../../common/types';
 
-import * as styles from './ProjectConfig.scss';
+import styles from './ProjectConfig.scss';
 import { ProjectSecret } from './ProjectSecret';
 import { DangerZone } from './DangerZone';
 import { ResponderConfig } from './ResponderConfig';

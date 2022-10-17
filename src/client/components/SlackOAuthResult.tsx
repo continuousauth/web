@@ -3,7 +3,7 @@ import { Alert, Heading, Pane, Paragraph } from 'evergreen-ui';
 
 import { SlackLogo } from './icons/Slack';
 
-import * as styles from './SlackOAuthResult.scss';
+import styles from './SlackOAuthResult.scss';
 
 export function SlackOAuthResult() {
   const query = new URLSearchParams(window.location.search);

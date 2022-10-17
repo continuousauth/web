@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Alert, Button, Dialog, Pane, toaster } from 'evergreen-ui';
 import { FullProject } from '../../common/types';
 
-import * as styles from './DangerZone.scss';
+import styles from './DangerZone.scss';
 import { useAsyncTaskFetch } from 'react-hooks-async';
 import { defaultBodyReader } from '../utils';
 

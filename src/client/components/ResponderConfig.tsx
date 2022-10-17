@@ -4,7 +4,7 @@ import { Alert, Heading, Pane, Paragraph, Tab, Tablist } from 'evergreen-ui';
 import { FullProject } from '../../common/types';
 import { SlackResponderConfig } from './configurators/SlackResponderConfig';
 
-import * as styles from './ReqResConfig.scss';
+import styles from './ReqResConfig.scss';
 import { SlackLogo } from './icons/Slack';
 
 export interface Props {

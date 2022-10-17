@@ -18,7 +18,10 @@ passport.use(
     (accessToken, refreshToken, profile, cb) => {
       cb(null, {
         accessToken,
-        profile,
+        profile: {
+          ...profile,
+          username: profile.username || '',
+        },
       });
     },
   ),

@@ -94,7 +94,6 @@ export function SlackResponderConfig({ project, setProject }: Props) {
           <Avatar
             name={project.responder_slack.teamName}
             size={24}
-            isSolid
             src={project.responder_slack.teamIcon}
             style={{ marginRight: 8 }}
           />

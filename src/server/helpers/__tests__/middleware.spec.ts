@@ -63,11 +63,11 @@ describe('validate middleware', () => {
       .send({ bad: true });
     expect(response.status).toBe(400);
     expect(response.body).toMatchInlineSnapshot(`
-                              Object {
-                                "error": "Body Validation Error",
-                                "message": "child \\"foo\\" fails because [\\"foo\\" is required]",
-                              }
-                    `);
+      {
+        "error": "Body Validation Error",
+        "message": "child "foo" fails because ["foo" is required]",
+      }
+    `);
   });
 
   it('should fail with 400 if the query does not match provided requirements', async () => {
@@ -85,11 +85,11 @@ describe('validate middleware', () => {
     const response = await request(router).post('/foo?a=1');
     expect(response.status).toBe(400);
     expect(response.body).toMatchInlineSnapshot(`
-                        Object {
-                          "error": "Query Validation Error",
-                          "message": "child \\"foo\\" fails because [\\"foo\\" is required]",
-                        }
-                `);
+      {
+        "error": "Query Validation Error",
+        "message": "child "foo" fails because ["foo" is required]",
+      }
+    `);
   });
 
   it('should fail with 400 if the params do not match provided requirements', async () => {
@@ -108,11 +108,11 @@ describe('validate middleware', () => {
     const response = await request(router).post('/not-a-number');
     expect(response.status).toBe(400);
     expect(response.body).toMatchInlineSnapshot(`
-                        Object {
-                          "error": "Params Validation Error",
-                          "message": "child \\"foo\\" fails because [\\"foo\\" must be a number]",
-                        }
-                `);
+      {
+        "error": "Params Validation Error",
+        "message": "child "foo" fails because ["foo" must be a number]",
+      }
+    `);
   });
 
   it('should should passthrough to the handler if all validation succeeds', async () => {
@@ -139,10 +139,10 @@ describe('validate middleware', () => {
       .send({ foo: 'hey' });
     expect(response.status).toBe(321);
     expect(response.body).toMatchInlineSnapshot(`
-            Object {
-              "very": "Good",
-            }
-        `);
+      {
+        "very": "Good",
+      }
+    `);
   });
 });
 

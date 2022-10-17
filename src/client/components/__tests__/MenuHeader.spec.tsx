@@ -10,7 +10,7 @@ import { UserState } from '../../state/user';
 import { BrowserRouter } from 'react-router-dom';
 
 const fakeLocation = (path: string) => {
-  delete window.location;
+  delete (window as any).location;
   window.location = {
     pathname: path,
   } as any;

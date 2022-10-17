@@ -1,0 +1,13 @@
+diff --git a/node_modules/evergreen-ui/index.d.ts b/node_modules/evergreen-ui/index.d.ts
+index 865ad6a..94046c6 100644
+--- a/node_modules/evergreen-ui/index.d.ts
++++ b/node_modules/evergreen-ui/index.d.ts
+@@ -324,7 +324,7 @@ export type StyleProps<T extends Components = Components> = {
+ export type ComponentStyle<T extends Components = Components> = {
+   baseStyle?: Partial<StyleProps<T>>
+   appearances?: { [appearance: string]: Partial<StyleProps<T>> }
+-  sizes?: { [size: Size]: Partial<StyleProps<T>> }
++  sizes?: { [size: string]: Partial<StyleProps<T>> } & { [size: number]: Partial<StyleProps<T>> }
+ }
+ 
+ export type ComponentStyles<T extends Components = Components> = {

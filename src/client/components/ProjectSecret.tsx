@@ -3,7 +3,7 @@ import { Button, Heading, Pane, TextInput } from 'evergreen-ui';
 
 import { FullProject } from '../../common/types';
 
-import * as styles from './ProjectSecret.scss';
+import styles from './ProjectSecret.scss';
 
 export interface Props {
   project: FullProject;

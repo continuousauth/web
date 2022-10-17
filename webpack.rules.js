@@ -23,7 +23,7 @@ module.exports = [
   {
     test: /\.tsx?$/,
     exclude: /(node_modules|bower_components|public_out\/)/,
-    loaders: [
+    use: [
       {
         loader: 'cache-loader',
         options: {
@@ -59,12 +59,12 @@ module.exports = [
   },
   {
     test: /\.css$/,
-    loaders: [envSpecificCSSLoader(), 'css-loader'],
+    use: [envSpecificCSSLoader(), 'css-loader'],
   },
   {
     test: /\.scss$/,
     exclude: /[/\\](node_modules|bower_components|public_out\/)[/\\]/,
-    loaders: [
+    use: [
       {
         loader: 'cache-loader',
         options: {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Dialog, Pane, Paragraph, SelectMenu, toaster } from 'evergreen-ui';
 import { SimpleRepo, SimpleProject } from '../../common/types';
 
-import * as styles from './AddProjectDialog.scss';
+import styles from './AddProjectDialog.scss';
 import { useAsyncTaskFetch } from 'react-hooks-async';
 import { defaultBodyReader } from '../utils';
 

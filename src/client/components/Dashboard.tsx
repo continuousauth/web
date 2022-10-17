@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useFetch } from 'react-hooks-async';
 import { Alert, Button, Icon, Pane, Paragraph, Position, Spinner, Tooltip } from 'evergreen-ui';
 
-import * as styles from './Dashboard.scss';
+import styles from './Dashboard.scss';
 import { ReposResponse, SimpleProject, projectIsMissingConfig } from '../../common/types';
 import { Rocket } from './icons/Rocket';
 import { AddProjectDialog } from './AddProjectDialog';

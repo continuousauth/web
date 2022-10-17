@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Avatar, Icon, Pane } from 'evergreen-ui';
 import { UserState } from '../state/user';
 
-import * as styles from './MenuHeader.scss';
+import styles from './MenuHeader.scss';
 import { CFALogo } from './icons/Logo';
 import { cx } from '../utils';
 import { Link, withRouter } from 'react-router-dom';
@@ -20,7 +20,7 @@ export function MenuHeaderInner() {
     <Pane className={styles.container}>
       <CFALogo className={styles.logo} />
       <span className={styles.productName}>CFA</span>
-      <Link className={cx(styles.item, isPathActive('/') && styles.active)} to="/">
+      <Link className={cx(styles.item, (isPathActive('/') && styles.active) || null)} to="/">
         Dashboard
       </Link>
       <a className={styles.item} href="https://docs.continuousauth.dev" target="_blank">

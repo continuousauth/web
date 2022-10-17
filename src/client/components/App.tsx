@@ -7,7 +7,7 @@ import { useFetch } from 'react-hooks-async';
 
 import { UserState } from '../state/user';
 
-import * as styles from './App.scss';
+import styles from './App.scss';
 import { User } from '../../common/types';
 import { MainAppRouter } from './MainAppRouter';
 import { defaultFetchInit, defaultBodyReader } from '../utils';

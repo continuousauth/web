@@ -9,7 +9,7 @@ module.exports = {
     "src/**/*.tsx"
   ],
   moduleNameMapper: {
-    '\\.scss$': 'identity-obj-proxy'
+    '\\.scss$': '<rootDir>/fake-sass.js'
   },
   setupFiles: [
     './jest.setup.js'

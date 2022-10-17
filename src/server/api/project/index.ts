@@ -1,7 +1,7 @@
 import * as debug from 'debug';
 import * as express from 'express';
 import * as Joi from 'joi';
-import * as Octokit from '@octokit/rest';
+import { Octokit } from '@octokit/rest';
 
 import { createA } from '../../helpers/a';
 import { validate, hasAdminAccessToTargetRepo } from '../../helpers/_middleware';
@@ -34,7 +34,7 @@ export function projectRoutes() {
         }
 
         const github = new Octokit({
-          auth: req.user.accessToken,
+          auth: req.user!.accessToken,
         });
 
         const repoResponse = await github.request('GET /repositories/:id', {
@@ -129,14 +129,14 @@ export function projectRoutes() {
               },
             })
           )
+            .sort((a, b) => b.requested.getTime() - a.requested.getTime())
             .map(req => {
-              const simpleReq = req.get() as OTPRequest;
+              const simpleReq: Partial<OTPRequest<unknown, unknown>> = req.get();
               delete simpleReq.proof;
               delete simpleReq.requestMetadata;
               delete simpleReq.responseMetadata;
               return simpleReq;
-            })
-            .sort((a, b) => b.requested.getTime() - a.requested.getTime()),
+            }),
         );
       },
     ),
