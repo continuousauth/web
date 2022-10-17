@@ -9,7 +9,7 @@ module.exports = {
     "src/**/*.tsx"
   ],
   moduleNameMapper: {
-    '\\.scss$': '<rootDir>/fake-sass.js'
+    '\\.scss$': '<rootDir>/src/__mocks__/fake-sass.js'
   },
   setupFiles: [
     './jest.setup.js'

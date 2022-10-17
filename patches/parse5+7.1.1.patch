@@ -1,0 +1,3196 @@
+diff --git a/node_modules/parse5/dist/cjs/common/doctype.d.ts b/node_modules/parse5/dist/cjs/common/doctype.d.ts
+deleted file mode 100644
+index 8c56fd7..0000000
+--- a/node_modules/parse5/dist/cjs/common/doctype.d.ts
++++ /dev/null
+@@ -1,5 +0,0 @@
+-import { DOCUMENT_MODE } from './html.js';
+-import type { DoctypeToken } from './token.js';
+-export declare function isConforming(token: DoctypeToken): boolean;
+-export declare function getDocumentMode(token: DoctypeToken): DOCUMENT_MODE;
+-//# sourceMappingURL=doctype.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/cjs/common/error-codes.d.ts b/node_modules/parse5/dist/cjs/common/error-codes.d.ts
+deleted file mode 100644
+index 13b0658..0000000
+--- a/node_modules/parse5/dist/cjs/common/error-codes.d.ts
++++ /dev/null
+@@ -1,68 +0,0 @@
+-import type { Location } from './token.js';
+-export interface ParserError extends Location {
+-    code: ERR;
+-}
+-export declare type ParserErrorHandler = (error: ParserError) => void;
+-export declare enum ERR {
+-    controlCharacterInInputStream = "control-character-in-input-stream",
+-    noncharacterInInputStream = "noncharacter-in-input-stream",
+-    surrogateInInputStream = "surrogate-in-input-stream",
+-    nonVoidHtmlElementStartTagWithTrailingSolidus = "non-void-html-element-start-tag-with-trailing-solidus",
+-    endTagWithAttributes = "end-tag-with-attributes",
+-    endTagWithTrailingSolidus = "end-tag-with-trailing-solidus",
+-    unexpectedSolidusInTag = "unexpected-solidus-in-tag",
+-    unexpectedNullCharacter = "unexpected-null-character",
+-    unexpectedQuestionMarkInsteadOfTagName = "unexpected-question-mark-instead-of-tag-name",
+-    invalidFirstCharacterOfTagName = "invalid-first-character-of-tag-name",
+-    unexpectedEqualsSignBeforeAttributeName = "unexpected-equals-sign-before-attribute-name",
+-    missingEndTagName = "missing-end-tag-name",
+-    unexpectedCharacterInAttributeName = "unexpected-character-in-attribute-name",
+-    unknownNamedCharacterReference = "unknown-named-character-reference",
+-    missingSemicolonAfterCharacterReference = "missing-semicolon-after-character-reference",
+-    unexpectedCharacterAfterDoctypeSystemIdentifier = "unexpected-character-after-doctype-system-identifier",
+-    unexpectedCharacterInUnquotedAttributeValue = "unexpected-character-in-unquoted-attribute-value",
+-    eofBeforeTagName = "eof-before-tag-name",
+-    eofInTag = "eof-in-tag",
+-    missingAttributeValue = "missing-attribute-value",
+-    missingWhitespaceBetweenAttributes = "missing-whitespace-between-attributes",
+-    missingWhitespaceAfterDoctypePublicKeyword = "missing-whitespace-after-doctype-public-keyword",
+-    missingWhitespaceBetweenDoctypePublicAndSystemIdentifiers = "missing-whitespace-between-doctype-public-and-system-identifiers",
+-    missingWhitespaceAfterDoctypeSystemKeyword = "missing-whitespace-after-doctype-system-keyword",
+-    missingQuoteBeforeDoctypePublicIdentifier = "missing-quote-before-doctype-public-identifier",
+-    missingQuoteBeforeDoctypeSystemIdentifier = "missing-quote-before-doctype-system-identifier",
+-    missingDoctypePublicIdentifier = "missing-doctype-public-identifier",
+-    missingDoctypeSystemIdentifier = "missing-doctype-system-identifier",
+-    abruptDoctypePublicIdentifier = "abrupt-doctype-public-identifier",
+-    abruptDoctypeSystemIdentifier = "abrupt-doctype-system-identifier",
+-    cdataInHtmlContent = "cdata-in-html-content",
+-    incorrectlyOpenedComment = "incorrectly-opened-comment",
+-    eofInScriptHtmlCommentLikeText = "eof-in-script-html-comment-like-text",
+-    eofInDoctype = "eof-in-doctype",
+-    nestedComment = "nested-comment",
+-    abruptClosingOfEmptyComment = "abrupt-closing-of-empty-comment",
+-    eofInComment = "eof-in-comment",
+-    incorrectlyClosedComment = "incorrectly-closed-comment",
+-    eofInCdata = "eof-in-cdata",
+-    absenceOfDigitsInNumericCharacterReference = "absence-of-digits-in-numeric-character-reference",
+-    nullCharacterReference = "null-character-reference",
+-    surrogateCharacterReference = "surrogate-character-reference",
+-    characterReferenceOutsideUnicodeRange = "character-reference-outside-unicode-range",
+-    controlCharacterReference = "control-character-reference",
+-    noncharacterCharacterReference = "noncharacter-character-reference",
+-    missingWhitespaceBeforeDoctypeName = "missing-whitespace-before-doctype-name",
+-    missingDoctypeName = "missing-doctype-name",
+-    invalidCharacterSequenceAfterDoctypeName = "invalid-character-sequence-after-doctype-name",
+-    duplicateAttribute = "duplicate-attribute",
+-    nonConformingDoctype = "non-conforming-doctype",
+-    missingDoctype = "missing-doctype",
+-    misplacedDoctype = "misplaced-doctype",
+-    endTagWithoutMatchingOpenElement = "end-tag-without-matching-open-element",
+-    closingOfElementWithOpenChildElements = "closing-of-element-with-open-child-elements",
+-    disallowedContentInNoscriptInHead = "disallowed-content-in-noscript-in-head",
+-    openElementsLeftAfterEof = "open-elements-left-after-eof",
+-    abandonedHeadElementChild = "abandoned-head-element-child",
+-    misplacedStartTagForHeadElement = "misplaced-start-tag-for-head-element",
+-    nestedNoscriptInHead = "nested-noscript-in-head",
+-    eofInElementThatCanContainOnlyText = "eof-in-element-that-can-contain-only-text"
+-}
+-//# sourceMappingURL=error-codes.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/cjs/common/foreign-content.d.ts b/node_modules/parse5/dist/cjs/common/foreign-content.d.ts
+deleted file mode 100644
+index 8d9f182..0000000
+--- a/node_modules/parse5/dist/cjs/common/foreign-content.d.ts
++++ /dev/null
+@@ -1,10 +0,0 @@
+-import { TAG_ID as $, NS } from './html.js';
+-import type { TagToken, Attribute } from './token.js';
+-export declare const SVG_TAG_NAMES_ADJUSTMENT_MAP: Map<string, string>;
+-export declare function causesExit(startTagToken: TagToken): boolean;
+-export declare function adjustTokenMathMLAttrs(token: TagToken): void;
+-export declare function adjustTokenSVGAttrs(token: TagToken): void;
+-export declare function adjustTokenXMLAttrs(token: TagToken): void;
+-export declare function adjustTokenSVGTagName(token: TagToken): void;
+-export declare function isIntegrationPoint(tn: $, ns: NS, attrs: Attribute[], foreignNS?: NS): boolean;
+-//# sourceMappingURL=foreign-content.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/cjs/common/html.d.ts b/node_modules/parse5/dist/cjs/common/html.d.ts
+deleted file mode 100644
+index 0b47095..0000000
+--- a/node_modules/parse5/dist/cjs/common/html.d.ts
++++ /dev/null
+@@ -1,288 +0,0 @@
+-/** All valid namespaces in HTML. */
+-export declare enum NS {
+-    HTML = "http://www.w3.org/1999/xhtml",
+-    MATHML = "http://www.w3.org/1998/Math/MathML",
+-    SVG = "http://www.w3.org/2000/svg",
+-    XLINK = "http://www.w3.org/1999/xlink",
+-    XML = "http://www.w3.org/XML/1998/namespace",
+-    XMLNS = "http://www.w3.org/2000/xmlns/"
+-}
+-export declare enum ATTRS {
+-    TYPE = "type",
+-    ACTION = "action",
+-    ENCODING = "encoding",
+-    PROMPT = "prompt",
+-    NAME = "name",
+-    COLOR = "color",
+-    FACE = "face",
+-    SIZE = "size"
+-}
+-/**
+- * The mode of the document.
+- *
+- * @see {@link https://dom.spec.whatwg.org/#concept-document-limited-quirks}
+- */
+-export declare enum DOCUMENT_MODE {
+-    NO_QUIRKS = "no-quirks",
+-    QUIRKS = "quirks",
+-    LIMITED_QUIRKS = "limited-quirks"
+-}
+-export declare enum TAG_NAMES {
+-    A = "a",
+-    ADDRESS = "address",
+-    ANNOTATION_XML = "annotation-xml",
+-    APPLET = "applet",
+-    AREA = "area",
+-    ARTICLE = "article",
+-    ASIDE = "aside",
+-    B = "b",
+-    BASE = "base",
+-    BASEFONT = "basefont",
+-    BGSOUND = "bgsound",
+-    BIG = "big",
+-    BLOCKQUOTE = "blockquote",
+-    BODY = "body",
+-    BR = "br",
+-    BUTTON = "button",
+-    CAPTION = "caption",
+-    CENTER = "center",
+-    CODE = "code",
+-    COL = "col",
+-    COLGROUP = "colgroup",
+-    DD = "dd",
+-    DESC = "desc",
+-    DETAILS = "details",
+-    DIALOG = "dialog",
+-    DIR = "dir",
+-    DIV = "div",
+-    DL = "dl",
+-    DT = "dt",
+-    EM = "em",
+-    EMBED = "embed",
+-    FIELDSET = "fieldset",
+-    FIGCAPTION = "figcaption",
+-    FIGURE = "figure",
+-    FONT = "font",
+-    FOOTER = "footer",
+-    FOREIGN_OBJECT = "foreignObject",
+-    FORM = "form",
+-    FRAME = "frame",
+-    FRAMESET = "frameset",
+-    H1 = "h1",
+-    H2 = "h2",
+-    H3 = "h3",
+-    H4 = "h4",
+-    H5 = "h5",
+-    H6 = "h6",
+-    HEAD = "head",
+-    HEADER = "header",
+-    HGROUP = "hgroup",
+-    HR = "hr",
+-    HTML = "html",
+-    I = "i",
+-    IMG = "img",
+-    IMAGE = "image",
+-    INPUT = "input",
+-    IFRAME = "iframe",
+-    KEYGEN = "keygen",
+-    LABEL = "label",
+-    LI = "li",
+-    LINK = "link",
+-    LISTING = "listing",
+-    MAIN = "main",
+-    MALIGNMARK = "malignmark",
+-    MARQUEE = "marquee",
+-    MATH = "math",
+-    MENU = "menu",
+-    META = "meta",
+-    MGLYPH = "mglyph",
+-    MI = "mi",
+-    MO = "mo",
+-    MN = "mn",
+-    MS = "ms",
+-    MTEXT = "mtext",
+-    NAV = "nav",
+-    NOBR = "nobr",
+-    NOFRAMES = "noframes",
+-    NOEMBED = "noembed",
+-    NOSCRIPT = "noscript",
+-    OBJECT = "object",
+-    OL = "ol",
+-    OPTGROUP = "optgroup",
+-    OPTION = "option",
+-    P = "p",
+-    PARAM = "param",
+-    PLAINTEXT = "plaintext",
+-    PRE = "pre",
+-    RB = "rb",
+-    RP = "rp",
+-    RT = "rt",
+-    RTC = "rtc",
+-    RUBY = "ruby",
+-    S = "s",
+-    SCRIPT = "script",
+-    SECTION = "section",
+-    SELECT = "select",
+-    SOURCE = "source",
+-    SMALL = "small",
+-    SPAN = "span",
+-    STRIKE = "strike",
+-    STRONG = "strong",
+-    STYLE = "style",
+-    SUB = "sub",
+-    SUMMARY = "summary",
+-    SUP = "sup",
+-    TABLE = "table",
+-    TBODY = "tbody",
+-    TEMPLATE = "template",
+-    TEXTAREA = "textarea",
+-    TFOOT = "tfoot",
+-    TD = "td",
+-    TH = "th",
+-    THEAD = "thead",
+-    TITLE = "title",
+-    TR = "tr",
+-    TRACK = "track",
+-    TT = "tt",
+-    U = "u",
+-    UL = "ul",
+-    SVG = "svg",
+-    VAR = "var",
+-    WBR = "wbr",
+-    XMP = "xmp"
+-}
+-/**
+- * Tag IDs are numeric IDs for known tag names.
+- *
+- * We use tag IDs to improve the performance of tag name comparisons.
+- */
+-export declare enum TAG_ID {
+-    UNKNOWN = 0,
+-    A = 1,
+-    ADDRESS = 2,
+-    ANNOTATION_XML = 3,
+-    APPLET = 4,
+-    AREA = 5,
+-    ARTICLE = 6,
+-    ASIDE = 7,
+-    B = 8,
+-    BASE = 9,
+-    BASEFONT = 10,
+-    BGSOUND = 11,
+-    BIG = 12,
+-    BLOCKQUOTE = 13,
+-    BODY = 14,
+-    BR = 15,
+-    BUTTON = 16,
+-    CAPTION = 17,
+-    CENTER = 18,
+-    CODE = 19,
+-    COL = 20,
+-    COLGROUP = 21,
+-    DD = 22,
+-    DESC = 23,
+-    DETAILS = 24,
+-    DIALOG = 25,
+-    DIR = 26,
+-    DIV = 27,
+-    DL = 28,
+-    DT = 29,
+-    EM = 30,
+-    EMBED = 31,
+-    FIELDSET = 32,
+-    FIGCAPTION = 33,
+-    FIGURE = 34,
+-    FONT = 35,
+-    FOOTER = 36,
+-    FOREIGN_OBJECT = 37,
+-    FORM = 38,
+-    FRAME = 39,
+-    FRAMESET = 40,
+-    H1 = 41,
+-    H2 = 42,
+-    H3 = 43,
+-    H4 = 44,
+-    H5 = 45,
+-    H6 = 46,
+-    HEAD = 47,
+-    HEADER = 48,
+-    HGROUP = 49,
+-    HR = 50,
+-    HTML = 51,
+-    I = 52,
+-    IMG = 53,
+-    IMAGE = 54,
+-    INPUT = 55,
+-    IFRAME = 56,
+-    KEYGEN = 57,
+-    LABEL = 58,
+-    LI = 59,
+-    LINK = 60,
+-    LISTING = 61,
+-    MAIN = 62,
+-    MALIGNMARK = 63,
+-    MARQUEE = 64,
+-    MATH = 65,
+-    MENU = 66,
+-    META = 67,
+-    MGLYPH = 68,
+-    MI = 69,
+-    MO = 70,
+-    MN = 71,
+-    MS = 72,
+-    MTEXT = 73,
+-    NAV = 74,
+-    NOBR = 75,
+-    NOFRAMES = 76,
+-    NOEMBED = 77,
+-    NOSCRIPT = 78,
+-    OBJECT = 79,
+-    OL = 80,
+-    OPTGROUP = 81,
+-    OPTION = 82,
+-    P = 83,
+-    PARAM = 84,
+-    PLAINTEXT = 85,
+-    PRE = 86,
+-    RB = 87,
+-    RP = 88,
+-    RT = 89,
+-    RTC = 90,
+-    RUBY = 91,
+-    S = 92,
+-    SCRIPT = 93,
+-    SECTION = 94,
+-    SELECT = 95,
+-    SOURCE = 96,
+-    SMALL = 97,
+-    SPAN = 98,
+-    STRIKE = 99,
+-    STRONG = 100,
+-    STYLE = 101,
+-    SUB = 102,
+-    SUMMARY = 103,
+-    SUP = 104,
+-    TABLE = 105,
+-    TBODY = 106,
+-    TEMPLATE = 107,
+-    TEXTAREA = 108,
+-    TFOOT = 109,
+-    TD = 110,
+-    TH = 111,
+-    THEAD = 112,
+-    TITLE = 113,
+-    TR = 114,
+-    TRACK = 115,
+-    TT = 116,
+-    U = 117,
+-    UL = 118,
+-    SVG = 119,
+-    VAR = 120,
+-    WBR = 121,
+-    XMP = 122
+-}
+-export declare function getTagID(tagName: string): TAG_ID;
+-export declare const SPECIAL_ELEMENTS: Record<NS, Set<TAG_ID>>;
+-export declare function isNumberedHeader(tn: TAG_ID): boolean;
+-export declare function hasUnescapedText(tn: string, scriptingEnabled: boolean): boolean;
+-//# sourceMappingURL=html.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/cjs/common/token.d.ts b/node_modules/parse5/dist/cjs/common/token.d.ts
+deleted file mode 100644
+index fb36ee1..0000000
+--- a/node_modules/parse5/dist/cjs/common/token.d.ts
++++ /dev/null
+@@ -1,85 +0,0 @@
+-import type { TAG_ID } from './html.js';
+-export declare enum TokenType {
+-    CHARACTER = 0,
+-    NULL_CHARACTER = 1,
+-    WHITESPACE_CHARACTER = 2,
+-    START_TAG = 3,
+-    END_TAG = 4,
+-    COMMENT = 5,
+-    DOCTYPE = 6,
+-    EOF = 7,
+-    HIBERNATION = 8
+-}
+-export interface Location {
+-    /** One-based line index of the first character. */
+-    startLine: number;
+-    /** One-based column index of the first character. */
+-    startCol: number;
+-    /** Zero-based first character index. */
+-    startOffset: number;
+-    /** One-based line index of the last character. */
+-    endLine: number;
+-    /** One-based column index of the last character. Points directly *after* the last character. */
+-    endCol: number;
+-    /** Zero-based last character index. Points directly *after* the last character. */
+-    endOffset: number;
+-}
+-export interface LocationWithAttributes extends Location {
+-    /** Start tag attributes' location info. */
+-    attrs?: Record<string, Location>;
+-}
+-export interface ElementLocation extends LocationWithAttributes {
+-    /** Element's start tag location info. */
+-    startTag?: Location;
+-    /**
+-     * Element's end tag location info.
+-     * This property is undefined, if the element has no closing tag.
+-     */
+-    endTag?: Location;
+-}
+-interface TokenBase {
+-    readonly type: TokenType;
+-    location: Location | null;
+-}
+-export interface DoctypeToken extends TokenBase {
+-    readonly type: TokenType.DOCTYPE;
+-    name: string | null;
+-    forceQuirks: boolean;
+-    publicId: string | null;
+-    systemId: string | null;
+-}
+-export interface Attribute {
+-    /** The name of the attribute. */
+-    name: string;
+-    /** The namespace of the attribute. */
+-    namespace?: string;
+-    /** The namespace-related prefix of the attribute. */
+-    prefix?: string;
+-    /** The value of the attribute. */
+-    value: string;
+-}
+-export interface TagToken extends TokenBase {
+-    readonly type: TokenType.START_TAG | TokenType.END_TAG;
+-    tagName: string;
+-    /** Used to cache the ID of the tag name. */
+-    tagID: TAG_ID;
+-    selfClosing: boolean;
+-    ackSelfClosing: boolean;
+-    attrs: Attribute[];
+-    location: LocationWithAttributes | null;
+-}
+-export declare function getTokenAttr(token: TagToken, attrName: string): string | null;
+-export interface CommentToken extends TokenBase {
+-    readonly type: TokenType.COMMENT;
+-    data: string;
+-}
+-export interface EOFToken extends TokenBase {
+-    readonly type: TokenType.EOF;
+-}
+-export interface CharacterToken extends TokenBase {
+-    type: TokenType.CHARACTER | TokenType.NULL_CHARACTER | TokenType.WHITESPACE_CHARACTER;
+-    chars: string;
+-}
+-export declare type Token = DoctypeToken | TagToken | CommentToken | EOFToken | CharacterToken;
+-export {};
+-//# sourceMappingURL=token.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/cjs/common/unicode.d.ts b/node_modules/parse5/dist/cjs/common/unicode.d.ts
+deleted file mode 100644
+index 9713197..0000000
+--- a/node_modules/parse5/dist/cjs/common/unicode.d.ts
++++ /dev/null
+@@ -1,49 +0,0 @@
+-export declare const REPLACEMENT_CHARACTER = "\uFFFD";
+-export declare enum CODE_POINTS {
+-    EOF = -1,
+-    NULL = 0,
+-    TABULATION = 9,
+-    CARRIAGE_RETURN = 13,
+-    LINE_FEED = 10,
+-    FORM_FEED = 12,
+-    SPACE = 32,
+-    EXCLAMATION_MARK = 33,
+-    QUOTATION_MARK = 34,
+-    NUMBER_SIGN = 35,
+-    AMPERSAND = 38,
+-    APOSTROPHE = 39,
+-    HYPHEN_MINUS = 45,
+-    SOLIDUS = 47,
+-    DIGIT_0 = 48,
+-    DIGIT_9 = 57,
+-    SEMICOLON = 59,
+-    LESS_THAN_SIGN = 60,
+-    EQUALS_SIGN = 61,
+-    GREATER_THAN_SIGN = 62,
+-    QUESTION_MARK = 63,
+-    LATIN_CAPITAL_A = 65,
+-    LATIN_CAPITAL_F = 70,
+-    LATIN_CAPITAL_X = 88,
+-    LATIN_CAPITAL_Z = 90,
+-    RIGHT_SQUARE_BRACKET = 93,
+-    GRAVE_ACCENT = 96,
+-    LATIN_SMALL_A = 97,
+-    LATIN_SMALL_F = 102,
+-    LATIN_SMALL_X = 120,
+-    LATIN_SMALL_Z = 122,
+-    REPLACEMENT_CHARACTER = 65533
+-}
+-export declare const SEQUENCES: {
+-    DASH_DASH: string;
+-    CDATA_START: string;
+-    DOCTYPE: string;
+-    SCRIPT: string;
+-    PUBLIC: string;
+-    SYSTEM: string;
+-};
+-export declare function isSurrogate(cp: number): boolean;
+-export declare function isSurrogatePair(cp: number): boolean;
+-export declare function getSurrogatePairCodePoint(cp1: number, cp2: number): number;
+-export declare function isControlCodePoint(cp: number): boolean;
+-export declare function isUndefinedCodePoint(cp: number): boolean;
+-//# sourceMappingURL=unicode.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/cjs/index.d.ts b/node_modules/parse5/dist/cjs/index.d.ts
+deleted file mode 100644
+index 3410755..0000000
+--- a/node_modules/parse5/dist/cjs/index.d.ts
++++ /dev/null
+@@ -1,60 +0,0 @@
+-import { type ParserOptions } from './parser/index.js';
+-import type { DefaultTreeAdapterMap } from './tree-adapters/default.js';
+-import type { TreeAdapterTypeMap } from './tree-adapters/interface.js';
+-export { type DefaultTreeAdapterMap, defaultTreeAdapter } from './tree-adapters/default.js';
+-export type { TreeAdapter, TreeAdapterTypeMap } from './tree-adapters/interface.js';
+-export { type ParserOptions, /** @internal */ Parser } from './parser/index.js';
+-export { serialize, serializeOuter, type SerializerOptions } from './serializer/index.js';
+-export type { ParserError } from './common/error-codes.js';
+-/** @internal */
+-export * as foreignContent from './common/foreign-content.js';
+-/** @internal */
+-export * as html from './common/html.js';
+-/** @internal */
+-export * as Token from './common/token.js';
+-/** @internal */
+-export { Tokenizer, type TokenizerOptions, TokenizerMode, type TokenHandler } from './tokenizer/index.js';
+-/**
+- * Parses an HTML string.
+- *
+- * @param html Input HTML string.
+- * @param options Parsing options.
+- * @returns Document
+- *
+- * @example
+- *
+- * ```js
+- * const parse5 = require('parse5');
+- *
+- * const document = parse5.parse('<!DOCTYPE html><html><head></head><body>Hi there!</body></html>');
+- *
+- * console.log(document.childNodes[1].tagName); //> 'html'
+- *```
+- */
+-export declare function parse<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(html: string, options?: ParserOptions<T>): T['document'];
+-/**
+- * Parses an HTML fragment.
+- *
+- * @example
+- *
+- * ```js
+- * const parse5 = require('parse5');
+- *
+- * const documentFragment = parse5.parseFragment('<table></table>');
+- *
+- * console.log(documentFragment.childNodes[0].tagName); //> 'table'
+- *
+- * // Parses the html fragment in the context of the parsed <table> element.
+- * const trFragment = parse5.parseFragment(documentFragment.childNodes[0], '<tr><td>Shake it, baby</td></tr>');
+- *
+- * console.log(trFragment.childNodes[0].childNodes[0].tagName); //> 'td'
+- * ```
+- *
+- * @param fragmentContext Parsing context element. If specified, given fragment will be parsed as if it was set to the context element's `innerHTML` property.
+- * @param html Input HTML fragment string.
+- * @param options Parsing options.
+- * @returns DocumentFragment
+- */
+-export declare function parseFragment<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(fragmentContext: T['parentNode'] | null, html: string, options: ParserOptions<T>): T['documentFragment'];
+-export declare function parseFragment<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(html: string, options?: ParserOptions<T>): T['documentFragment'];
+-//# sourceMappingURL=index.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/cjs/parser/formatting-element-list.d.ts b/node_modules/parse5/dist/cjs/parser/formatting-element-list.d.ts
+deleted file mode 100644
+index b12136d..0000000
+--- a/node_modules/parse5/dist/cjs/parser/formatting-element-list.d.ts
++++ /dev/null
+@@ -1,37 +0,0 @@
+-import type { TagToken } from '../common/token.js';
+-import type { TreeAdapter, TreeAdapterTypeMap } from '../tree-adapters/interface.js';
+-export declare enum EntryType {
+-    Marker = 0,
+-    Element = 1
+-}
+-interface MarkerEntry {
+-    type: EntryType.Marker;
+-}
+-export interface ElementEntry<T extends TreeAdapterTypeMap> {
+-    type: EntryType.Element;
+-    element: T['element'];
+-    token: TagToken;
+-}
+-export declare type Entry<T extends TreeAdapterTypeMap> = MarkerEntry | ElementEntry<T>;
+-export declare class FormattingElementList<T extends TreeAdapterTypeMap> {
+-    private treeAdapter;
+-    entries: Entry<T>[];
+-    bookmark: Entry<T> | null;
+-    constructor(treeAdapter: TreeAdapter<T>);
+-    private _getNoahArkConditionCandidates;
+-    private _ensureNoahArkCondition;
+-    insertMarker(): void;
+-    pushElement(element: T['element'], token: TagToken): void;
+-    insertElementAfterBookmark(element: T['element'], token: TagToken): void;
+-    removeEntry(entry: Entry<T>): void;
+-    /**
+-     * Clears the list of formatting elements up to the last marker.
+-     *
+-     * @see https://html.spec.whatwg.org/multipage/parsing.html#clear-the-list-of-active-formatting-elements-up-to-the-last-marker
+-     */
+-    clearToLastMarker(): void;
+-    getElementEntryInScopeWithTagName(tagName: string): ElementEntry<T> | null;
+-    getElementEntry(element: T['element']): ElementEntry<T> | undefined;
+-}
+-export {};
+-//# sourceMappingURL=formatting-element-list.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/cjs/parser/index.d.ts b/node_modules/parse5/dist/cjs/parser/index.d.ts
+deleted file mode 100644
+index 50a9bd0..0000000
+--- a/node_modules/parse5/dist/cjs/parser/index.d.ts
++++ /dev/null
+@@ -1,157 +0,0 @@
+-import { Tokenizer, TokenizerMode, type TokenHandler } from '../tokenizer/index.js';
+-import { OpenElementStack, type StackHandler } from './open-element-stack.js';
+-import { FormattingElementList } from './formatting-element-list.js';
+-import { ERR, type ParserErrorHandler } from '../common/error-codes.js';
+-import { TAG_ID as $, NS } from '../common/html.js';
+-import type { TreeAdapter, TreeAdapterTypeMap } from '../tree-adapters/interface.js';
+-import { type Token, type CommentToken, type CharacterToken, type TagToken, type DoctypeToken, type EOFToken, type LocationWithAttributes } from '../common/token.js';
+-declare enum InsertionMode {
+-    INITIAL = 0,
+-    BEFORE_HTML = 1,
+-    BEFORE_HEAD = 2,
+-    IN_HEAD = 3,
+-    IN_HEAD_NO_SCRIPT = 4,
+-    AFTER_HEAD = 5,
+-    IN_BODY = 6,
+-    TEXT = 7,
+-    IN_TABLE = 8,
+-    IN_TABLE_TEXT = 9,
+-    IN_CAPTION = 10,
+-    IN_COLUMN_GROUP = 11,
+-    IN_TABLE_BODY = 12,
+-    IN_ROW = 13,
+-    IN_CELL = 14,
+-    IN_SELECT = 15,
+-    IN_SELECT_IN_TABLE = 16,
+-    IN_TEMPLATE = 17,
+-    AFTER_BODY = 18,
+-    IN_FRAMESET = 19,
+-    AFTER_FRAMESET = 20,
+-    AFTER_AFTER_BODY = 21,
+-    AFTER_AFTER_FRAMESET = 22
+-}
+-export interface ParserOptions<T extends TreeAdapterTypeMap> {
+-    /**
+-     * The [scripting flag](https://html.spec.whatwg.org/multipage/parsing.html#scripting-flag). If set
+-     * to `true`, `noscript` element content will be parsed as text.
+-     *
+-     *  @default `true`
+-     */
+-    scriptingEnabled?: boolean;
+-    /**
+-     * Enables source code location information. When enabled, each node (except the root node)
+-     * will have a `sourceCodeLocation` property. If the node is not an empty element, `sourceCodeLocation` will
+-     * be a {@link ElementLocation} object, otherwise it will be {@link Location}.
+-     * If the element was implicitly created by the parser (as part of
+-     * [tree correction](https://html.spec.whatwg.org/multipage/syntax.html#an-introduction-to-error-handling-and-strange-cases-in-the-parser)),
+-     * its `sourceCodeLocation` property will be `undefined`.
+-     *
+-     * @default `false`
+-     */
+-    sourceCodeLocationInfo?: boolean;
+-    /**
+-     * Specifies the resulting tree format.
+-     *
+-     * @default `treeAdapters.default`
+-     */
+-    treeAdapter?: TreeAdapter<T>;
+-    /**
+-     * Callback for parse errors.
+-     *
+-     * @default `null`
+-     */
+-    onParseError?: ParserErrorHandler | null;
+-}
+-export declare class Parser<T extends TreeAdapterTypeMap> implements TokenHandler, StackHandler<T> {
+-    fragmentContext: T['element'] | null;
+-    scriptHandler: null | ((pendingScript: T['element']) => void);
+-    treeAdapter: TreeAdapter<T>;
+-    onParseError: ParserErrorHandler | null;
+-    private currentToken;
+-    options: Required<ParserOptions<T>>;
+-    document: T['document'];
+-    constructor(options?: ParserOptions<T>, document?: T['document'], fragmentContext?: T['element'] | null, scriptHandler?: null | ((pendingScript: T['element']) => void));
+-    static parse<T extends TreeAdapterTypeMap>(html: string, options?: ParserOptions<T>): T['document'];
+-    static getFragmentParser<T extends TreeAdapterTypeMap>(fragmentContext?: T['parentNode'] | null, options?: ParserOptions<T>): Parser<T>;
+-    getFragment(): T['documentFragment'];
+-    tokenizer: Tokenizer;
+-    stopped: boolean;
+-    insertionMode: InsertionMode;
+-    originalInsertionMode: InsertionMode;
+-    fragmentContextID: $;
+-    headElement: null | T['element'];
+-    formElement: null | T['element'];
+-    openElements: OpenElementStack<T>;
+-    activeFormattingElements: FormattingElementList<T>;
+-    /** Indicates that the current node is not an element in the HTML namespace */
+-    private currentNotInHTML;
+-    /**
+-     * The template insertion mode stack is maintained from the left.
+-     * Ie. the topmost element will always have index 0.
+-     */
+-    tmplInsertionModeStack: InsertionMode[];
+-    pendingCharacterTokens: CharacterToken[];
+-    hasNonWhitespacePendingCharacterToken: boolean;
+-    framesetOk: boolean;
+-    skipNextNewLine: boolean;
+-    fosterParentingEnabled: boolean;
+-    _err(token: Token, code: ERR, beforeToken?: boolean): void;
+-    onItemPush(node: T['parentNode'], tid: number, isTop: boolean): void;
+-    onItemPop(node: T['parentNode'], isTop: boolean): void;
+-    private _setContextModes;
+-    _switchToTextParsing(currentToken: TagToken, nextTokenizerState: typeof TokenizerMode[keyof typeof TokenizerMode]): void;
+-    switchToPlaintextParsing(): void;
+-    _getAdjustedCurrentElement(): T['element'];
+-    _findFormInFragmentContext(): void;
+-    private _initTokenizerForFragmentParsing;
+-    _setDocumentType(token: DoctypeToken): void;
+-    _attachElementToTree(element: T['element'], location: LocationWithAttributes | null): void;
+-    _appendElement(token: TagToken, namespaceURI: NS): void;
+-    _insertElement(token: TagToken, namespaceURI: NS): void;
+-    _insertFakeElement(tagName: string, tagID: $): void;
+-    _insertTemplate(token: TagToken): void;
+-    _insertFakeRootElement(): void;
+-    _appendCommentNode(token: CommentToken, parent: T['parentNode']): void;
+-    _insertCharacters(token: CharacterToken): void;
+-    _adoptNodes(donor: T['parentNode'], recipient: T['parentNode']): void;
+-    _setEndLocation(element: T['element'], closingToken: Token): void;
+-    private shouldProcessStartTagTokenInForeignContent;
+-    _processToken(token: Token): void;
+-    _isIntegrationPoint(tid: $, element: T['element'], foreignNS?: NS): boolean;
+-    _reconstructActiveFormattingElements(): void;
+-    _closeTableCell(): void;
+-    _closePElement(): void;
+-    _resetInsertionMode(): void;
+-    _resetInsertionModeForSelect(selectIdx: number): void;
+-    _isElementCausesFosterParenting(tn: $): boolean;
+-    _shouldFosterParentOnInsertion(): boolean;
+-    _findFosterParentingLocation(): {
+-        parent: T['parentNode'];
+-        beforeElement: T['element'] | null;
+-    };
+-    _fosterParentElement(element: T['element']): void;
+-    _isSpecialElement(element: T['element'], id: $): boolean;
+-    onCharacter(token: CharacterToken): void;
+-    onNullCharacter(token: CharacterToken): void;
+-    onComment(token: CommentToken): void;
+-    onDoctype(token: DoctypeToken): void;
+-    onStartTag(token: TagToken): void;
+-    /**
+-     * Processes a given start tag.
+-     *
+-     * `onStartTag` checks if a self-closing tag was recognized. When a token
+-     * is moved inbetween multiple insertion modes, this check for self-closing
+-     * could lead to false positives. To avoid this, `_processStartTag` is used
+-     * for nested calls.
+-     *
+-     * @param token The token to process.
+-     */
+-    _processStartTag(token: TagToken): void;
+-    _startTagOutsideForeignContent(token: TagToken): void;
+-    onEndTag(token: TagToken): void;
+-    _endTagOutsideForeignContent(token: TagToken): void;
+-    onEof(token: EOFToken): void;
+-    onWhitespaceCharacter(token: CharacterToken): void;
+-}
+-export {};
+-//# sourceMappingURL=index.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/cjs/parser/open-element-stack.d.ts b/node_modules/parse5/dist/cjs/parser/open-element-stack.d.ts
+deleted file mode 100644
+index 77c1800..0000000
+--- a/node_modules/parse5/dist/cjs/parser/open-element-stack.d.ts
++++ /dev/null
+@@ -1,53 +0,0 @@
+-import { TAG_ID as $ } from '../common/html.js';
+-import type { TreeAdapter, TreeAdapterTypeMap } from '../tree-adapters/interface.js';
+-export interface StackHandler<T extends TreeAdapterTypeMap> {
+-    onItemPush: (node: T['parentNode'], tid: number, isTop: boolean) => void;
+-    onItemPop: (node: T['parentNode'], isTop: boolean) => void;
+-}
+-export declare class OpenElementStack<T extends TreeAdapterTypeMap> {
+-    private treeAdapter;
+-    private handler;
+-    items: T['parentNode'][];
+-    tagIDs: $[];
+-    current: T['parentNode'];
+-    stackTop: number;
+-    tmplCount: number;
+-    currentTagId: $;
+-    get currentTmplContentOrNode(): T['parentNode'];
+-    constructor(document: T['document'], treeAdapter: TreeAdapter<T>, handler: StackHandler<T>);
+-    private _indexOf;
+-    private _isInTemplate;
+-    private _updateCurrentElement;
+-    push(element: T['element'], tagID: $): void;
+-    pop(): void;
+-    replace(oldElement: T['element'], newElement: T['element']): void;
+-    insertAfter(referenceElement: T['element'], newElement: T['element'], newElementID: $): void;
+-    popUntilTagNamePopped(tagName: $): void;
+-    shortenToLength(idx: number): void;
+-    popUntilElementPopped(element: T['element']): void;
+-    private popUntilPopped;
+-    popUntilNumberedHeaderPopped(): void;
+-    popUntilTableCellPopped(): void;
+-    popAllUpToHtmlElement(): void;
+-    private _indexOfTagNames;
+-    private clearBackTo;
+-    clearBackToTableContext(): void;
+-    clearBackToTableBodyContext(): void;
+-    clearBackToTableRowContext(): void;
+-    remove(element: T['element']): void;
+-    tryPeekProperlyNestedBodyElement(): T['element'] | null;
+-    contains(element: T['element']): boolean;
+-    getCommonAncestor(element: T['element']): T['element'] | null;
+-    isRootHtmlElementCurrent(): boolean;
+-    hasInScope(tagName: $): boolean;
+-    hasNumberedHeaderInScope(): boolean;
+-    hasInListItemScope(tagName: $): boolean;
+-    hasInButtonScope(tagName: $): boolean;
+-    hasInTableScope(tagName: $): boolean;
+-    hasTableBodyContextInTableScope(): boolean;
+-    hasInSelectScope(tagName: $): boolean;
+-    generateImpliedEndTags(): void;
+-    generateImpliedEndTagsThoroughly(): void;
+-    generateImpliedEndTagsWithExclusion(exclusionId: $): void;
+-}
+-//# sourceMappingURL=open-element-stack.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/cjs/serializer/index.d.ts b/node_modules/parse5/dist/cjs/serializer/index.d.ts
+deleted file mode 100644
+index bf759e6..0000000
+--- a/node_modules/parse5/dist/cjs/serializer/index.d.ts
++++ /dev/null
+@@ -1,61 +0,0 @@
+-import type { TreeAdapter, TreeAdapterTypeMap } from '../tree-adapters/interface.js';
+-import { type DefaultTreeAdapterMap } from '../tree-adapters/default.js';
+-export interface SerializerOptions<T extends TreeAdapterTypeMap> {
+-    /**
+-     * Specifies input tree format.
+-     *
+-     * @default `treeAdapters.default`
+-     */
+-    treeAdapter?: TreeAdapter<T>;
+-    /**
+-     * The [scripting flag](https://html.spec.whatwg.org/multipage/parsing.html#scripting-flag). If set
+-     * to `true`, `noscript` element content will not be escaped.
+-     *
+-     *  @default `true`
+-     */
+-    scriptingEnabled?: boolean;
+-}
+-/**
+- * Serializes an AST node to an HTML string.
+- *
+- * @example
+- *
+- * ```js
+- * const parse5 = require('parse5');
+- *
+- * const document = parse5.parse('<!DOCTYPE html><html><head></head><body>Hi there!</body></html>');
+- *
+- * // Serializes a document.
+- * const html = parse5.serialize(document);
+- *
+- * // Serializes the <html> element content.
+- * const str = parse5.serialize(document.childNodes[1]);
+- *
+- * console.log(str); //> '<head></head><body>Hi there!</body>'
+- * ```
+- *
+- * @param node Node to serialize.
+- * @param options Serialization options.
+- */
+-export declare function serialize<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(node: T['parentNode'], options?: SerializerOptions<T>): string;
+-/**
+- * Serializes an AST element node to an HTML string, including the element node.
+- *
+- * @example
+- *
+- * ```js
+- * const parse5 = require('parse5');
+- *
+- * const document = parse5.parseFragment('<div>Hello, <b>world</b>!</div>');
+- *
+- * // Serializes the <div> element.
+- * const html = parse5.serializeOuter(document.childNodes[0]);
+- *
+- * console.log(str); //> '<div>Hello, <b>world</b>!</div>'
+- * ```
+- *
+- * @param node Node to serialize.
+- * @param options Serialization options.
+- */
+-export declare function serializeOuter<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(node: T['node'], options?: SerializerOptions<T>): string;
+-//# sourceMappingURL=index.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/cjs/tokenizer/index.d.ts b/node_modules/parse5/dist/cjs/tokenizer/index.d.ts
+deleted file mode 100644
+index 5afab96..0000000
+--- a/node_modules/parse5/dist/cjs/tokenizer/index.d.ts
++++ /dev/null
+@@ -1,248 +0,0 @@
+-import { Preprocessor } from './preprocessor.js';
+-import { type CharacterToken, type DoctypeToken, type TagToken, type EOFToken, type CommentToken } from '../common/token.js';
+-import { type ParserErrorHandler } from '../common/error-codes.js';
+-declare const enum State {
+-    DATA = 0,
+-    RCDATA = 1,
+-    RAWTEXT = 2,
+-    SCRIPT_DATA = 3,
+-    PLAINTEXT = 4,
+-    TAG_OPEN = 5,
+-    END_TAG_OPEN = 6,
+-    TAG_NAME = 7,
+-    RCDATA_LESS_THAN_SIGN = 8,
+-    RCDATA_END_TAG_OPEN = 9,
+-    RCDATA_END_TAG_NAME = 10,
+-    RAWTEXT_LESS_THAN_SIGN = 11,
+-    RAWTEXT_END_TAG_OPEN = 12,
+-    RAWTEXT_END_TAG_NAME = 13,
+-    SCRIPT_DATA_LESS_THAN_SIGN = 14,
+-    SCRIPT_DATA_END_TAG_OPEN = 15,
+-    SCRIPT_DATA_END_TAG_NAME = 16,
+-    SCRIPT_DATA_ESCAPE_START = 17,
+-    SCRIPT_DATA_ESCAPE_START_DASH = 18,
+-    SCRIPT_DATA_ESCAPED = 19,
+-    SCRIPT_DATA_ESCAPED_DASH = 20,
+-    SCRIPT_DATA_ESCAPED_DASH_DASH = 21,
+-    SCRIPT_DATA_ESCAPED_LESS_THAN_SIGN = 22,
+-    SCRIPT_DATA_ESCAPED_END_TAG_OPEN = 23,
+-    SCRIPT_DATA_ESCAPED_END_TAG_NAME = 24,
+-    SCRIPT_DATA_DOUBLE_ESCAPE_START = 25,
+-    SCRIPT_DATA_DOUBLE_ESCAPED = 26,
+-    SCRIPT_DATA_DOUBLE_ESCAPED_DASH = 27,
+-    SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH = 28,
+-    SCRIPT_DATA_DOUBLE_ESCAPED_LESS_THAN_SIGN = 29,
+-    SCRIPT_DATA_DOUBLE_ESCAPE_END = 30,
+-    BEFORE_ATTRIBUTE_NAME = 31,
+-    ATTRIBUTE_NAME = 32,
+-    AFTER_ATTRIBUTE_NAME = 33,
+-    BEFORE_ATTRIBUTE_VALUE = 34,
+-    ATTRIBUTE_VALUE_DOUBLE_QUOTED = 35,
+-    ATTRIBUTE_VALUE_SINGLE_QUOTED = 36,
+-    ATTRIBUTE_VALUE_UNQUOTED = 37,
+-    AFTER_ATTRIBUTE_VALUE_QUOTED = 38,
+-    SELF_CLOSING_START_TAG = 39,
+-    BOGUS_COMMENT = 40,
+-    MARKUP_DECLARATION_OPEN = 41,
+-    COMMENT_START = 42,
+-    COMMENT_START_DASH = 43,
+-    COMMENT = 44,
+-    COMMENT_LESS_THAN_SIGN = 45,
+-    COMMENT_LESS_THAN_SIGN_BANG = 46,
+-    COMMENT_LESS_THAN_SIGN_BANG_DASH = 47,
+-    COMMENT_LESS_THAN_SIGN_BANG_DASH_DASH = 48,
+-    COMMENT_END_DASH = 49,
+-    COMMENT_END = 50,
+-    COMMENT_END_BANG = 51,
+-    DOCTYPE = 52,
+-    BEFORE_DOCTYPE_NAME = 53,
+-    DOCTYPE_NAME = 54,
+-    AFTER_DOCTYPE_NAME = 55,
+-    AFTER_DOCTYPE_PUBLIC_KEYWORD = 56,
+-    BEFORE_DOCTYPE_PUBLIC_IDENTIFIER = 57,
+-    DOCTYPE_PUBLIC_IDENTIFIER_DOUBLE_QUOTED = 58,
+-    DOCTYPE_PUBLIC_IDENTIFIER_SINGLE_QUOTED = 59,
+-    AFTER_DOCTYPE_PUBLIC_IDENTIFIER = 60,
+-    BETWEEN_DOCTYPE_PUBLIC_AND_SYSTEM_IDENTIFIERS = 61,
+-    AFTER_DOCTYPE_SYSTEM_KEYWORD = 62,
+-    BEFORE_DOCTYPE_SYSTEM_IDENTIFIER = 63,
+-    DOCTYPE_SYSTEM_IDENTIFIER_DOUBLE_QUOTED = 64,
+-    DOCTYPE_SYSTEM_IDENTIFIER_SINGLE_QUOTED = 65,
+-    AFTER_DOCTYPE_SYSTEM_IDENTIFIER = 66,
+-    BOGUS_DOCTYPE = 67,
+-    CDATA_SECTION = 68,
+-    CDATA_SECTION_BRACKET = 69,
+-    CDATA_SECTION_END = 70,
+-    CHARACTER_REFERENCE = 71,
+-    NAMED_CHARACTER_REFERENCE = 72,
+-    AMBIGUOUS_AMPERSAND = 73,
+-    NUMERIC_CHARACTER_REFERENCE = 74,
+-    HEXADEMICAL_CHARACTER_REFERENCE_START = 75,
+-    HEXADEMICAL_CHARACTER_REFERENCE = 76,
+-    DECIMAL_CHARACTER_REFERENCE = 77,
+-    NUMERIC_CHARACTER_REFERENCE_END = 78
+-}
+-export declare const TokenizerMode: {
+-    readonly DATA: State.DATA;
+-    readonly RCDATA: State.RCDATA;
+-    readonly RAWTEXT: State.RAWTEXT;
+-    readonly SCRIPT_DATA: State.SCRIPT_DATA;
+-    readonly PLAINTEXT: State.PLAINTEXT;
+-    readonly CDATA_SECTION: State.CDATA_SECTION;
+-};
+-export interface TokenizerOptions {
+-    sourceCodeLocationInfo?: boolean;
+-}
+-export interface TokenHandler {
+-    onComment(token: CommentToken): void;
+-    onDoctype(token: DoctypeToken): void;
+-    onStartTag(token: TagToken): void;
+-    onEndTag(token: TagToken): void;
+-    onEof(token: EOFToken): void;
+-    onCharacter(token: CharacterToken): void;
+-    onNullCharacter(token: CharacterToken): void;
+-    onWhitespaceCharacter(token: CharacterToken): void;
+-    onParseError?: ParserErrorHandler | null;
+-}
+-export declare class Tokenizer {
+-    private options;
+-    private handler;
+-    preprocessor: Preprocessor;
+-    private paused;
+-    /** Ensures that the parsing loop isn't run multiple times at once. */
+-    private inLoop;
+-    /**
+-     * Indicates that the current adjusted node exists, is not an element in the HTML namespace,
+-     * and that it is not an integration point for either MathML or HTML.
+-     *
+-     * @see {@link https://html.spec.whatwg.org/multipage/parsing.html#tree-construction}
+-     */
+-    inForeignNode: boolean;
+-    lastStartTagName: string;
+-    active: boolean;
+-    state: State;
+-    private returnState;
+-    private charRefCode;
+-    private consumedAfterSnapshot;
+-    private currentLocation;
+-    private currentCharacterToken;
+-    private currentToken;
+-    private currentAttr;
+-    constructor(options: TokenizerOptions, handler: TokenHandler);
+-    private _err;
+-    private getCurrentLocation;
+-    private _runParsingLoop;
+-    pause(): void;
+-    resume(writeCallback?: () => void): void;
+-    write(chunk: string, isLastChunk: boolean, writeCallback?: () => void): void;
+-    insertHtmlAtCurrentPos(chunk: string): void;
+-    private _ensureHibernation;
+-    private _consume;
+-    private _unconsume;
+-    private _reconsumeInState;
+-    private _advanceBy;
+-    private _consumeSequenceIfMatch;
+-    private _createStartTagToken;
+-    private _createEndTagToken;
+-    private _createCommentToken;
+-    private _createDoctypeToken;
+-    private _createCharacterToken;
+-    private _createAttr;
+-    private _leaveAttrName;
+-    private _leaveAttrValue;
+-    private prepareToken;
+-    private emitCurrentTagToken;
+-    private emitCurrentComment;
+-    private emitCurrentDoctype;
+-    private _emitCurrentCharacterToken;
+-    private _emitEOFToken;
+-    private _appendCharToCurrentCharacterToken;
+-    private _emitCodePoint;
+-    private _emitChars;
+-    private _matchNamedCharacterReference;
+-    private _isCharacterReferenceInAttribute;
+-    private _flushCodePointConsumedAsCharacterReference;
+-    private _callState;
+-    private _stateData;
+-    private _stateRcdata;
+-    private _stateRawtext;
+-    private _stateScriptData;
+-    private _statePlaintext;
+-    private _stateTagOpen;
+-    private _stateEndTagOpen;
+-    private _stateTagName;
+-    private _stateRcdataLessThanSign;
+-    private _stateRcdataEndTagOpen;
+-    private handleSpecialEndTag;
+-    private _stateRcdataEndTagName;
+-    private _stateRawtextLessThanSign;
+-    private _stateRawtextEndTagOpen;
+-    private _stateRawtextEndTagName;
+-    private _stateScriptDataLessThanSign;
+-    private _stateScriptDataEndTagOpen;
+-    private _stateScriptDataEndTagName;
+-    private _stateScriptDataEscapeStart;
+-    private _stateScriptDataEscapeStartDash;
+-    private _stateScriptDataEscaped;
+-    private _stateScriptDataEscapedDash;
+-    private _stateScriptDataEscapedDashDash;
+-    private _stateScriptDataEscapedLessThanSign;
+-    private _stateScriptDataEscapedEndTagOpen;
+-    private _stateScriptDataEscapedEndTagName;
+-    private _stateScriptDataDoubleEscapeStart;
+-    private _stateScriptDataDoubleEscaped;
+-    private _stateScriptDataDoubleEscapedDash;
+-    private _stateScriptDataDoubleEscapedDashDash;
+-    private _stateScriptDataDoubleEscapedLessThanSign;
+-    private _stateScriptDataDoubleEscapeEnd;
+-    private _stateBeforeAttributeName;
+-    private _stateAttributeName;
+-    private _stateAfterAttributeName;
+-    private _stateBeforeAttributeValue;
+-    private _stateAttributeValueDoubleQuoted;
+-    private _stateAttributeValueSingleQuoted;
+-    private _stateAttributeValueUnquoted;
+-    private _stateAfterAttributeValueQuoted;
+-    private _stateSelfClosingStartTag;
+-    private _stateBogusComment;
+-    private _stateMarkupDeclarationOpen;
+-    private _stateCommentStart;
+-    private _stateCommentStartDash;
+-    private _stateComment;
+-    private _stateCommentLessThanSign;
+-    private _stateCommentLessThanSignBang;
+-    private _stateCommentLessThanSignBangDash;
+-    private _stateCommentLessThanSignBangDashDash;
+-    private _stateCommentEndDash;
+-    private _stateCommentEnd;
+-    private _stateCommentEndBang;
+-    private _stateDoctype;
+-    private _stateBeforeDoctypeName;
+-    private _stateDoctypeName;
+-    private _stateAfterDoctypeName;
+-    private _stateAfterDoctypePublicKeyword;
+-    private _stateBeforeDoctypePublicIdentifier;
+-    private _stateDoctypePublicIdentifierDoubleQuoted;
+-    private _stateDoctypePublicIdentifierSingleQuoted;
+-    private _stateAfterDoctypePublicIdentifier;
+-    private _stateBetweenDoctypePublicAndSystemIdentifiers;
+-    private _stateAfterDoctypeSystemKeyword;
+-    private _stateBeforeDoctypeSystemIdentifier;
+-    private _stateDoctypeSystemIdentifierDoubleQuoted;
+-    private _stateDoctypeSystemIdentifierSingleQuoted;
+-    private _stateAfterDoctypeSystemIdentifier;
+-    private _stateBogusDoctype;
+-    private _stateCdataSection;
+-    private _stateCdataSectionBracket;
+-    private _stateCdataSectionEnd;
+-    private _stateCharacterReference;
+-    private _stateNamedCharacterReference;
+-    private _stateAmbiguousAmpersand;
+-    private _stateNumericCharacterReference;
+-    private _stateHexademicalCharacterReferenceStart;
+-    private _stateHexademicalCharacterReference;
+-    private _stateDecimalCharacterReference;
+-    private _stateNumericCharacterReferenceEnd;
+-}
+-export {};
+-//# sourceMappingURL=index.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/cjs/tokenizer/preprocessor.d.ts b/node_modules/parse5/dist/cjs/tokenizer/preprocessor.d.ts
+deleted file mode 100644
+index e74a590..0000000
+--- a/node_modules/parse5/dist/cjs/tokenizer/preprocessor.d.ts
++++ /dev/null
+@@ -1,37 +0,0 @@
+-import { ERR, type ParserError, type ParserErrorHandler } from '../common/error-codes.js';
+-export declare class Preprocessor {
+-    private handler;
+-    html: string;
+-    private pos;
+-    private lastGapPos;
+-    private gapStack;
+-    private skipNextNewLine;
+-    private lastChunkWritten;
+-    endOfChunkHit: boolean;
+-    bufferWaterline: number;
+-    private isEol;
+-    private lineStartPos;
+-    droppedBufferSize: number;
+-    line: number;
+-    constructor(handler: {
+-        onParseError?: ParserErrorHandler | null;
+-    });
+-    /** The column on the current line. If we just saw a gap (eg. a surrogate pair), return the index before. */
+-    get col(): number;
+-    get offset(): number;
+-    getError(code: ERR): ParserError;
+-    private lastErrOffset;
+-    private _err;
+-    private _addGap;
+-    private _processSurrogate;
+-    willDropParsedChunk(): boolean;
+-    dropParsedChunk(): void;
+-    write(chunk: string, isLastChunk: boolean): void;
+-    insertHtmlAtCurrentPos(chunk: string): void;
+-    startsWith(pattern: string, caseSensitive: boolean): boolean;
+-    peek(offset: number): number;
+-    advance(): number;
+-    private _checkForProblematicCharacters;
+-    retreat(count: number): void;
+-}
+-//# sourceMappingURL=preprocessor.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/cjs/tree-adapters/default.d.ts b/node_modules/parse5/dist/cjs/tree-adapters/default.d.ts
+deleted file mode 100644
+index 926ffea..0000000
+--- a/node_modules/parse5/dist/cjs/tree-adapters/default.d.ts
++++ /dev/null
+@@ -1,85 +0,0 @@
+-import { DOCUMENT_MODE, type NS } from '../common/html.js';
+-import type { Attribute, Location, ElementLocation } from '../common/token.js';
+-import type { TreeAdapter, TreeAdapterTypeMap } from './interface.js';
+-export interface Document {
+-    /** The name of the node. */
+-    nodeName: '#document';
+-    /**
+-     * Document mode.
+-     *
+-     * @see {@link DOCUMENT_MODE} */
+-    mode: DOCUMENT_MODE;
+-    /** The node's children. */
+-    childNodes: ChildNode[];
+-    /** Comment source code location info. Available if location info is enabled. */
+-    sourceCodeLocation?: Location | null;
+-}
+-export interface DocumentFragment {
+-    /** The name of the node. */
+-    nodeName: '#document-fragment';
+-    /** The node's children. */
+-    childNodes: ChildNode[];
+-    /** Comment source code location info. Available if location info is enabled. */
+-    sourceCodeLocation?: Location | null;
+-}
+-export interface Element {
+-    /** Element tag name. Same as {@link tagName}. */
+-    nodeName: string;
+-    /** Element tag name. Same as {@link nodeName}. */
+-    tagName: string;
+-    /** List of element attributes. */
+-    attrs: Attribute[];
+-    /** Element namespace. */
+-    namespaceURI: NS;
+-    /** Element source code location info, with attributes. Available if location info is enabled. */
+-    sourceCodeLocation?: ElementLocation | null;
+-    /** Parent node. */
+-    parentNode: ParentNode | null;
+-    /** The node's children. */
+-    childNodes: ChildNode[];
+-}
+-export interface CommentNode {
+-    /** The name of the node. */
+-    nodeName: '#comment';
+-    /** Parent node. */
+-    parentNode: ParentNode | null;
+-    /** Comment text. */
+-    data: string;
+-    /** Comment source code location info. Available if location info is enabled. */
+-    sourceCodeLocation?: Location | null;
+-}
+-export interface TextNode {
+-    nodeName: '#text';
+-    /** Parent node. */
+-    parentNode: ParentNode | null;
+-    /** Text content. */
+-    value: string;
+-    /** Comment source code location info. Available if location info is enabled. */
+-    sourceCodeLocation?: Location | null;
+-}
+-export interface Template extends Element {
+-    nodeName: 'template';
+-    tagName: 'template';
+-    /** The content of a `template` tag. */
+-    content: DocumentFragment;
+-}
+-export interface DocumentType {
+-    /** The name of the node. */
+-    nodeName: '#documentType';
+-    /** Parent node. */
+-    parentNode: ParentNode | null;
+-    /** Document type name. */
+-    name: string;
+-    /** Document type public identifier. */
+-    publicId: string;
+-    /** Document type system identifier. */
+-    systemId: string;
+-    /** Comment source code location info. Available if location info is enabled. */
+-    sourceCodeLocation?: Location | null;
+-}
+-export declare type ParentNode = Document | DocumentFragment | Element | Template;
+-export declare type ChildNode = Element | Template | CommentNode | TextNode | DocumentType;
+-export declare type Node = ParentNode | ChildNode;
+-export declare type DefaultTreeAdapterMap = TreeAdapterTypeMap<Node, ParentNode, ChildNode, Document, DocumentFragment, Element, CommentNode, TextNode, Template, DocumentType>;
+-export declare const defaultTreeAdapter: TreeAdapter<DefaultTreeAdapterMap>;
+-//# sourceMappingURL=default.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/cjs/tree-adapters/interface.d.ts b/node_modules/parse5/dist/cjs/tree-adapters/interface.d.ts
+deleted file mode 100644
+index 8de74ee..0000000
+--- a/node_modules/parse5/dist/cjs/tree-adapters/interface.d.ts
++++ /dev/null
+@@ -1,250 +0,0 @@
+-import type { DOCUMENT_MODE, NS } from '../common/html.js';
+-import type { Attribute, ElementLocation } from '../common/token.js';
+-export interface TreeAdapterTypeMap<Node = unknown, ParentNode = unknown, ChildNode = unknown, Document = unknown, DocumentFragment = unknown, Element = unknown, CommentNode = unknown, TextNode = unknown, Template = unknown, DocumentType = unknown> {
+-    node: Node;
+-    parentNode: ParentNode;
+-    childNode: ChildNode;
+-    document: Document;
+-    documentFragment: DocumentFragment;
+-    element: Element;
+-    commentNode: CommentNode;
+-    textNode: TextNode;
+-    template: Template;
+-    documentType: DocumentType;
+-}
+-/**
+- * Tree adapter is a set of utility functions that provides minimal required abstraction layer beetween parser and a specific AST format.
+- * Note that `TreeAdapter` is not designed to be a general purpose AST manipulation library. You can build such library
+- * on top of existing `TreeAdapter` or use one of the existing libraries from npm.
+- *
+- * @see The default implementation {@link parse5.treeAdapters.default}
+- */
+-export interface TreeAdapter<T extends TreeAdapterTypeMap = TreeAdapterTypeMap> {
+-    /**
+-     * Copies attributes to the given element. Only attributes that are not yet present in the element are copied.
+-     *
+-     * @param recipient - Element to copy attributes into.
+-     * @param attrs - Attributes to copy.
+-     */
+-    adoptAttributes(recipient: T['element'], attrs: Attribute[]): void;
+-    /**
+-     * Appends a child node to the given parent node.
+-     *
+-     * @param parentNode - Parent node.
+-     * @param newNode -  Child node.
+-     */
+-    appendChild(parentNode: T['parentNode'], newNode: T['childNode']): void;
+-    /**
+-     * Creates a comment node.
+-     *
+-     * @param data - Comment text.
+-     */
+-    createCommentNode(data: string): T['commentNode'];
+-    /**
+-     * Creates a document node.
+-     */
+-    createDocument(): T['document'];
+-    /**
+-     * Creates a document fragment node.
+-     */
+-    createDocumentFragment(): T['documentFragment'];
+-    /**
+-     * Creates an element node.
+-     *
+-     * @param tagName - Tag name of the element.
+-     * @param namespaceURI - Namespace of the element.
+-     * @param attrs - Attribute name-value pair array. Foreign attributes may contain `namespace` and `prefix` fields as well.
+-     */
+-    createElement(tagName: string, namespaceURI: NS, attrs: Attribute[]): T['element'];
+-    /**
+-     * Removes a node from its parent.
+-     *
+-     * @param node - Node to remove.
+-     */
+-    detachNode(node: T['childNode']): void;
+-    /**
+-     * Returns the given element's attributes in an array, in the form of name-value pairs.
+-     * Foreign attributes may contain `namespace` and `prefix` fields as well.
+-     *
+-     * @param element - Element.
+-     */
+-    getAttrList(element: T['element']): Attribute[];
+-    /**
+-     * Returns the given node's children in an array.
+-     *
+-     * @param node - Node.
+-     */
+-    getChildNodes(node: T['parentNode']): T['childNode'][];
+-    /**
+-     * Returns the given comment node's content.
+-     *
+-     * @param commentNode - Comment node.
+-     */
+-    getCommentNodeContent(commentNode: T['commentNode']): string;
+-    /**
+-     * Returns [document mode](https://dom.spec.whatwg.org/#concept-document-limited-quirks).
+-     *
+-     * @param document - Document node.
+-     */
+-    getDocumentMode(document: T['document']): DOCUMENT_MODE;
+-    /**
+-     * Returns the given document type node's name.
+-     *
+-     * @param doctypeNode - Document type node.
+-     */
+-    getDocumentTypeNodeName(doctypeNode: T['documentType']): string;
+-    /**
+-     * Returns the given document type node's public identifier.
+-     *
+-     * @param doctypeNode - Document type node.
+-     */
+-    getDocumentTypeNodePublicId(doctypeNode: T['documentType']): string;
+-    /**
+-     * Returns the given document type node's system identifier.
+-     *
+-     * @param doctypeNode - Document type node.
+-     */
+-    getDocumentTypeNodeSystemId(doctypeNode: T['documentType']): string;
+-    /**
+-     * Returns the first child of the given node.
+-     *
+-     * @param node - Node.
+-     */
+-    getFirstChild(node: T['parentNode']): T['childNode'] | null;
+-    /**
+-     * Returns the given element's namespace.
+-     *
+-     * @param element - Element.
+-     */
+-    getNamespaceURI(element: T['element']): NS;
+-    /**
+-     * Returns the given node's source code location information.
+-     *
+-     * @param node - Node.
+-     */
+-    getNodeSourceCodeLocation(node: T['node']): ElementLocation | undefined | null;
+-    /**
+-     * Returns the given node's parent.
+-     *
+-     * @param node - Node.
+-     */
+-    getParentNode(node: T['node']): T['parentNode'] | null;
+-    /**
+-     * Returns the given element's tag name.
+-     *
+-     * @param element - Element.
+-     */
+-    getTagName(element: T['element']): string;
+-    /**
+-     * Returns the given text node's content.
+-     *
+-     * @param textNode - Text node.
+-     */
+-    getTextNodeContent(textNode: T['textNode']): string;
+-    /**
+-     * Returns the `<template>` element content element.
+-     *
+-     * @param templateElement - `<template>` element.
+-     */
+-    getTemplateContent(templateElement: T['template']): T['documentFragment'];
+-    /**
+-     * Inserts a child node to the given parent node before the given reference node.
+-     *
+-     * @param parentNode - Parent node.
+-     * @param newNode -  Child node.
+-     * @param referenceNode -  Reference node.
+-     */
+-    insertBefore(parentNode: T['parentNode'], newNode: T['childNode'], referenceNode: T['childNode']): void;
+-    /**
+-     * Inserts text into a node. If the last child of the node is a text node, the provided text will be appended to the
+-     * text node content. Otherwise, inserts a new text node with the given text.
+-     *
+-     * @param parentNode - Node to insert text into.
+-     * @param text - Text to insert.
+-     */
+-    insertText(parentNode: T['parentNode'], text: string): void;
+-    /**
+-     * Inserts text into a sibling node that goes before the reference node. If this sibling node is the text node,
+-     * the provided text will be appended to the text node content. Otherwise, inserts a new sibling text node with
+-     * the given text before the reference node.
+-     *
+-     * @param parentNode - Node to insert text into.
+-     * @param text - Text to insert.
+-     * @param referenceNode - Node to insert text before.
+-     */
+-    insertTextBefore(parentNode: T['parentNode'], text: string, referenceNode: T['childNode']): void;
+-    /**
+-     * Determines if the given node is a comment node.
+-     *
+-     * @param node - Node.
+-     */
+-    isCommentNode(node: T['node']): node is T['commentNode'];
+-    /**
+-     * Determines if the given node is a document type node.
+-     *
+-     * @param node - Node.
+-     */
+-    isDocumentTypeNode(node: T['node']): node is T['documentType'];
+-    /**
+-     * Determines if the given node is an element.
+-     *
+-     * @param node - Node.
+-     */
+-    isElementNode(node: T['node']): node is T['element'];
+-    /**
+-     * Determines if the given node is a text node.
+-     *
+-     * @param node - Node.
+-     */
+-    isTextNode(node: T['node']): node is T['textNode'];
+-    /**
+-     * Sets the [document mode](https://dom.spec.whatwg.org/#concept-document-limited-quirks).
+-     *
+-     * @param document - Document node.
+-     * @param mode - Document mode.
+-     */
+-    setDocumentMode(document: T['document'], mode: DOCUMENT_MODE): void;
+-    /**
+-     * Sets the document type. If the `document` already contains a document type node, the `name`, `publicId` and `systemId`
+-     * properties of this node will be updated with the provided values. Otherwise, creates a new document type node
+-     * with the given properties and inserts it into the `document`.
+-     *
+-     * @param document - Document node.
+-     * @param name -  Document type name.
+-     * @param publicId - Document type public identifier.
+-     * @param systemId - Document type system identifier.
+-     */
+-    setDocumentType(document: T['document'], name: string, publicId: string, systemId: string): void;
+-    /**
+-     * Attaches source code location information to the node.
+-     *
+-     * @param node - Node.
+-     */
+-    setNodeSourceCodeLocation(node: T['node'], location: ElementLocation | null): void;
+-    /**
+-     * Updates the source code location information of the node.
+-     *
+-     * @param node - Node.
+-     */
+-    updateNodeSourceCodeLocation(node: T['node'], location: Partial<ElementLocation>): void;
+-    /**
+-     * Sets the `<template>` element content element.
+-     *
+-     * @param templateElement - `<template>` element.
+-     * @param contentElement -  Content element.
+-     */
+-    setTemplateContent(templateElement: T['template'], contentElement: T['documentFragment']): void;
+-    /**
+-     * Optional callback for elements being pushed to the stack of open elements.
+-     *
+-     * @param element The element being pushed to the stack of open elements.
+-     */
+-    onItemPush?: (item: T['element']) => void;
+-    /**
+-     * Optional callback for elements being popped from the stack of open elements.
+-     *
+-     * @param item The element being popped.
+-     */
+-    onItemPop?: (item: T['element'], newTop: T['parentNode']) => void;
+-}
+-//# sourceMappingURL=interface.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/common/doctype.d.ts b/node_modules/parse5/dist/common/doctype.d.ts
+deleted file mode 100644
+index 8c56fd7..0000000
+--- a/node_modules/parse5/dist/common/doctype.d.ts
++++ /dev/null
+@@ -1,5 +0,0 @@
+-import { DOCUMENT_MODE } from './html.js';
+-import type { DoctypeToken } from './token.js';
+-export declare function isConforming(token: DoctypeToken): boolean;
+-export declare function getDocumentMode(token: DoctypeToken): DOCUMENT_MODE;
+-//# sourceMappingURL=doctype.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/common/error-codes.d.ts b/node_modules/parse5/dist/common/error-codes.d.ts
+deleted file mode 100644
+index 13b0658..0000000
+--- a/node_modules/parse5/dist/common/error-codes.d.ts
++++ /dev/null
+@@ -1,68 +0,0 @@
+-import type { Location } from './token.js';
+-export interface ParserError extends Location {
+-    code: ERR;
+-}
+-export declare type ParserErrorHandler = (error: ParserError) => void;
+-export declare enum ERR {
+-    controlCharacterInInputStream = "control-character-in-input-stream",
+-    noncharacterInInputStream = "noncharacter-in-input-stream",
+-    surrogateInInputStream = "surrogate-in-input-stream",
+-    nonVoidHtmlElementStartTagWithTrailingSolidus = "non-void-html-element-start-tag-with-trailing-solidus",
+-    endTagWithAttributes = "end-tag-with-attributes",
+-    endTagWithTrailingSolidus = "end-tag-with-trailing-solidus",
+-    unexpectedSolidusInTag = "unexpected-solidus-in-tag",
+-    unexpectedNullCharacter = "unexpected-null-character",
+-    unexpectedQuestionMarkInsteadOfTagName = "unexpected-question-mark-instead-of-tag-name",
+-    invalidFirstCharacterOfTagName = "invalid-first-character-of-tag-name",
+-    unexpectedEqualsSignBeforeAttributeName = "unexpected-equals-sign-before-attribute-name",
+-    missingEndTagName = "missing-end-tag-name",
+-    unexpectedCharacterInAttributeName = "unexpected-character-in-attribute-name",
+-    unknownNamedCharacterReference = "unknown-named-character-reference",
+-    missingSemicolonAfterCharacterReference = "missing-semicolon-after-character-reference",
+-    unexpectedCharacterAfterDoctypeSystemIdentifier = "unexpected-character-after-doctype-system-identifier",
+-    unexpectedCharacterInUnquotedAttributeValue = "unexpected-character-in-unquoted-attribute-value",
+-    eofBeforeTagName = "eof-before-tag-name",
+-    eofInTag = "eof-in-tag",
+-    missingAttributeValue = "missing-attribute-value",
+-    missingWhitespaceBetweenAttributes = "missing-whitespace-between-attributes",
+-    missingWhitespaceAfterDoctypePublicKeyword = "missing-whitespace-after-doctype-public-keyword",
+-    missingWhitespaceBetweenDoctypePublicAndSystemIdentifiers = "missing-whitespace-between-doctype-public-and-system-identifiers",
+-    missingWhitespaceAfterDoctypeSystemKeyword = "missing-whitespace-after-doctype-system-keyword",
+-    missingQuoteBeforeDoctypePublicIdentifier = "missing-quote-before-doctype-public-identifier",
+-    missingQuoteBeforeDoctypeSystemIdentifier = "missing-quote-before-doctype-system-identifier",
+-    missingDoctypePublicIdentifier = "missing-doctype-public-identifier",
+-    missingDoctypeSystemIdentifier = "missing-doctype-system-identifier",
+-    abruptDoctypePublicIdentifier = "abrupt-doctype-public-identifier",
+-    abruptDoctypeSystemIdentifier = "abrupt-doctype-system-identifier",
+-    cdataInHtmlContent = "cdata-in-html-content",
+-    incorrectlyOpenedComment = "incorrectly-opened-comment",
+-    eofInScriptHtmlCommentLikeText = "eof-in-script-html-comment-like-text",
+-    eofInDoctype = "eof-in-doctype",
+-    nestedComment = "nested-comment",
+-    abruptClosingOfEmptyComment = "abrupt-closing-of-empty-comment",
+-    eofInComment = "eof-in-comment",
+-    incorrectlyClosedComment = "incorrectly-closed-comment",
+-    eofInCdata = "eof-in-cdata",
+-    absenceOfDigitsInNumericCharacterReference = "absence-of-digits-in-numeric-character-reference",
+-    nullCharacterReference = "null-character-reference",
+-    surrogateCharacterReference = "surrogate-character-reference",
+-    characterReferenceOutsideUnicodeRange = "character-reference-outside-unicode-range",
+-    controlCharacterReference = "control-character-reference",
+-    noncharacterCharacterReference = "noncharacter-character-reference",
+-    missingWhitespaceBeforeDoctypeName = "missing-whitespace-before-doctype-name",
+-    missingDoctypeName = "missing-doctype-name",
+-    invalidCharacterSequenceAfterDoctypeName = "invalid-character-sequence-after-doctype-name",
+-    duplicateAttribute = "duplicate-attribute",
+-    nonConformingDoctype = "non-conforming-doctype",
+-    missingDoctype = "missing-doctype",
+-    misplacedDoctype = "misplaced-doctype",
+-    endTagWithoutMatchingOpenElement = "end-tag-without-matching-open-element",
+-    closingOfElementWithOpenChildElements = "closing-of-element-with-open-child-elements",
+-    disallowedContentInNoscriptInHead = "disallowed-content-in-noscript-in-head",
+-    openElementsLeftAfterEof = "open-elements-left-after-eof",
+-    abandonedHeadElementChild = "abandoned-head-element-child",
+-    misplacedStartTagForHeadElement = "misplaced-start-tag-for-head-element",
+-    nestedNoscriptInHead = "nested-noscript-in-head",
+-    eofInElementThatCanContainOnlyText = "eof-in-element-that-can-contain-only-text"
+-}
+-//# sourceMappingURL=error-codes.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/common/foreign-content.d.ts b/node_modules/parse5/dist/common/foreign-content.d.ts
+deleted file mode 100644
+index 8d9f182..0000000
+--- a/node_modules/parse5/dist/common/foreign-content.d.ts
++++ /dev/null
+@@ -1,10 +0,0 @@
+-import { TAG_ID as $, NS } from './html.js';
+-import type { TagToken, Attribute } from './token.js';
+-export declare const SVG_TAG_NAMES_ADJUSTMENT_MAP: Map<string, string>;
+-export declare function causesExit(startTagToken: TagToken): boolean;
+-export declare function adjustTokenMathMLAttrs(token: TagToken): void;
+-export declare function adjustTokenSVGAttrs(token: TagToken): void;
+-export declare function adjustTokenXMLAttrs(token: TagToken): void;
+-export declare function adjustTokenSVGTagName(token: TagToken): void;
+-export declare function isIntegrationPoint(tn: $, ns: NS, attrs: Attribute[], foreignNS?: NS): boolean;
+-//# sourceMappingURL=foreign-content.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/common/html.d.ts b/node_modules/parse5/dist/common/html.d.ts
+deleted file mode 100644
+index 0b47095..0000000
+--- a/node_modules/parse5/dist/common/html.d.ts
++++ /dev/null
+@@ -1,288 +0,0 @@
+-/** All valid namespaces in HTML. */
+-export declare enum NS {
+-    HTML = "http://www.w3.org/1999/xhtml",
+-    MATHML = "http://www.w3.org/1998/Math/MathML",
+-    SVG = "http://www.w3.org/2000/svg",
+-    XLINK = "http://www.w3.org/1999/xlink",
+-    XML = "http://www.w3.org/XML/1998/namespace",
+-    XMLNS = "http://www.w3.org/2000/xmlns/"
+-}
+-export declare enum ATTRS {
+-    TYPE = "type",
+-    ACTION = "action",
+-    ENCODING = "encoding",
+-    PROMPT = "prompt",
+-    NAME = "name",
+-    COLOR = "color",
+-    FACE = "face",
+-    SIZE = "size"
+-}
+-/**
+- * The mode of the document.
+- *
+- * @see {@link https://dom.spec.whatwg.org/#concept-document-limited-quirks}
+- */
+-export declare enum DOCUMENT_MODE {
+-    NO_QUIRKS = "no-quirks",
+-    QUIRKS = "quirks",
+-    LIMITED_QUIRKS = "limited-quirks"
+-}
+-export declare enum TAG_NAMES {
+-    A = "a",
+-    ADDRESS = "address",
+-    ANNOTATION_XML = "annotation-xml",
+-    APPLET = "applet",
+-    AREA = "area",
+-    ARTICLE = "article",
+-    ASIDE = "aside",
+-    B = "b",
+-    BASE = "base",
+-    BASEFONT = "basefont",
+-    BGSOUND = "bgsound",
+-    BIG = "big",
+-    BLOCKQUOTE = "blockquote",
+-    BODY = "body",
+-    BR = "br",
+-    BUTTON = "button",
+-    CAPTION = "caption",
+-    CENTER = "center",
+-    CODE = "code",
+-    COL = "col",
+-    COLGROUP = "colgroup",
+-    DD = "dd",
+-    DESC = "desc",
+-    DETAILS = "details",
+-    DIALOG = "dialog",
+-    DIR = "dir",
+-    DIV = "div",
+-    DL = "dl",
+-    DT = "dt",
+-    EM = "em",
+-    EMBED = "embed",
+-    FIELDSET = "fieldset",
+-    FIGCAPTION = "figcaption",
+-    FIGURE = "figure",
+-    FONT = "font",
+-    FOOTER = "footer",
+-    FOREIGN_OBJECT = "foreignObject",
+-    FORM = "form",
+-    FRAME = "frame",
+-    FRAMESET = "frameset",
+-    H1 = "h1",
+-    H2 = "h2",
+-    H3 = "h3",
+-    H4 = "h4",
+-    H5 = "h5",
+-    H6 = "h6",
+-    HEAD = "head",
+-    HEADER = "header",
+-    HGROUP = "hgroup",
+-    HR = "hr",
+-    HTML = "html",
+-    I = "i",
+-    IMG = "img",
+-    IMAGE = "image",
+-    INPUT = "input",
+-    IFRAME = "iframe",
+-    KEYGEN = "keygen",
+-    LABEL = "label",
+-    LI = "li",
+-    LINK = "link",
+-    LISTING = "listing",
+-    MAIN = "main",
+-    MALIGNMARK = "malignmark",
+-    MARQUEE = "marquee",
+-    MATH = "math",
+-    MENU = "menu",
+-    META = "meta",
+-    MGLYPH = "mglyph",
+-    MI = "mi",
+-    MO = "mo",
+-    MN = "mn",
+-    MS = "ms",
+-    MTEXT = "mtext",
+-    NAV = "nav",
+-    NOBR = "nobr",
+-    NOFRAMES = "noframes",
+-    NOEMBED = "noembed",
+-    NOSCRIPT = "noscript",
+-    OBJECT = "object",
+-    OL = "ol",
+-    OPTGROUP = "optgroup",
+-    OPTION = "option",
+-    P = "p",
+-    PARAM = "param",
+-    PLAINTEXT = "plaintext",
+-    PRE = "pre",
+-    RB = "rb",
+-    RP = "rp",
+-    RT = "rt",
+-    RTC = "rtc",
+-    RUBY = "ruby",
+-    S = "s",
+-    SCRIPT = "script",
+-    SECTION = "section",
+-    SELECT = "select",
+-    SOURCE = "source",
+-    SMALL = "small",
+-    SPAN = "span",
+-    STRIKE = "strike",
+-    STRONG = "strong",
+-    STYLE = "style",
+-    SUB = "sub",
+-    SUMMARY = "summary",
+-    SUP = "sup",
+-    TABLE = "table",
+-    TBODY = "tbody",
+-    TEMPLATE = "template",
+-    TEXTAREA = "textarea",
+-    TFOOT = "tfoot",
+-    TD = "td",
+-    TH = "th",
+-    THEAD = "thead",
+-    TITLE = "title",
+-    TR = "tr",
+-    TRACK = "track",
+-    TT = "tt",
+-    U = "u",
+-    UL = "ul",
+-    SVG = "svg",
+-    VAR = "var",
+-    WBR = "wbr",
+-    XMP = "xmp"
+-}
+-/**
+- * Tag IDs are numeric IDs for known tag names.
+- *
+- * We use tag IDs to improve the performance of tag name comparisons.
+- */
+-export declare enum TAG_ID {
+-    UNKNOWN = 0,
+-    A = 1,
+-    ADDRESS = 2,
+-    ANNOTATION_XML = 3,
+-    APPLET = 4,
+-    AREA = 5,
+-    ARTICLE = 6,
+-    ASIDE = 7,
+-    B = 8,
+-    BASE = 9,
+-    BASEFONT = 10,
+-    BGSOUND = 11,
+-    BIG = 12,
+-    BLOCKQUOTE = 13,
+-    BODY = 14,
+-    BR = 15,
+-    BUTTON = 16,
+-    CAPTION = 17,
+-    CENTER = 18,
+-    CODE = 19,
+-    COL = 20,
+-    COLGROUP = 21,
+-    DD = 22,
+-    DESC = 23,
+-    DETAILS = 24,
+-    DIALOG = 25,
+-    DIR = 26,
+-    DIV = 27,
+-    DL = 28,
+-    DT = 29,
+-    EM = 30,
+-    EMBED = 31,
+-    FIELDSET = 32,
+-    FIGCAPTION = 33,
+-    FIGURE = 34,
+-    FONT = 35,
+-    FOOTER = 36,
+-    FOREIGN_OBJECT = 37,
+-    FORM = 38,
+-    FRAME = 39,
+-    FRAMESET = 40,
+-    H1 = 41,
+-    H2 = 42,
+-    H3 = 43,
+-    H4 = 44,
+-    H5 = 45,
+-    H6 = 46,
+-    HEAD = 47,
+-    HEADER = 48,
+-    HGROUP = 49,
+-    HR = 50,
+-    HTML = 51,
+-    I = 52,
+-    IMG = 53,
+-    IMAGE = 54,
+-    INPUT = 55,
+-    IFRAME = 56,
+-    KEYGEN = 57,
+-    LABEL = 58,
+-    LI = 59,
+-    LINK = 60,
+-    LISTING = 61,
+-    MAIN = 62,
+-    MALIGNMARK = 63,
+-    MARQUEE = 64,
+-    MATH = 65,
+-    MENU = 66,
+-    META = 67,
+-    MGLYPH = 68,
+-    MI = 69,
+-    MO = 70,
+-    MN = 71,
+-    MS = 72,
+-    MTEXT = 73,
+-    NAV = 74,
+-    NOBR = 75,
+-    NOFRAMES = 76,
+-    NOEMBED = 77,
+-    NOSCRIPT = 78,
+-    OBJECT = 79,
+-    OL = 80,
+-    OPTGROUP = 81,
+-    OPTION = 82,
+-    P = 83,
+-    PARAM = 84,
+-    PLAINTEXT = 85,
+-    PRE = 86,
+-    RB = 87,
+-    RP = 88,
+-    RT = 89,
+-    RTC = 90,
+-    RUBY = 91,
+-    S = 92,
+-    SCRIPT = 93,
+-    SECTION = 94,
+-    SELECT = 95,
+-    SOURCE = 96,
+-    SMALL = 97,
+-    SPAN = 98,
+-    STRIKE = 99,
+-    STRONG = 100,
+-    STYLE = 101,
+-    SUB = 102,
+-    SUMMARY = 103,
+-    SUP = 104,
+-    TABLE = 105,
+-    TBODY = 106,
+-    TEMPLATE = 107,
+-    TEXTAREA = 108,
+-    TFOOT = 109,
+-    TD = 110,
+-    TH = 111,
+-    THEAD = 112,
+-    TITLE = 113,
+-    TR = 114,
+-    TRACK = 115,
+-    TT = 116,
+-    U = 117,
+-    UL = 118,
+-    SVG = 119,
+-    VAR = 120,
+-    WBR = 121,
+-    XMP = 122
+-}
+-export declare function getTagID(tagName: string): TAG_ID;
+-export declare const SPECIAL_ELEMENTS: Record<NS, Set<TAG_ID>>;
+-export declare function isNumberedHeader(tn: TAG_ID): boolean;
+-export declare function hasUnescapedText(tn: string, scriptingEnabled: boolean): boolean;
+-//# sourceMappingURL=html.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/common/token.d.ts b/node_modules/parse5/dist/common/token.d.ts
+deleted file mode 100644
+index fb36ee1..0000000
+--- a/node_modules/parse5/dist/common/token.d.ts
++++ /dev/null
+@@ -1,85 +0,0 @@
+-import type { TAG_ID } from './html.js';
+-export declare enum TokenType {
+-    CHARACTER = 0,
+-    NULL_CHARACTER = 1,
+-    WHITESPACE_CHARACTER = 2,
+-    START_TAG = 3,
+-    END_TAG = 4,
+-    COMMENT = 5,
+-    DOCTYPE = 6,
+-    EOF = 7,
+-    HIBERNATION = 8
+-}
+-export interface Location {
+-    /** One-based line index of the first character. */
+-    startLine: number;
+-    /** One-based column index of the first character. */
+-    startCol: number;
+-    /** Zero-based first character index. */
+-    startOffset: number;
+-    /** One-based line index of the last character. */
+-    endLine: number;
+-    /** One-based column index of the last character. Points directly *after* the last character. */
+-    endCol: number;
+-    /** Zero-based last character index. Points directly *after* the last character. */
+-    endOffset: number;
+-}
+-export interface LocationWithAttributes extends Location {
+-    /** Start tag attributes' location info. */
+-    attrs?: Record<string, Location>;
+-}
+-export interface ElementLocation extends LocationWithAttributes {
+-    /** Element's start tag location info. */
+-    startTag?: Location;
+-    /**
+-     * Element's end tag location info.
+-     * This property is undefined, if the element has no closing tag.
+-     */
+-    endTag?: Location;
+-}
+-interface TokenBase {
+-    readonly type: TokenType;
+-    location: Location | null;
+-}
+-export interface DoctypeToken extends TokenBase {
+-    readonly type: TokenType.DOCTYPE;
+-    name: string | null;
+-    forceQuirks: boolean;
+-    publicId: string | null;
+-    systemId: string | null;
+-}
+-export interface Attribute {
+-    /** The name of the attribute. */
+-    name: string;
+-    /** The namespace of the attribute. */
+-    namespace?: string;
+-    /** The namespace-related prefix of the attribute. */
+-    prefix?: string;
+-    /** The value of the attribute. */
+-    value: string;
+-}
+-export interface TagToken extends TokenBase {
+-    readonly type: TokenType.START_TAG | TokenType.END_TAG;
+-    tagName: string;
+-    /** Used to cache the ID of the tag name. */
+-    tagID: TAG_ID;
+-    selfClosing: boolean;
+-    ackSelfClosing: boolean;
+-    attrs: Attribute[];
+-    location: LocationWithAttributes | null;
+-}
+-export declare function getTokenAttr(token: TagToken, attrName: string): string | null;
+-export interface CommentToken extends TokenBase {
+-    readonly type: TokenType.COMMENT;
+-    data: string;
+-}
+-export interface EOFToken extends TokenBase {
+-    readonly type: TokenType.EOF;
+-}
+-export interface CharacterToken extends TokenBase {
+-    type: TokenType.CHARACTER | TokenType.NULL_CHARACTER | TokenType.WHITESPACE_CHARACTER;
+-    chars: string;
+-}
+-export declare type Token = DoctypeToken | TagToken | CommentToken | EOFToken | CharacterToken;
+-export {};
+-//# sourceMappingURL=token.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/common/unicode.d.ts b/node_modules/parse5/dist/common/unicode.d.ts
+deleted file mode 100644
+index 9713197..0000000
+--- a/node_modules/parse5/dist/common/unicode.d.ts
++++ /dev/null
+@@ -1,49 +0,0 @@
+-export declare const REPLACEMENT_CHARACTER = "\uFFFD";
+-export declare enum CODE_POINTS {
+-    EOF = -1,
+-    NULL = 0,
+-    TABULATION = 9,
+-    CARRIAGE_RETURN = 13,
+-    LINE_FEED = 10,
+-    FORM_FEED = 12,
+-    SPACE = 32,
+-    EXCLAMATION_MARK = 33,
+-    QUOTATION_MARK = 34,
+-    NUMBER_SIGN = 35,
+-    AMPERSAND = 38,
+-    APOSTROPHE = 39,
+-    HYPHEN_MINUS = 45,
+-    SOLIDUS = 47,
+-    DIGIT_0 = 48,
+-    DIGIT_9 = 57,
+-    SEMICOLON = 59,
+-    LESS_THAN_SIGN = 60,
+-    EQUALS_SIGN = 61,
+-    GREATER_THAN_SIGN = 62,
+-    QUESTION_MARK = 63,
+-    LATIN_CAPITAL_A = 65,
+-    LATIN_CAPITAL_F = 70,
+-    LATIN_CAPITAL_X = 88,
+-    LATIN_CAPITAL_Z = 90,
+-    RIGHT_SQUARE_BRACKET = 93,
+-    GRAVE_ACCENT = 96,
+-    LATIN_SMALL_A = 97,
+-    LATIN_SMALL_F = 102,
+-    LATIN_SMALL_X = 120,
+-    LATIN_SMALL_Z = 122,
+-    REPLACEMENT_CHARACTER = 65533
+-}
+-export declare const SEQUENCES: {
+-    DASH_DASH: string;
+-    CDATA_START: string;
+-    DOCTYPE: string;
+-    SCRIPT: string;
+-    PUBLIC: string;
+-    SYSTEM: string;
+-};
+-export declare function isSurrogate(cp: number): boolean;
+-export declare function isSurrogatePair(cp: number): boolean;
+-export declare function getSurrogatePairCodePoint(cp1: number, cp2: number): number;
+-export declare function isControlCodePoint(cp: number): boolean;
+-export declare function isUndefinedCodePoint(cp: number): boolean;
+-//# sourceMappingURL=unicode.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/index.d.ts b/node_modules/parse5/dist/index.d.ts
+deleted file mode 100644
+index 3410755..0000000
+--- a/node_modules/parse5/dist/index.d.ts
++++ /dev/null
+@@ -1,60 +0,0 @@
+-import { type ParserOptions } from './parser/index.js';
+-import type { DefaultTreeAdapterMap } from './tree-adapters/default.js';
+-import type { TreeAdapterTypeMap } from './tree-adapters/interface.js';
+-export { type DefaultTreeAdapterMap, defaultTreeAdapter } from './tree-adapters/default.js';
+-export type { TreeAdapter, TreeAdapterTypeMap } from './tree-adapters/interface.js';
+-export { type ParserOptions, /** @internal */ Parser } from './parser/index.js';
+-export { serialize, serializeOuter, type SerializerOptions } from './serializer/index.js';
+-export type { ParserError } from './common/error-codes.js';
+-/** @internal */
+-export * as foreignContent from './common/foreign-content.js';
+-/** @internal */
+-export * as html from './common/html.js';
+-/** @internal */
+-export * as Token from './common/token.js';
+-/** @internal */
+-export { Tokenizer, type TokenizerOptions, TokenizerMode, type TokenHandler } from './tokenizer/index.js';
+-/**
+- * Parses an HTML string.
+- *
+- * @param html Input HTML string.
+- * @param options Parsing options.
+- * @returns Document
+- *
+- * @example
+- *
+- * ```js
+- * const parse5 = require('parse5');
+- *
+- * const document = parse5.parse('<!DOCTYPE html><html><head></head><body>Hi there!</body></html>');
+- *
+- * console.log(document.childNodes[1].tagName); //> 'html'
+- *```
+- */
+-export declare function parse<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(html: string, options?: ParserOptions<T>): T['document'];
+-/**
+- * Parses an HTML fragment.
+- *
+- * @example
+- *
+- * ```js
+- * const parse5 = require('parse5');
+- *
+- * const documentFragment = parse5.parseFragment('<table></table>');
+- *
+- * console.log(documentFragment.childNodes[0].tagName); //> 'table'
+- *
+- * // Parses the html fragment in the context of the parsed <table> element.
+- * const trFragment = parse5.parseFragment(documentFragment.childNodes[0], '<tr><td>Shake it, baby</td></tr>');
+- *
+- * console.log(trFragment.childNodes[0].childNodes[0].tagName); //> 'td'
+- * ```
+- *
+- * @param fragmentContext Parsing context element. If specified, given fragment will be parsed as if it was set to the context element's `innerHTML` property.
+- * @param html Input HTML fragment string.
+- * @param options Parsing options.
+- * @returns DocumentFragment
+- */
+-export declare function parseFragment<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(fragmentContext: T['parentNode'] | null, html: string, options: ParserOptions<T>): T['documentFragment'];
+-export declare function parseFragment<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(html: string, options?: ParserOptions<T>): T['documentFragment'];
+-//# sourceMappingURL=index.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/parser/formatting-element-list.d.ts b/node_modules/parse5/dist/parser/formatting-element-list.d.ts
+deleted file mode 100644
+index b12136d..0000000
+--- a/node_modules/parse5/dist/parser/formatting-element-list.d.ts
++++ /dev/null
+@@ -1,37 +0,0 @@
+-import type { TagToken } from '../common/token.js';
+-import type { TreeAdapter, TreeAdapterTypeMap } from '../tree-adapters/interface.js';
+-export declare enum EntryType {
+-    Marker = 0,
+-    Element = 1
+-}
+-interface MarkerEntry {
+-    type: EntryType.Marker;
+-}
+-export interface ElementEntry<T extends TreeAdapterTypeMap> {
+-    type: EntryType.Element;
+-    element: T['element'];
+-    token: TagToken;
+-}
+-export declare type Entry<T extends TreeAdapterTypeMap> = MarkerEntry | ElementEntry<T>;
+-export declare class FormattingElementList<T extends TreeAdapterTypeMap> {
+-    private treeAdapter;
+-    entries: Entry<T>[];
+-    bookmark: Entry<T> | null;
+-    constructor(treeAdapter: TreeAdapter<T>);
+-    private _getNoahArkConditionCandidates;
+-    private _ensureNoahArkCondition;
+-    insertMarker(): void;
+-    pushElement(element: T['element'], token: TagToken): void;
+-    insertElementAfterBookmark(element: T['element'], token: TagToken): void;
+-    removeEntry(entry: Entry<T>): void;
+-    /**
+-     * Clears the list of formatting elements up to the last marker.
+-     *
+-     * @see https://html.spec.whatwg.org/multipage/parsing.html#clear-the-list-of-active-formatting-elements-up-to-the-last-marker
+-     */
+-    clearToLastMarker(): void;
+-    getElementEntryInScopeWithTagName(tagName: string): ElementEntry<T> | null;
+-    getElementEntry(element: T['element']): ElementEntry<T> | undefined;
+-}
+-export {};
+-//# sourceMappingURL=formatting-element-list.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/parser/index.d.ts b/node_modules/parse5/dist/parser/index.d.ts
+deleted file mode 100644
+index 50a9bd0..0000000
+--- a/node_modules/parse5/dist/parser/index.d.ts
++++ /dev/null
+@@ -1,157 +0,0 @@
+-import { Tokenizer, TokenizerMode, type TokenHandler } from '../tokenizer/index.js';
+-import { OpenElementStack, type StackHandler } from './open-element-stack.js';
+-import { FormattingElementList } from './formatting-element-list.js';
+-import { ERR, type ParserErrorHandler } from '../common/error-codes.js';
+-import { TAG_ID as $, NS } from '../common/html.js';
+-import type { TreeAdapter, TreeAdapterTypeMap } from '../tree-adapters/interface.js';
+-import { type Token, type CommentToken, type CharacterToken, type TagToken, type DoctypeToken, type EOFToken, type LocationWithAttributes } from '../common/token.js';
+-declare enum InsertionMode {
+-    INITIAL = 0,
+-    BEFORE_HTML = 1,
+-    BEFORE_HEAD = 2,
+-    IN_HEAD = 3,
+-    IN_HEAD_NO_SCRIPT = 4,
+-    AFTER_HEAD = 5,
+-    IN_BODY = 6,
+-    TEXT = 7,
+-    IN_TABLE = 8,
+-    IN_TABLE_TEXT = 9,
+-    IN_CAPTION = 10,
+-    IN_COLUMN_GROUP = 11,
+-    IN_TABLE_BODY = 12,
+-    IN_ROW = 13,
+-    IN_CELL = 14,
+-    IN_SELECT = 15,
+-    IN_SELECT_IN_TABLE = 16,
+-    IN_TEMPLATE = 17,
+-    AFTER_BODY = 18,
+-    IN_FRAMESET = 19,
+-    AFTER_FRAMESET = 20,
+-    AFTER_AFTER_BODY = 21,
+-    AFTER_AFTER_FRAMESET = 22
+-}
+-export interface ParserOptions<T extends TreeAdapterTypeMap> {
+-    /**
+-     * The [scripting flag](https://html.spec.whatwg.org/multipage/parsing.html#scripting-flag). If set
+-     * to `true`, `noscript` element content will be parsed as text.
+-     *
+-     *  @default `true`
+-     */
+-    scriptingEnabled?: boolean;
+-    /**
+-     * Enables source code location information. When enabled, each node (except the root node)
+-     * will have a `sourceCodeLocation` property. If the node is not an empty element, `sourceCodeLocation` will
+-     * be a {@link ElementLocation} object, otherwise it will be {@link Location}.
+-     * If the element was implicitly created by the parser (as part of
+-     * [tree correction](https://html.spec.whatwg.org/multipage/syntax.html#an-introduction-to-error-handling-and-strange-cases-in-the-parser)),
+-     * its `sourceCodeLocation` property will be `undefined`.
+-     *
+-     * @default `false`
+-     */
+-    sourceCodeLocationInfo?: boolean;
+-    /**
+-     * Specifies the resulting tree format.
+-     *
+-     * @default `treeAdapters.default`
+-     */
+-    treeAdapter?: TreeAdapter<T>;
+-    /**
+-     * Callback for parse errors.
+-     *
+-     * @default `null`
+-     */
+-    onParseError?: ParserErrorHandler | null;
+-}
+-export declare class Parser<T extends TreeAdapterTypeMap> implements TokenHandler, StackHandler<T> {
+-    fragmentContext: T['element'] | null;
+-    scriptHandler: null | ((pendingScript: T['element']) => void);
+-    treeAdapter: TreeAdapter<T>;
+-    onParseError: ParserErrorHandler | null;
+-    private currentToken;
+-    options: Required<ParserOptions<T>>;
+-    document: T['document'];
+-    constructor(options?: ParserOptions<T>, document?: T['document'], fragmentContext?: T['element'] | null, scriptHandler?: null | ((pendingScript: T['element']) => void));
+-    static parse<T extends TreeAdapterTypeMap>(html: string, options?: ParserOptions<T>): T['document'];
+-    static getFragmentParser<T extends TreeAdapterTypeMap>(fragmentContext?: T['parentNode'] | null, options?: ParserOptions<T>): Parser<T>;
+-    getFragment(): T['documentFragment'];
+-    tokenizer: Tokenizer;
+-    stopped: boolean;
+-    insertionMode: InsertionMode;
+-    originalInsertionMode: InsertionMode;
+-    fragmentContextID: $;
+-    headElement: null | T['element'];
+-    formElement: null | T['element'];
+-    openElements: OpenElementStack<T>;
+-    activeFormattingElements: FormattingElementList<T>;
+-    /** Indicates that the current node is not an element in the HTML namespace */
+-    private currentNotInHTML;
+-    /**
+-     * The template insertion mode stack is maintained from the left.
+-     * Ie. the topmost element will always have index 0.
+-     */
+-    tmplInsertionModeStack: InsertionMode[];
+-    pendingCharacterTokens: CharacterToken[];
+-    hasNonWhitespacePendingCharacterToken: boolean;
+-    framesetOk: boolean;
+-    skipNextNewLine: boolean;
+-    fosterParentingEnabled: boolean;
+-    _err(token: Token, code: ERR, beforeToken?: boolean): void;
+-    onItemPush(node: T['parentNode'], tid: number, isTop: boolean): void;
+-    onItemPop(node: T['parentNode'], isTop: boolean): void;
+-    private _setContextModes;
+-    _switchToTextParsing(currentToken: TagToken, nextTokenizerState: typeof TokenizerMode[keyof typeof TokenizerMode]): void;
+-    switchToPlaintextParsing(): void;
+-    _getAdjustedCurrentElement(): T['element'];
+-    _findFormInFragmentContext(): void;
+-    private _initTokenizerForFragmentParsing;
+-    _setDocumentType(token: DoctypeToken): void;
+-    _attachElementToTree(element: T['element'], location: LocationWithAttributes | null): void;
+-    _appendElement(token: TagToken, namespaceURI: NS): void;
+-    _insertElement(token: TagToken, namespaceURI: NS): void;
+-    _insertFakeElement(tagName: string, tagID: $): void;
+-    _insertTemplate(token: TagToken): void;
+-    _insertFakeRootElement(): void;
+-    _appendCommentNode(token: CommentToken, parent: T['parentNode']): void;
+-    _insertCharacters(token: CharacterToken): void;
+-    _adoptNodes(donor: T['parentNode'], recipient: T['parentNode']): void;
+-    _setEndLocation(element: T['element'], closingToken: Token): void;
+-    private shouldProcessStartTagTokenInForeignContent;
+-    _processToken(token: Token): void;
+-    _isIntegrationPoint(tid: $, element: T['element'], foreignNS?: NS): boolean;
+-    _reconstructActiveFormattingElements(): void;
+-    _closeTableCell(): void;
+-    _closePElement(): void;
+-    _resetInsertionMode(): void;
+-    _resetInsertionModeForSelect(selectIdx: number): void;
+-    _isElementCausesFosterParenting(tn: $): boolean;
+-    _shouldFosterParentOnInsertion(): boolean;
+-    _findFosterParentingLocation(): {
+-        parent: T['parentNode'];
+-        beforeElement: T['element'] | null;
+-    };
+-    _fosterParentElement(element: T['element']): void;
+-    _isSpecialElement(element: T['element'], id: $): boolean;
+-    onCharacter(token: CharacterToken): void;
+-    onNullCharacter(token: CharacterToken): void;
+-    onComment(token: CommentToken): void;
+-    onDoctype(token: DoctypeToken): void;
+-    onStartTag(token: TagToken): void;
+-    /**
+-     * Processes a given start tag.
+-     *
+-     * `onStartTag` checks if a self-closing tag was recognized. When a token
+-     * is moved inbetween multiple insertion modes, this check for self-closing
+-     * could lead to false positives. To avoid this, `_processStartTag` is used
+-     * for nested calls.
+-     *
+-     * @param token The token to process.
+-     */
+-    _processStartTag(token: TagToken): void;
+-    _startTagOutsideForeignContent(token: TagToken): void;
+-    onEndTag(token: TagToken): void;
+-    _endTagOutsideForeignContent(token: TagToken): void;
+-    onEof(token: EOFToken): void;
+-    onWhitespaceCharacter(token: CharacterToken): void;
+-}
+-export {};
+-//# sourceMappingURL=index.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/parser/open-element-stack.d.ts b/node_modules/parse5/dist/parser/open-element-stack.d.ts
+deleted file mode 100644
+index 77c1800..0000000
+--- a/node_modules/parse5/dist/parser/open-element-stack.d.ts
++++ /dev/null
+@@ -1,53 +0,0 @@
+-import { TAG_ID as $ } from '../common/html.js';
+-import type { TreeAdapter, TreeAdapterTypeMap } from '../tree-adapters/interface.js';
+-export interface StackHandler<T extends TreeAdapterTypeMap> {
+-    onItemPush: (node: T['parentNode'], tid: number, isTop: boolean) => void;
+-    onItemPop: (node: T['parentNode'], isTop: boolean) => void;
+-}
+-export declare class OpenElementStack<T extends TreeAdapterTypeMap> {
+-    private treeAdapter;
+-    private handler;
+-    items: T['parentNode'][];
+-    tagIDs: $[];
+-    current: T['parentNode'];
+-    stackTop: number;
+-    tmplCount: number;
+-    currentTagId: $;
+-    get currentTmplContentOrNode(): T['parentNode'];
+-    constructor(document: T['document'], treeAdapter: TreeAdapter<T>, handler: StackHandler<T>);
+-    private _indexOf;
+-    private _isInTemplate;
+-    private _updateCurrentElement;
+-    push(element: T['element'], tagID: $): void;
+-    pop(): void;
+-    replace(oldElement: T['element'], newElement: T['element']): void;
+-    insertAfter(referenceElement: T['element'], newElement: T['element'], newElementID: $): void;
+-    popUntilTagNamePopped(tagName: $): void;
+-    shortenToLength(idx: number): void;
+-    popUntilElementPopped(element: T['element']): void;
+-    private popUntilPopped;
+-    popUntilNumberedHeaderPopped(): void;
+-    popUntilTableCellPopped(): void;
+-    popAllUpToHtmlElement(): void;
+-    private _indexOfTagNames;
+-    private clearBackTo;
+-    clearBackToTableContext(): void;
+-    clearBackToTableBodyContext(): void;
+-    clearBackToTableRowContext(): void;
+-    remove(element: T['element']): void;
+-    tryPeekProperlyNestedBodyElement(): T['element'] | null;
+-    contains(element: T['element']): boolean;
+-    getCommonAncestor(element: T['element']): T['element'] | null;
+-    isRootHtmlElementCurrent(): boolean;
+-    hasInScope(tagName: $): boolean;
+-    hasNumberedHeaderInScope(): boolean;
+-    hasInListItemScope(tagName: $): boolean;
+-    hasInButtonScope(tagName: $): boolean;
+-    hasInTableScope(tagName: $): boolean;
+-    hasTableBodyContextInTableScope(): boolean;
+-    hasInSelectScope(tagName: $): boolean;
+-    generateImpliedEndTags(): void;
+-    generateImpliedEndTagsThoroughly(): void;
+-    generateImpliedEndTagsWithExclusion(exclusionId: $): void;
+-}
+-//# sourceMappingURL=open-element-stack.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/serializer/index.d.ts b/node_modules/parse5/dist/serializer/index.d.ts
+deleted file mode 100644
+index bf759e6..0000000
+--- a/node_modules/parse5/dist/serializer/index.d.ts
++++ /dev/null
+@@ -1,61 +0,0 @@
+-import type { TreeAdapter, TreeAdapterTypeMap } from '../tree-adapters/interface.js';
+-import { type DefaultTreeAdapterMap } from '../tree-adapters/default.js';
+-export interface SerializerOptions<T extends TreeAdapterTypeMap> {
+-    /**
+-     * Specifies input tree format.
+-     *
+-     * @default `treeAdapters.default`
+-     */
+-    treeAdapter?: TreeAdapter<T>;
+-    /**
+-     * The [scripting flag](https://html.spec.whatwg.org/multipage/parsing.html#scripting-flag). If set
+-     * to `true`, `noscript` element content will not be escaped.
+-     *
+-     *  @default `true`
+-     */
+-    scriptingEnabled?: boolean;
+-}
+-/**
+- * Serializes an AST node to an HTML string.
+- *
+- * @example
+- *
+- * ```js
+- * const parse5 = require('parse5');
+- *
+- * const document = parse5.parse('<!DOCTYPE html><html><head></head><body>Hi there!</body></html>');
+- *
+- * // Serializes a document.
+- * const html = parse5.serialize(document);
+- *
+- * // Serializes the <html> element content.
+- * const str = parse5.serialize(document.childNodes[1]);
+- *
+- * console.log(str); //> '<head></head><body>Hi there!</body>'
+- * ```
+- *
+- * @param node Node to serialize.
+- * @param options Serialization options.
+- */
+-export declare function serialize<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(node: T['parentNode'], options?: SerializerOptions<T>): string;
+-/**
+- * Serializes an AST element node to an HTML string, including the element node.
+- *
+- * @example
+- *
+- * ```js
+- * const parse5 = require('parse5');
+- *
+- * const document = parse5.parseFragment('<div>Hello, <b>world</b>!</div>');
+- *
+- * // Serializes the <div> element.
+- * const html = parse5.serializeOuter(document.childNodes[0]);
+- *
+- * console.log(str); //> '<div>Hello, <b>world</b>!</div>'
+- * ```
+- *
+- * @param node Node to serialize.
+- * @param options Serialization options.
+- */
+-export declare function serializeOuter<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(node: T['node'], options?: SerializerOptions<T>): string;
+-//# sourceMappingURL=index.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/tokenizer/index.d.ts b/node_modules/parse5/dist/tokenizer/index.d.ts
+deleted file mode 100644
+index 5afab96..0000000
+--- a/node_modules/parse5/dist/tokenizer/index.d.ts
++++ /dev/null
+@@ -1,248 +0,0 @@
+-import { Preprocessor } from './preprocessor.js';
+-import { type CharacterToken, type DoctypeToken, type TagToken, type EOFToken, type CommentToken } from '../common/token.js';
+-import { type ParserErrorHandler } from '../common/error-codes.js';
+-declare const enum State {
+-    DATA = 0,
+-    RCDATA = 1,
+-    RAWTEXT = 2,
+-    SCRIPT_DATA = 3,
+-    PLAINTEXT = 4,
+-    TAG_OPEN = 5,
+-    END_TAG_OPEN = 6,
+-    TAG_NAME = 7,
+-    RCDATA_LESS_THAN_SIGN = 8,
+-    RCDATA_END_TAG_OPEN = 9,
+-    RCDATA_END_TAG_NAME = 10,
+-    RAWTEXT_LESS_THAN_SIGN = 11,
+-    RAWTEXT_END_TAG_OPEN = 12,
+-    RAWTEXT_END_TAG_NAME = 13,
+-    SCRIPT_DATA_LESS_THAN_SIGN = 14,
+-    SCRIPT_DATA_END_TAG_OPEN = 15,
+-    SCRIPT_DATA_END_TAG_NAME = 16,
+-    SCRIPT_DATA_ESCAPE_START = 17,
+-    SCRIPT_DATA_ESCAPE_START_DASH = 18,
+-    SCRIPT_DATA_ESCAPED = 19,
+-    SCRIPT_DATA_ESCAPED_DASH = 20,
+-    SCRIPT_DATA_ESCAPED_DASH_DASH = 21,
+-    SCRIPT_DATA_ESCAPED_LESS_THAN_SIGN = 22,
+-    SCRIPT_DATA_ESCAPED_END_TAG_OPEN = 23,
+-    SCRIPT_DATA_ESCAPED_END_TAG_NAME = 24,
+-    SCRIPT_DATA_DOUBLE_ESCAPE_START = 25,
+-    SCRIPT_DATA_DOUBLE_ESCAPED = 26,
+-    SCRIPT_DATA_DOUBLE_ESCAPED_DASH = 27,
+-    SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH = 28,
+-    SCRIPT_DATA_DOUBLE_ESCAPED_LESS_THAN_SIGN = 29,
+-    SCRIPT_DATA_DOUBLE_ESCAPE_END = 30,
+-    BEFORE_ATTRIBUTE_NAME = 31,
+-    ATTRIBUTE_NAME = 32,
+-    AFTER_ATTRIBUTE_NAME = 33,
+-    BEFORE_ATTRIBUTE_VALUE = 34,
+-    ATTRIBUTE_VALUE_DOUBLE_QUOTED = 35,
+-    ATTRIBUTE_VALUE_SINGLE_QUOTED = 36,
+-    ATTRIBUTE_VALUE_UNQUOTED = 37,
+-    AFTER_ATTRIBUTE_VALUE_QUOTED = 38,
+-    SELF_CLOSING_START_TAG = 39,
+-    BOGUS_COMMENT = 40,
+-    MARKUP_DECLARATION_OPEN = 41,
+-    COMMENT_START = 42,
+-    COMMENT_START_DASH = 43,
+-    COMMENT = 44,
+-    COMMENT_LESS_THAN_SIGN = 45,
+-    COMMENT_LESS_THAN_SIGN_BANG = 46,
+-    COMMENT_LESS_THAN_SIGN_BANG_DASH = 47,
+-    COMMENT_LESS_THAN_SIGN_BANG_DASH_DASH = 48,
+-    COMMENT_END_DASH = 49,
+-    COMMENT_END = 50,
+-    COMMENT_END_BANG = 51,
+-    DOCTYPE = 52,
+-    BEFORE_DOCTYPE_NAME = 53,
+-    DOCTYPE_NAME = 54,
+-    AFTER_DOCTYPE_NAME = 55,
+-    AFTER_DOCTYPE_PUBLIC_KEYWORD = 56,
+-    BEFORE_DOCTYPE_PUBLIC_IDENTIFIER = 57,
+-    DOCTYPE_PUBLIC_IDENTIFIER_DOUBLE_QUOTED = 58,
+-    DOCTYPE_PUBLIC_IDENTIFIER_SINGLE_QUOTED = 59,
+-    AFTER_DOCTYPE_PUBLIC_IDENTIFIER = 60,
+-    BETWEEN_DOCTYPE_PUBLIC_AND_SYSTEM_IDENTIFIERS = 61,
+-    AFTER_DOCTYPE_SYSTEM_KEYWORD = 62,
+-    BEFORE_DOCTYPE_SYSTEM_IDENTIFIER = 63,
+-    DOCTYPE_SYSTEM_IDENTIFIER_DOUBLE_QUOTED = 64,
+-    DOCTYPE_SYSTEM_IDENTIFIER_SINGLE_QUOTED = 65,
+-    AFTER_DOCTYPE_SYSTEM_IDENTIFIER = 66,
+-    BOGUS_DOCTYPE = 67,
+-    CDATA_SECTION = 68,
+-    CDATA_SECTION_BRACKET = 69,
+-    CDATA_SECTION_END = 70,
+-    CHARACTER_REFERENCE = 71,
+-    NAMED_CHARACTER_REFERENCE = 72,
+-    AMBIGUOUS_AMPERSAND = 73,
+-    NUMERIC_CHARACTER_REFERENCE = 74,
+-    HEXADEMICAL_CHARACTER_REFERENCE_START = 75,
+-    HEXADEMICAL_CHARACTER_REFERENCE = 76,
+-    DECIMAL_CHARACTER_REFERENCE = 77,
+-    NUMERIC_CHARACTER_REFERENCE_END = 78
+-}
+-export declare const TokenizerMode: {
+-    readonly DATA: State.DATA;
+-    readonly RCDATA: State.RCDATA;
+-    readonly RAWTEXT: State.RAWTEXT;
+-    readonly SCRIPT_DATA: State.SCRIPT_DATA;
+-    readonly PLAINTEXT: State.PLAINTEXT;
+-    readonly CDATA_SECTION: State.CDATA_SECTION;
+-};
+-export interface TokenizerOptions {
+-    sourceCodeLocationInfo?: boolean;
+-}
+-export interface TokenHandler {
+-    onComment(token: CommentToken): void;
+-    onDoctype(token: DoctypeToken): void;
+-    onStartTag(token: TagToken): void;
+-    onEndTag(token: TagToken): void;
+-    onEof(token: EOFToken): void;
+-    onCharacter(token: CharacterToken): void;
+-    onNullCharacter(token: CharacterToken): void;
+-    onWhitespaceCharacter(token: CharacterToken): void;
+-    onParseError?: ParserErrorHandler | null;
+-}
+-export declare class Tokenizer {
+-    private options;
+-    private handler;
+-    preprocessor: Preprocessor;
+-    private paused;
+-    /** Ensures that the parsing loop isn't run multiple times at once. */
+-    private inLoop;
+-    /**
+-     * Indicates that the current adjusted node exists, is not an element in the HTML namespace,
+-     * and that it is not an integration point for either MathML or HTML.
+-     *
+-     * @see {@link https://html.spec.whatwg.org/multipage/parsing.html#tree-construction}
+-     */
+-    inForeignNode: boolean;
+-    lastStartTagName: string;
+-    active: boolean;
+-    state: State;
+-    private returnState;
+-    private charRefCode;
+-    private consumedAfterSnapshot;
+-    private currentLocation;
+-    private currentCharacterToken;
+-    private currentToken;
+-    private currentAttr;
+-    constructor(options: TokenizerOptions, handler: TokenHandler);
+-    private _err;
+-    private getCurrentLocation;
+-    private _runParsingLoop;
+-    pause(): void;
+-    resume(writeCallback?: () => void): void;
+-    write(chunk: string, isLastChunk: boolean, writeCallback?: () => void): void;
+-    insertHtmlAtCurrentPos(chunk: string): void;
+-    private _ensureHibernation;
+-    private _consume;
+-    private _unconsume;
+-    private _reconsumeInState;
+-    private _advanceBy;
+-    private _consumeSequenceIfMatch;
+-    private _createStartTagToken;
+-    private _createEndTagToken;
+-    private _createCommentToken;
+-    private _createDoctypeToken;
+-    private _createCharacterToken;
+-    private _createAttr;
+-    private _leaveAttrName;
+-    private _leaveAttrValue;
+-    private prepareToken;
+-    private emitCurrentTagToken;
+-    private emitCurrentComment;
+-    private emitCurrentDoctype;
+-    private _emitCurrentCharacterToken;
+-    private _emitEOFToken;
+-    private _appendCharToCurrentCharacterToken;
+-    private _emitCodePoint;
+-    private _emitChars;
+-    private _matchNamedCharacterReference;
+-    private _isCharacterReferenceInAttribute;
+-    private _flushCodePointConsumedAsCharacterReference;
+-    private _callState;
+-    private _stateData;
+-    private _stateRcdata;
+-    private _stateRawtext;
+-    private _stateScriptData;
+-    private _statePlaintext;
+-    private _stateTagOpen;
+-    private _stateEndTagOpen;
+-    private _stateTagName;
+-    private _stateRcdataLessThanSign;
+-    private _stateRcdataEndTagOpen;
+-    private handleSpecialEndTag;
+-    private _stateRcdataEndTagName;
+-    private _stateRawtextLessThanSign;
+-    private _stateRawtextEndTagOpen;
+-    private _stateRawtextEndTagName;
+-    private _stateScriptDataLessThanSign;
+-    private _stateScriptDataEndTagOpen;
+-    private _stateScriptDataEndTagName;
+-    private _stateScriptDataEscapeStart;
+-    private _stateScriptDataEscapeStartDash;
+-    private _stateScriptDataEscaped;
+-    private _stateScriptDataEscapedDash;
+-    private _stateScriptDataEscapedDashDash;
+-    private _stateScriptDataEscapedLessThanSign;
+-    private _stateScriptDataEscapedEndTagOpen;
+-    private _stateScriptDataEscapedEndTagName;
+-    private _stateScriptDataDoubleEscapeStart;
+-    private _stateScriptDataDoubleEscaped;
+-    private _stateScriptDataDoubleEscapedDash;
+-    private _stateScriptDataDoubleEscapedDashDash;
+-    private _stateScriptDataDoubleEscapedLessThanSign;
+-    private _stateScriptDataDoubleEscapeEnd;
+-    private _stateBeforeAttributeName;
+-    private _stateAttributeName;
+-    private _stateAfterAttributeName;
+-    private _stateBeforeAttributeValue;
+-    private _stateAttributeValueDoubleQuoted;
+-    private _stateAttributeValueSingleQuoted;
+-    private _stateAttributeValueUnquoted;
+-    private _stateAfterAttributeValueQuoted;
+-    private _stateSelfClosingStartTag;
+-    private _stateBogusComment;
+-    private _stateMarkupDeclarationOpen;
+-    private _stateCommentStart;
+-    private _stateCommentStartDash;
+-    private _stateComment;
+-    private _stateCommentLessThanSign;
+-    private _stateCommentLessThanSignBang;
+-    private _stateCommentLessThanSignBangDash;
+-    private _stateCommentLessThanSignBangDashDash;
+-    private _stateCommentEndDash;
+-    private _stateCommentEnd;
+-    private _stateCommentEndBang;
+-    private _stateDoctype;
+-    private _stateBeforeDoctypeName;
+-    private _stateDoctypeName;
+-    private _stateAfterDoctypeName;
+-    private _stateAfterDoctypePublicKeyword;
+-    private _stateBeforeDoctypePublicIdentifier;
+-    private _stateDoctypePublicIdentifierDoubleQuoted;
+-    private _stateDoctypePublicIdentifierSingleQuoted;
+-    private _stateAfterDoctypePublicIdentifier;
+-    private _stateBetweenDoctypePublicAndSystemIdentifiers;
+-    private _stateAfterDoctypeSystemKeyword;
+-    private _stateBeforeDoctypeSystemIdentifier;
+-    private _stateDoctypeSystemIdentifierDoubleQuoted;
+-    private _stateDoctypeSystemIdentifierSingleQuoted;
+-    private _stateAfterDoctypeSystemIdentifier;
+-    private _stateBogusDoctype;
+-    private _stateCdataSection;
+-    private _stateCdataSectionBracket;
+-    private _stateCdataSectionEnd;
+-    private _stateCharacterReference;
+-    private _stateNamedCharacterReference;
+-    private _stateAmbiguousAmpersand;
+-    private _stateNumericCharacterReference;
+-    private _stateHexademicalCharacterReferenceStart;
+-    private _stateHexademicalCharacterReference;
+-    private _stateDecimalCharacterReference;
+-    private _stateNumericCharacterReferenceEnd;
+-}
+-export {};
+-//# sourceMappingURL=index.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/tokenizer/preprocessor.d.ts b/node_modules/parse5/dist/tokenizer/preprocessor.d.ts
+deleted file mode 100644
+index e74a590..0000000
+--- a/node_modules/parse5/dist/tokenizer/preprocessor.d.ts
++++ /dev/null
+@@ -1,37 +0,0 @@
+-import { ERR, type ParserError, type ParserErrorHandler } from '../common/error-codes.js';
+-export declare class Preprocessor {
+-    private handler;
+-    html: string;
+-    private pos;
+-    private lastGapPos;
+-    private gapStack;
+-    private skipNextNewLine;
+-    private lastChunkWritten;
+-    endOfChunkHit: boolean;
+-    bufferWaterline: number;
+-    private isEol;
+-    private lineStartPos;
+-    droppedBufferSize: number;
+-    line: number;
+-    constructor(handler: {
+-        onParseError?: ParserErrorHandler | null;
+-    });
+-    /** The column on the current line. If we just saw a gap (eg. a surrogate pair), return the index before. */
+-    get col(): number;
+-    get offset(): number;
+-    getError(code: ERR): ParserError;
+-    private lastErrOffset;
+-    private _err;
+-    private _addGap;
+-    private _processSurrogate;
+-    willDropParsedChunk(): boolean;
+-    dropParsedChunk(): void;
+-    write(chunk: string, isLastChunk: boolean): void;
+-    insertHtmlAtCurrentPos(chunk: string): void;
+-    startsWith(pattern: string, caseSensitive: boolean): boolean;
+-    peek(offset: number): number;
+-    advance(): number;
+-    private _checkForProblematicCharacters;
+-    retreat(count: number): void;
+-}
+-//# sourceMappingURL=preprocessor.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/tree-adapters/default.d.ts b/node_modules/parse5/dist/tree-adapters/default.d.ts
+deleted file mode 100644
+index 926ffea..0000000
+--- a/node_modules/parse5/dist/tree-adapters/default.d.ts
++++ /dev/null
+@@ -1,85 +0,0 @@
+-import { DOCUMENT_MODE, type NS } from '../common/html.js';
+-import type { Attribute, Location, ElementLocation } from '../common/token.js';
+-import type { TreeAdapter, TreeAdapterTypeMap } from './interface.js';
+-export interface Document {
+-    /** The name of the node. */
+-    nodeName: '#document';
+-    /**
+-     * Document mode.
+-     *
+-     * @see {@link DOCUMENT_MODE} */
+-    mode: DOCUMENT_MODE;
+-    /** The node's children. */
+-    childNodes: ChildNode[];
+-    /** Comment source code location info. Available if location info is enabled. */
+-    sourceCodeLocation?: Location | null;
+-}
+-export interface DocumentFragment {
+-    /** The name of the node. */
+-    nodeName: '#document-fragment';
+-    /** The node's children. */
+-    childNodes: ChildNode[];
+-    /** Comment source code location info. Available if location info is enabled. */
+-    sourceCodeLocation?: Location | null;
+-}
+-export interface Element {
+-    /** Element tag name. Same as {@link tagName}. */
+-    nodeName: string;
+-    /** Element tag name. Same as {@link nodeName}. */
+-    tagName: string;
+-    /** List of element attributes. */
+-    attrs: Attribute[];
+-    /** Element namespace. */
+-    namespaceURI: NS;
+-    /** Element source code location info, with attributes. Available if location info is enabled. */
+-    sourceCodeLocation?: ElementLocation | null;
+-    /** Parent node. */
+-    parentNode: ParentNode | null;
+-    /** The node's children. */
+-    childNodes: ChildNode[];
+-}
+-export interface CommentNode {
+-    /** The name of the node. */
+-    nodeName: '#comment';
+-    /** Parent node. */
+-    parentNode: ParentNode | null;
+-    /** Comment text. */
+-    data: string;
+-    /** Comment source code location info. Available if location info is enabled. */
+-    sourceCodeLocation?: Location | null;
+-}
+-export interface TextNode {
+-    nodeName: '#text';
+-    /** Parent node. */
+-    parentNode: ParentNode | null;
+-    /** Text content. */
+-    value: string;
+-    /** Comment source code location info. Available if location info is enabled. */
+-    sourceCodeLocation?: Location | null;
+-}
+-export interface Template extends Element {
+-    nodeName: 'template';
+-    tagName: 'template';
+-    /** The content of a `template` tag. */
+-    content: DocumentFragment;
+-}
+-export interface DocumentType {
+-    /** The name of the node. */
+-    nodeName: '#documentType';
+-    /** Parent node. */
+-    parentNode: ParentNode | null;
+-    /** Document type name. */
+-    name: string;
+-    /** Document type public identifier. */
+-    publicId: string;
+-    /** Document type system identifier. */
+-    systemId: string;
+-    /** Comment source code location info. Available if location info is enabled. */
+-    sourceCodeLocation?: Location | null;
+-}
+-export declare type ParentNode = Document | DocumentFragment | Element | Template;
+-export declare type ChildNode = Element | Template | CommentNode | TextNode | DocumentType;
+-export declare type Node = ParentNode | ChildNode;
+-export declare type DefaultTreeAdapterMap = TreeAdapterTypeMap<Node, ParentNode, ChildNode, Document, DocumentFragment, Element, CommentNode, TextNode, Template, DocumentType>;
+-export declare const defaultTreeAdapter: TreeAdapter<DefaultTreeAdapterMap>;
+-//# sourceMappingURL=default.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/parse5/dist/tree-adapters/interface.d.ts b/node_modules/parse5/dist/tree-adapters/interface.d.ts
+deleted file mode 100644
+index 8de74ee..0000000
+--- a/node_modules/parse5/dist/tree-adapters/interface.d.ts
++++ /dev/null
+@@ -1,250 +0,0 @@
+-import type { DOCUMENT_MODE, NS } from '../common/html.js';
+-import type { Attribute, ElementLocation } from '../common/token.js';
+-export interface TreeAdapterTypeMap<Node = unknown, ParentNode = unknown, ChildNode = unknown, Document = unknown, DocumentFragment = unknown, Element = unknown, CommentNode = unknown, TextNode = unknown, Template = unknown, DocumentType = unknown> {
+-    node: Node;
+-    parentNode: ParentNode;
+-    childNode: ChildNode;
+-    document: Document;
+-    documentFragment: DocumentFragment;
+-    element: Element;
+-    commentNode: CommentNode;
+-    textNode: TextNode;
+-    template: Template;
+-    documentType: DocumentType;
+-}
+-/**
+- * Tree adapter is a set of utility functions that provides minimal required abstraction layer beetween parser and a specific AST format.
+- * Note that `TreeAdapter` is not designed to be a general purpose AST manipulation library. You can build such library
+- * on top of existing `TreeAdapter` or use one of the existing libraries from npm.
+- *
+- * @see The default implementation {@link parse5.treeAdapters.default}
+- */
+-export interface TreeAdapter<T extends TreeAdapterTypeMap = TreeAdapterTypeMap> {
+-    /**
+-     * Copies attributes to the given element. Only attributes that are not yet present in the element are copied.
+-     *
+-     * @param recipient - Element to copy attributes into.
+-     * @param attrs - Attributes to copy.
+-     */
+-    adoptAttributes(recipient: T['element'], attrs: Attribute[]): void;
+-    /**
+-     * Appends a child node to the given parent node.
+-     *
+-     * @param parentNode - Parent node.
+-     * @param newNode -  Child node.
+-     */
+-    appendChild(parentNode: T['parentNode'], newNode: T['childNode']): void;
+-    /**
+-     * Creates a comment node.
+-     *
+-     * @param data - Comment text.
+-     */
+-    createCommentNode(data: string): T['commentNode'];
+-    /**
+-     * Creates a document node.
+-     */
+-    createDocument(): T['document'];
+-    /**
+-     * Creates a document fragment node.
+-     */
+-    createDocumentFragment(): T['documentFragment'];
+-    /**
+-     * Creates an element node.
+-     *
+-     * @param tagName - Tag name of the element.
+-     * @param namespaceURI - Namespace of the element.
+-     * @param attrs - Attribute name-value pair array. Foreign attributes may contain `namespace` and `prefix` fields as well.
+-     */
+-    createElement(tagName: string, namespaceURI: NS, attrs: Attribute[]): T['element'];
+-    /**
+-     * Removes a node from its parent.
+-     *
+-     * @param node - Node to remove.
+-     */
+-    detachNode(node: T['childNode']): void;
+-    /**
+-     * Returns the given element's attributes in an array, in the form of name-value pairs.
+-     * Foreign attributes may contain `namespace` and `prefix` fields as well.
+-     *
+-     * @param element - Element.
+-     */
+-    getAttrList(element: T['element']): Attribute[];
+-    /**
+-     * Returns the given node's children in an array.
+-     *
+-     * @param node - Node.
+-     */
+-    getChildNodes(node: T['parentNode']): T['childNode'][];
+-    /**
+-     * Returns the given comment node's content.
+-     *
+-     * @param commentNode - Comment node.
+-     */
+-    getCommentNodeContent(commentNode: T['commentNode']): string;
+-    /**
+-     * Returns [document mode](https://dom.spec.whatwg.org/#concept-document-limited-quirks).
+-     *
+-     * @param document - Document node.
+-     */
+-    getDocumentMode(document: T['document']): DOCUMENT_MODE;
+-    /**
+-     * Returns the given document type node's name.
+-     *
+-     * @param doctypeNode - Document type node.
+-     */
+-    getDocumentTypeNodeName(doctypeNode: T['documentType']): string;
+-    /**
+-     * Returns the given document type node's public identifier.
+-     *
+-     * @param doctypeNode - Document type node.
+-     */
+-    getDocumentTypeNodePublicId(doctypeNode: T['documentType']): string;
+-    /**
+-     * Returns the given document type node's system identifier.
+-     *
+-     * @param doctypeNode - Document type node.
+-     */
+-    getDocumentTypeNodeSystemId(doctypeNode: T['documentType']): string;
+-    /**
+-     * Returns the first child of the given node.
+-     *
+-     * @param node - Node.
+-     */
+-    getFirstChild(node: T['parentNode']): T['childNode'] | null;
+-    /**
+-     * Returns the given element's namespace.
+-     *
+-     * @param element - Element.
+-     */
+-    getNamespaceURI(element: T['element']): NS;
+-    /**
+-     * Returns the given node's source code location information.
+-     *
+-     * @param node - Node.
+-     */
+-    getNodeSourceCodeLocation(node: T['node']): ElementLocation | undefined | null;
+-    /**
+-     * Returns the given node's parent.
+-     *
+-     * @param node - Node.
+-     */
+-    getParentNode(node: T['node']): T['parentNode'] | null;
+-    /**
+-     * Returns the given element's tag name.
+-     *
+-     * @param element - Element.
+-     */
+-    getTagName(element: T['element']): string;
+-    /**
+-     * Returns the given text node's content.
+-     *
+-     * @param textNode - Text node.
+-     */
+-    getTextNodeContent(textNode: T['textNode']): string;
+-    /**
+-     * Returns the `<template>` element content element.
+-     *
+-     * @param templateElement - `<template>` element.
+-     */
+-    getTemplateContent(templateElement: T['template']): T['documentFragment'];
+-    /**
+-     * Inserts a child node to the given parent node before the given reference node.
+-     *
+-     * @param parentNode - Parent node.
+-     * @param newNode -  Child node.
+-     * @param referenceNode -  Reference node.
+-     */
+-    insertBefore(parentNode: T['parentNode'], newNode: T['childNode'], referenceNode: T['childNode']): void;
+-    /**
+-     * Inserts text into a node. If the last child of the node is a text node, the provided text will be appended to the
+-     * text node content. Otherwise, inserts a new text node with the given text.
+-     *
+-     * @param parentNode - Node to insert text into.
+-     * @param text - Text to insert.
+-     */
+-    insertText(parentNode: T['parentNode'], text: string): void;
+-    /**
+-     * Inserts text into a sibling node that goes before the reference node. If this sibling node is the text node,
+-     * the provided text will be appended to the text node content. Otherwise, inserts a new sibling text node with
+-     * the given text before the reference node.
+-     *
+-     * @param parentNode - Node to insert text into.
+-     * @param text - Text to insert.
+-     * @param referenceNode - Node to insert text before.
+-     */
+-    insertTextBefore(parentNode: T['parentNode'], text: string, referenceNode: T['childNode']): void;
+-    /**
+-     * Determines if the given node is a comment node.
+-     *
+-     * @param node - Node.
+-     */
+-    isCommentNode(node: T['node']): node is T['commentNode'];
+-    /**
+-     * Determines if the given node is a document type node.
+-     *
+-     * @param node - Node.
+-     */
+-    isDocumentTypeNode(node: T['node']): node is T['documentType'];
+-    /**
+-     * Determines if the given node is an element.
+-     *
+-     * @param node - Node.
+-     */
+-    isElementNode(node: T['node']): node is T['element'];
+-    /**
+-     * Determines if the given node is a text node.
+-     *
+-     * @param node - Node.
+-     */
+-    isTextNode(node: T['node']): node is T['textNode'];
+-    /**
+-     * Sets the [document mode](https://dom.spec.whatwg.org/#concept-document-limited-quirks).
+-     *
+-     * @param document - Document node.
+-     * @param mode - Document mode.
+-     */
+-    setDocumentMode(document: T['document'], mode: DOCUMENT_MODE): void;
+-    /**
+-     * Sets the document type. If the `document` already contains a document type node, the `name`, `publicId` and `systemId`
+-     * properties of this node will be updated with the provided values. Otherwise, creates a new document type node
+-     * with the given properties and inserts it into the `document`.
+-     *
+-     * @param document - Document node.
+-     * @param name -  Document type name.
+-     * @param publicId - Document type public identifier.
+-     * @param systemId - Document type system identifier.
+-     */
+-    setDocumentType(document: T['document'], name: string, publicId: string, systemId: string): void;
+-    /**
+-     * Attaches source code location information to the node.
+-     *
+-     * @param node - Node.
+-     */
+-    setNodeSourceCodeLocation(node: T['node'], location: ElementLocation | null): void;
+-    /**
+-     * Updates the source code location information of the node.
+-     *
+-     * @param node - Node.
+-     */
+-    updateNodeSourceCodeLocation(node: T['node'], location: Partial<ElementLocation>): void;
+-    /**
+-     * Sets the `<template>` element content element.
+-     *
+-     * @param templateElement - `<template>` element.
+-     * @param contentElement -  Content element.
+-     */
+-    setTemplateContent(templateElement: T['template'], contentElement: T['documentFragment']): void;
+-    /**
+-     * Optional callback for elements being pushed to the stack of open elements.
+-     *
+-     * @param element The element being pushed to the stack of open elements.
+-     */
+-    onItemPush?: (item: T['element']) => void;
+-    /**
+-     * Optional callback for elements being popped from the stack of open elements.
+-     *
+-     * @param item The element being popped.
+-     */
+-    onItemPop?: (item: T['element'], newTop: T['parentNode']) => void;
+-}
+-//# sourceMappingURL=interface.d.ts.map
+\ No newline at end of file
