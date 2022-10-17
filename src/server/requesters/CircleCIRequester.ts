@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
 import * as Joi from 'joi';
+import * as jwt from 'jsonwebtoken';
 
 import { Requester, AllowedState } from './Requester';
 import { Project, CircleCIRequesterConfig, OTPRequest } from '../db/models';
@@ -13,6 +14,16 @@ export type CircleCIOTPRequestMetadata = {
 export const getAxiosForConfig = (config: CircleCIRequesterConfig) =>
   axios.create({
     baseURL: 'https://circleci.com/api/v1.1',
+    auth: {
+      username: config.accessToken,
+      password: '',
+    },
+    validateStatus: () => true,
+  });
+
+export const getAxiosForConfigV2 = (config: CircleCIRequesterConfig) =>
+  axios.create({
+    baseURL: 'https://circleci.com/api/v2',
     auth: {
       username: config.accessToken,
       password: '',
@@ -35,6 +46,31 @@ export class CircleCIRequester
 
   getConfigForProject(project: Project) {
     return project.requester_circleCI || null;
+  }
+
+  async getOpenIDConnectDiscoveryURL(project: Project, config: CircleCIRequesterConfig) {
+    const projectResponse = await getAxiosForConfigV2(config).get(
+      `/project/gh/${project.repoOwner}/${project.repoName}`,
+    );
+
+    if (projectResponse.status !== 200) {
+      return null;
+    }
+
+    const orgId = projectResponse.data.organization_id;
+    return `https://oidc.circleci.com/org/${orgId}`;
+  }
+
+  async doOpenIDConnectClaimsMatchProject(claims: jwt.JwtPayload, project: Project, config: CircleCIRequesterConfig) {
+    const projectResponse = await getAxiosForConfigV2(config).get(
+      `/project/gh/${project.repoOwner}/${project.repoName}`,
+    );
+
+    if (projectResponse.status !== 200) {
+      return false;
+    }
+
+    return projectResponse.data.id === claims['oidc.circleci.com/project-id'];
   }
 
   async metadataForInitialRequest(

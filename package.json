@@ -38,6 +38,7 @@
     "@types/fs-extra": "^8.0.1",
     "@types/jest": "^29.0.0",
     "@types/joi": "^14.3.4",
+    "@types/jwk-to-pem": "^2.0.1",
     "@types/morgan": "^1.7.37",
     "@types/node": "^16.0.0",
     "@types/passport": "^1.0.0",
@@ -93,6 +94,7 @@
     "webpack-subresource-integrity": "^5.1.0"
   },
   "dependencies": {
+    "@octokit/auth-app": "^4.0.7",
     "@octokit/rest": "^19.0.5",
     "@sentry/node": "^5.10.2",
     "@slack/bolt": "^3.12.1",
@@ -104,7 +106,10 @@
     "express-history-api-fallback": "^2.2.1",
     "express-session": "^1.17.0",
     "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "jwk-to-pem": "^2.0.5",
     "morgan": "^1.9.1",
+    "openid-client": "^5.1.10",
     "passport": "^0.4.1",
     "passport-github": "^1.1.0",
     "patch-package": "^6.2.0",

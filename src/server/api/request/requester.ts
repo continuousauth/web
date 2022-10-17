@@ -1,6 +1,12 @@
+import { createAppAuth } from '@octokit/auth-app';
+import { Octokit } from '@octokit/rest';
+import axios from 'axios';
 import * as debug from 'debug';
 import * as express from 'express';
 import * as Joi from 'joi';
+import { Issuer } from 'openid-client';
+import * as jwkToPem from 'jwk-to-pem';
+import * as jwt from 'jsonwebtoken';
 
 import { createA } from '../../helpers/a';
 import { validate } from '../../helpers/_middleware';
@@ -87,6 +93,101 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
   );
 
   router.post(`/:projectId/${requester.slug}/test`, (req, res) => res.json({ ok: true }));
+
+  router.get(
+    `/:projectId/${requester.slug}/credentials`,
+    validate(
+      {
+        a,
+        params: {
+          projectId: Joi.number()
+            .integer()
+            .required(),
+        },
+        body: {
+          token: Joi.string().required(),
+        },
+      },
+      async (req, res) => {
+        const project = await getRequestReadyProject(req.params.projectId);
+        if (!project) return res.status(404).json({ error: 'Could not find project' });
+
+        const config = requester.getConfigForProject(project);
+        if (!config)
+          return res.status(422).json({ error: 'Project is not configured to use this requester' });
+
+        const disoveryUrl = await requester.getOpenIDConnectDiscoveryURL(project, config);
+        if (!disoveryUrl)
+          return res.status(422).json({ error: 'Project is not eligible for OIDC credential exchange' });
+        const issuer = await Issuer.discover(disoveryUrl);
+
+        if (!issuer.metadata.jwks_uri)
+          return res.status(422).json({ error: 'Project is not eligible for JWKS backed OIDC credential exchange' });
+        const jwks = await axios.get(issuer.metadata.jwks_uri);
+
+        if (jwks.status !== 200)
+          return res.status(422).json({ error: 'Project is not eligible for JWKS backed OIDC credential exchange' });
+
+        let claims = jwt.decode(req.body.token) as jwt.JwtPayload | null;
+        if (!claims)
+          return res.status(422).json({ error: 'Invalid OIDC token provided' });
+        const key = jwks.data.keys.find(key => key.kid === claims!.headers.kid);
+
+        if (!key)
+          return res.status(422).json({ error: 'Invalid kid found in the token provided' });
+
+        const pem = jwkToPem(key);
+        try {
+          claims = jwt.verify(req.body.token, pem) as jwt.JwtPayload | null;
+        } catch {
+          return res.status(422).json({ error: 'Could not verify the provided token against the OIDC provider' });
+        }
+
+        if (!claims)
+          return res.status(422).json({ error: 'Invalid OIDC token provided' });
+
+        if (!(await requester.doOpenIDConnectClaimsMatchProject(claims, project, config))) {
+          return res.status(422).json({ error: 'Provided OIDC token does not match project' });
+        }
+
+        const appCredentials = {
+          appId: process.env.GITHUB_APP_ID!,
+          privateKey: process.env.GITHUB_PRIVATE_KEY!,
+        }
+
+        const appOctokit = new Octokit({
+          authStrategy: createAppAuth,
+          auth: {
+            ...appCredentials,
+          },
+        });
+
+        let githubToken: string;
+        try {
+          const installation = await appOctokit.apps.getRepoInstallation({
+            owner: project.repoOwner,
+            repo: project.repoName,
+          });
+
+          const authOptions = {
+            type: <const>'installation',
+            ...appCredentials,
+            installationId: installation.data.id,
+            repositoryNames: [project.repoName],
+          };
+          const { token } = await createAppAuth(authOptions)(authOptions);
+          githubToken = token;
+        } catch (err) {
+          console.error(err);
+          return res.status(422).json({ error: 'Failed to obtain access token for project' });
+        }
+
+        return res.json({
+          GITHUB_TOKEN: githubToken,
+        });
+      }
+    )
+  )
 
   router.post(
     `/:projectId/${requester.slug}`,

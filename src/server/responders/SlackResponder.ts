@@ -186,7 +186,10 @@ bolt.command(
 /**
  * Handle the "Open Dialog" button
  */
-bolt.action(/^otp-token\//g, async ({ context, action, ack, body, next }) => {
+bolt.action({
+  type: 'interactive_message',
+  callback_id: /^otp-token\//g,
+}, async ({ context, action, ack, body, next }) => {
   if (
     action &&
     action.type === 'button' &&

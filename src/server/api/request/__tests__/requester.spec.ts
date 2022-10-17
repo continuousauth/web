@@ -18,6 +18,8 @@ const makeMockRequester = () => ({
   validateProofForRequest: jest.fn(),
   isOTPRequestValidForRequester: jest.fn(),
   getRequestInformationToPassOn: jest.fn(),
+  getOpenIDConnectDiscoveryURL: jest.fn(),
+  doOpenIDConnectClaimsMatchProject: jest.fn(),
 });
 
 describe('requester endpoint creator', () => {
