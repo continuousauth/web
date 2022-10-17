@@ -1,6 +1,6 @@
 import * as debug from 'debug';
 import * as express from 'express';
-import { Octokit } from '@octokit/rest';
+import { Octokit, RestEndpointMethodTypes } from '@octokit/rest';
 
 import { Project } from '../../db/models';
 import { createA } from '../../helpers/a';
@@ -34,14 +34,14 @@ export function repoRoutes() {
           auth: req.user.accessToken,
         });
 
-        const allRepos: Octokit.ReposListForOrgResponseItem[] = await github.paginate(
-          github.repos.list.endpoint.merge({
+        const allRepos: RestEndpointMethodTypes['repos']['listForAuthenticatedUser']['response']['data'] = await github.paginate(
+          github.repos.listForAuthenticatedUser.endpoint.merge({
             per_page: 100,
           }),
         );
 
         reposWithAdmin = allRepos
-          .filter(r => r.permissions.admin)
+          .filter(r => r.permissions?.admin)
           .map(r => ({
             id: `${r.id}`,
             repoName: r.name,

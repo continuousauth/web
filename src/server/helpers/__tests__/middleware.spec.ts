@@ -4,7 +4,9 @@ jest.mock('@octokit/rest', () => {
   class FakeOctokit {
     request = octokitRequest;
   }
-  return FakeOctokit;
+  return {
+    Octokit: FakeOctokit,
+  };
 });
 
 import * as bodyParser from 'body-parser';

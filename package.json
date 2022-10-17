@@ -93,7 +93,7 @@
     "webpack-subresource-integrity": "^5.1.0"
   },
   "dependencies": {
-    "@octokit/rest": "^16.35.0",
+    "@octokit/rest": "^19.0.5",
     "@sentry/node": "^5.10.2",
     "@slack/bolt": "^3.12.1",
     "compression": "^1.7.4",

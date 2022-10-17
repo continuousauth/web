@@ -1,7 +1,7 @@
 import * as debug from 'debug';
 import * as express from 'express';
 import * as Joi from 'joi';
-import { Octokit } from '@octokit/rest';
+import { Octokit, RestEndpointMethodTypes } from '@octokit/rest';
 
 import { createA } from '../../helpers/a';
 import { validate, hasAdminAccessToTargetRepo } from '../../helpers/_middleware';
@@ -40,7 +40,7 @@ export function projectRoutes() {
         const repoResponse = await github.request('GET /repositories/:id', {
           id: req.body.repoId,
         });
-        const repo: Octokit.ReposGetResponse = repoResponse.data;
+        const repo: RestEndpointMethodTypes['repos']['get']['response']['data'] = repoResponse.data;
 
         const existingProject = await Project.findByPk(req.body.repoId);
         if (existingProject) {

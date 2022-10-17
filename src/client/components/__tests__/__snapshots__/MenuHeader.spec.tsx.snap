@@ -28,9 +28,8 @@ exports[`<MenuHeader /> Should render a logo 1`] = `
   <div
     className="item warning"
   >
-    <Memo(ForwardRef(Icon))
+    <Memo(ForwardRef(WarningSignIcon))
       color="warning"
-      icon="warning-sign"
       marginRight={8}
     />
     CFA is open-source and does not have formal support
