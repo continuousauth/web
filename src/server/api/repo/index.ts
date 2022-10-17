@@ -1,6 +1,7 @@
 import * as debug from 'debug';
 import * as express from 'express';
 import { Octokit, RestEndpointMethodTypes } from '@octokit/rest';
+import { paginateGraphql } from '@octokit/plugin-paginate-graphql';
 
 import { Project } from '../../db/models';
 import { createA } from '../../helpers/a';
@@ -9,6 +10,8 @@ import { Op } from 'sequelize';
 
 const d = debug('cfa:server:api:repo');
 const a = createA(d);
+
+Octokit.plugin(paginateGraphql);
 
 declare module 'express-session' {
   interface SessionData {
@@ -30,23 +33,48 @@ export function repoRoutes() {
       // place to store them in a cache?
       let reposWithAdmin = req.session.cachedRepos;
       if (!reposWithAdmin) {
-        const github = new Octokit({
-          auth: req.user.accessToken,
-        });
-
-        const allRepos: RestEndpointMethodTypes['repos']['listForAuthenticatedUser']['response']['data'] = await github.paginate(
-          github.repos.listForAuthenticatedUser.endpoint.merge({
-            per_page: 100,
+        const github = paginateGraphql(
+          new Octokit({
+            auth: req.user.accessToken,
           }),
         );
 
-        reposWithAdmin = allRepos
-          .filter(r => r.permissions?.admin)
-          .map(r => ({
-            id: `${r.id}`,
+        const {
+          viewer: { repositories },
+        } = await github.graphql.paginate(`
+          query paginate($cursor: String) {
+            viewer {
+              repositories(first: 100, after: $cursor) {
+                edges {
+                  node {
+                    databaseId
+                    name
+                    defaultBranchRef {
+                      name
+                    }
+                    owner {
+                      login
+                    }
+                    viewerCanAdminister
+                  }
+                }
+                pageInfo {
+                  hasNextPage
+                  endCursor
+                }
+              }
+            }
+          }
+        `);
+
+        reposWithAdmin = (repositories.edges as any[])
+          .map(edge => edge.node)
+          .filter(r => r.viewerCanAdminister)
+          .map<SimpleRepo>(r => ({
+            id: `${r.databaseId}`,
             repoName: r.name,
             repoOwner: r.owner.login,
-            defaultBranch: r.default_branch,
+            defaultBranch: r.defaultBranchRef.name,
           }));
         req.session!.cachedRepos = reposWithAdmin;
       }

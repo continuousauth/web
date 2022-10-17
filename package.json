@@ -93,6 +93,7 @@
     "webpack-subresource-integrity": "^5.1.0"
   },
   "dependencies": {
+    "@octokit/plugin-paginate-graphql": "^2.0.1",
     "@octokit/rest": "^19.0.5",
     "@sentry/node": "^5.10.2",
     "@slack/bolt": "^3.12.1",
