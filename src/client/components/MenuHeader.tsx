@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Avatar, Icon, Pane } from 'evergreen-ui';
+import { Avatar, WarningSignIcon, Pane } from 'evergreen-ui';
 import { UserState } from '../state/user';
 
 import styles from './MenuHeader.scss';
@@ -27,7 +27,7 @@ export function MenuHeaderInner() {
         Documentation
       </a>
       <div className={cx(styles.item, styles.warning)}>
-        <Icon icon="warning-sign" color="warning" marginRight={8} />
+        <WarningSignIcon color="warning" marginRight={8} />
         CFA is open-source and does not have formal support
       </div>
       <Pane className={styles.right}>

@@ -1,6 +1,17 @@
 import * as React from 'react';
 import { useFetch } from 'react-hooks-async';
-import { Alert, Button, Icon, Pane, Paragraph, Position, Spinner, Tooltip } from 'evergreen-ui';
+import {
+  Alert,
+  Button,
+  CircleArrowLeftIcon,
+  CircleArrowRightIcon,
+  WarningSignIcon,
+  Pane,
+  Paragraph,
+  Position,
+  Spinner,
+  Tooltip,
+} from 'evergreen-ui';
 
 import styles from './Dashboard.scss';
 import { ReposResponse, SimpleProject, projectIsMissingConfig } from '../../common/types';
@@ -118,7 +129,7 @@ export function Dashboard() {
                   )}
                 >
                   <Tooltip content="Configuration Incomplete" position={Position.LEFT}>
-                    <Icon icon="warning-sign" color="danger" />
+                    <WarningSignIcon color="danger" />
                   </Tooltip>
                   <span className={styles.configIcon} />
                   <Paragraph color="danger">
@@ -130,7 +141,7 @@ export function Dashboard() {
               {repo.requester_circleCI ? (
                 <Pane className={styles.configRow}>
                   <Tooltip content="CFA Requester" position={Position.LEFT}>
-                    <Icon icon="circle-arrow-right" color="success" />
+                    <CircleArrowRightIcon color="success" />
                   </Tooltip>
                   <CircleCILogo className={styles.configIcon} />
                   <span>CircleCI</span>
@@ -139,7 +150,7 @@ export function Dashboard() {
               {repo.requester_travisCI ? (
                 <Pane className={styles.configRow}>
                   <Tooltip content="CFA Requester" position={Position.LEFT}>
-                    <Icon icon="circle-arrow-right" color="success" />
+                    <CircleArrowRightIcon color="success" />
                   </Tooltip>
                   <TravisCILogo className={styles.configIcon} />
                   <span>Travis CI</span>
@@ -148,7 +159,7 @@ export function Dashboard() {
               {repo.responder_slack ? (
                 <Pane className={styles.configRow}>
                   <Tooltip content="CFA Responder" position={Position.LEFT}>
-                    <Icon icon="circle-arrow-left" color="warning" />
+                    <CircleArrowLeftIcon color="warning" />
                   </Tooltip>
                   <SlackLogo className={styles.configIcon} />
                   <span>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useFetch } from 'react-hooks-async';
 import { RouteComponentProps } from 'react-router';
-import { Icon, Pane, Spinner, Tooltip, toaster } from 'evergreen-ui';
+import { RefreshIcon, Pane, Spinner, Tooltip, toaster } from 'evergreen-ui';
 
 import { FullProject } from '../../common/types';
 
@@ -64,8 +64,7 @@ export function ProjectConfig(props: RouteComponentProps<{ projectId: string }>)
             Configuration: {project.repoOwner}/{project.repoName}
           </Pane>
           <Tooltip content="Refresh Project">
-            <Icon
-              icon="refresh"
+            <RefreshIcon
               onClick={() => setRefreshId(refreshId + 1)}
               style={{ cursor: 'pointer' }}
             />
