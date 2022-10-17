@@ -13,8 +13,8 @@ export interface Props {
 }
 
 export function AddProjectDialog({ isOpen, onClose, repos }: Props) {
-  const [selectedOwner, setSelectedOwner] = React.useState(null);
-  const [selectedRepo, setSelectedRepo] = React.useState(null);
+  const [selectedOwner, setSelectedOwner] = React.useState<string | undefined>(undefined);
+  const [selectedRepo, setSelectedRepo] = React.useState<string | undefined>(undefined);
   const owners = Array.from(new Set(repos.map(r => r.repoOwner))).sort();
   const possibleRepos = selectedOwner ? repos.filter(r => r.repoOwner === selectedOwner) : [];
   const selectedRepoObject = selectedRepo ? repos.find(r => r.id === selectedRepo) : null;
@@ -45,8 +45,8 @@ export function AddProjectDialog({ isOpen, onClose, repos }: Props) {
     }
   }, [createProjectTask.error]);
   React.useEffect(() => {
-    setSelectedRepo(null);
-    setSelectedOwner(null);
+    setSelectedRepo(undefined);
+    setSelectedOwner(undefined);
     if (!createProjectTask.result) return;
     toaster.success(
       'Successfully added project, select it on the Dashboard to continue setting it up.',
@@ -60,7 +60,7 @@ export function AddProjectDialog({ isOpen, onClose, repos }: Props) {
       title="Add Project"
       onCloseComplete={onClose}
       confirmLabel="Add"
-      isConfirmDisabled={!selectedOwner || !selectedRepo || createProjectTask.error}
+      isConfirmDisabled={!selectedOwner || !selectedRepo || !!createProjectTask.error}
       isConfirmLoading={creatingProject}
       onConfirm={() => createProjectTask.start()}
       shouldCloseOnOverlayClick={!creatingProject}
@@ -78,8 +78,8 @@ export function AddProjectDialog({ isOpen, onClose, repos }: Props) {
           selected={selectedOwner}
           closeOnSelect
           onSelect={item => {
-            setSelectedRepo(null);
-            setSelectedOwner(item.value);
+            setSelectedRepo(undefined);
+            setSelectedOwner(item.value as string);
           }}
         >
           <Button disabled={creatingProject}>{selectedOwner || 'Select Owner...'}</Button>
@@ -95,7 +95,7 @@ export function AddProjectDialog({ isOpen, onClose, repos }: Props) {
           }))}
           selected={selectedRepo}
           closeOnSelect
-          onSelect={item => setSelectedRepo(item.value)}
+          onSelect={item => setSelectedRepo(item.value as string)}
         >
           <Button disabled={!selectedOwner || creatingProject}>
             {selectedRepoName || 'Select Repository...'}

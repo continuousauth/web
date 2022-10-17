@@ -113,7 +113,7 @@ export function SlackResponderConfig({ project, setProject }: Props) {
               intent="success"
               marginLeft={8}
               isLoading={saving}
-              disabled={updateUsernameToMentionTask.error}
+              disabled={!!updateUsernameToMentionTask.error}
               onClick={() => updateUsernameToMentionTask.start()}
             >
               Save
