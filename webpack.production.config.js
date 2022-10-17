@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const CSPPlugin = require('csp-html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const SRIPlugin = require('webpack-subresource-integrity');
+const { SubresourceIntegrityPlugin } = require('webpack-subresource-integrity');
 
 const config = require('./webpack.config');
 
@@ -30,7 +30,7 @@ config.plugins.unshift(
   new MiniCssExtractPlugin({
     filename: '[name].[contenthash].css',
     chunkFilename: 'chunk.[id].[contenthash].css',
-    allChunks: true,
+    // allChunks: true,
   }),
   new OptimizeCssAssetsPlugin());
 
@@ -52,7 +52,7 @@ config.plugins.push(
       'style-src': false
     }
   }),
-  new SRIPlugin({
+  new SubresourceIntegrityPlugin({
     hashFuncNames: ['sha256', 'sha384'],
     enabled: true,
   }),

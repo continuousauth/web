@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<MenuHeader /> Should render a logo 1`] = `
-<withTheme(Pane)
+<Memo(ForwardRef(Pane))
   className="container"
 >
   <CFALogo
@@ -28,17 +28,16 @@ exports[`<MenuHeader /> Should render a logo 1`] = `
   <div
     className="item warning"
   >
-    <withTheme(Icon)
+    <Memo(ForwardRef(WarningSignIcon))
       color="warning"
-      icon="warning-sign"
       marginRight={8}
     />
     CFA is open-source and does not have formal support
   </div>
-  <withTheme(Pane)
+  <Memo(ForwardRef(Pane))
     className="right"
   >
-    <withTheme(Avatar)
+    <Memo(ForwardRef(Avatar))
       isSolid={true}
       name="?"
       size={24}
@@ -46,7 +45,7 @@ exports[`<MenuHeader /> Should render a logo 1`] = `
     <span>
       ?
     </span>
-  </withTheme(Pane)>
+  </Memo(ForwardRef(Pane))>
   <span />
-</withTheme(Pane)>
+</Memo(ForwardRef(Pane))>
 `;

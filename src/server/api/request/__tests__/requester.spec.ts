@@ -35,9 +35,7 @@ describe('requester endpoint creator', () => {
     it('should reject requests with no auth header', async () => {
       const response = await request(router).delete('/123/test');
       expect(response.status).toBe(403);
-      expect(response.text).toMatchInlineSnapshot(
-        `"{\\"error\\":\\"Missing Authorization header\\"}"`,
-      );
+      expect(response.text).toMatchInlineSnapshot(`"{"error":"Missing Authorization header"}"`);
     });
 
     it('should reject requests for projects that do not exist', async () => {
@@ -46,7 +44,7 @@ describe('requester endpoint creator', () => {
         .auth('abc', { type: 'bearer' });
       expect(response.status).toBe(404);
       expect(response.text).toMatchInlineSnapshot(
-        `"{\\"error\\":\\"Project not found, disabled or you are not authorizad to access it\\"}"`,
+        `"{"error":"Project not found, disabled or you are not authorizad to access it"}"`,
       );
     });
 
@@ -64,7 +62,7 @@ describe('requester endpoint creator', () => {
         .auth('username', 'password');
       expect(response.status).toBe(404);
       expect(response.text).toMatchInlineSnapshot(
-        `"{\\"error\\":\\"Project not found, disabled or you are not authorizad to access it\\"}"`,
+        `"{"error":"Project not found, disabled or you are not authorizad to access it"}"`,
       );
     });
 
@@ -82,7 +80,7 @@ describe('requester endpoint creator', () => {
         .auth('the wrong secret thing', { type: 'bearer' });
       expect(response.status).toBe(404);
       expect(response.text).toMatchInlineSnapshot(
-        `"{\\"error\\":\\"Project not found, disabled or you are not authorizad to access it\\"}"`,
+        `"{"error":"Project not found, disabled or you are not authorizad to access it"}"`,
       );
     });
 
@@ -100,7 +98,7 @@ describe('requester endpoint creator', () => {
         .auth('very scret thing', { type: 'bearer' });
       expect(response.status).toBe(400);
       expect(response.text).toMatchInlineSnapshot(
-        `"{\\"error\\":\\"Project not completely configured\\"}"`,
+        `"{"error":"Project not completely configured"}"`,
       );
     });
 
@@ -144,18 +142,18 @@ describe('requester endpoint creator', () => {
         .auth('very scret thing', { type: 'bearer' });
       expect(response.status).toBe(404);
       expect(response.text).toMatchInlineSnapshot(`
-                                                                                "<!DOCTYPE html>
-                                                                                <html lang=\\"en\\">
-                                                                                <head>
-                                                                                <meta charset=\\"utf-8\\">
-                                                                                <title>Error</title>
-                                                                                </head>
-                                                                                <body>
-                                                                                <pre>Cannot DELETE /123/test</pre>
-                                                                                </body>
-                                                                                </html>
-                                                                                "
-                                                            `);
+        "<!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <title>Error</title>
+        </head>
+        <body>
+        <pre>Cannot DELETE /123/test</pre>
+        </body>
+        </html>
+        "
+      `);
     });
   });
 
@@ -173,32 +171,32 @@ describe('requester endpoint creator', () => {
         const response = await request(router).post('/123/voodoo');
         expect(response.status).toEqual(404);
         expect(response.text).toMatchInlineSnapshot(`
-                                                                                                                                                                                                                    "<!DOCTYPE html>
-                                                                                                                                                                                                                    <html lang=\\"en\\">
-                                                                                                                                                                                                                    <head>
-                                                                                                                                                                                                                    <meta charset=\\"utf-8\\">
-                                                                                                                                                                                                                    <title>Error</title>
-                                                                                                                                                                                                                    </head>
-                                                                                                                                                                                                                    <body>
-                                                                                                                                                                                                                    <pre>Cannot POST /123/voodoo</pre>
-                                                                                                                                                                                                                    </body>
-                                                                                                                                                                                                                    </html>
-                                                                                                                                                                                                                    "
-                                                                                                                                                                    `);
+          "<!DOCTYPE html>
+          <html lang="en">
+          <head>
+          <meta charset="utf-8">
+          <title>Error</title>
+          </head>
+          <body>
+          <pre>Cannot POST /123/voodoo</pre>
+          </body>
+          </html>
+          "
+        `);
       });
 
       it('should 400 for an invalid project ID', async () => {
         const response = await request(router).post('/bad-id/test');
         expect(response.status).toEqual(400);
         expect(response.text).toMatchInlineSnapshot(
-          `"{\\"error\\":\\"Params Validation Error\\",\\"message\\":\\"child \\\\\\"projectId\\\\\\" fails because [\\\\\\"projectId\\\\\\" must be a number]\\"}"`,
+          `"{"error":"Params Validation Error","message":"child \\"projectId\\" fails because [\\"projectId\\" must be a number]"}"`,
         );
       });
 
       it('should 404 for a project that does not exist', async () => {
         const response = await request(router).post('/123/test');
         expect(response.status).toEqual(404);
-        expect(response.text).toMatchInlineSnapshot(`"{\\"error\\":\\"Could not find project\\"}"`);
+        expect(response.text).toMatchInlineSnapshot(`"{"error":"Could not find project"}"`);
       });
 
       describe('with an existing project', () => {
@@ -217,7 +215,7 @@ describe('requester endpoint creator', () => {
           const response = await request(router).post('/123/test');
           expect(response.status).toEqual(422);
           expect(response.text).toMatchInlineSnapshot(
-            `"{\\"error\\":\\"Project is not configured to use this requester\\"}"`,
+            `"{"error":"Project is not configured to use this requester"}"`,
           );
         });
 
@@ -259,7 +257,7 @@ describe('requester endpoint creator', () => {
           const response = await request(router).post('/123/test');
           expect(response.status).toBe(422);
           expect(response.text).toMatchInlineSnapshot(
-            `"{\\"error\\":\\"CFA Requester is misconfigured\\"}"`,
+            `"{"error":"CFA Requester is misconfigured"}"`,
           );
         });
 
@@ -278,7 +276,7 @@ describe('requester endpoint creator', () => {
           const response = await request(router).post('/123/test');
           expect(response.status).toBe(400);
           expect(response.text).toMatchInlineSnapshot(
-            `"{\\"error\\":\\"Invalid build provided, check the CFA dashboard for reasoning.\\"}"`,
+            `"{"error":"Invalid build provided, check the CFA dashboard for reasoning."}"`,
           );
           const requests = await OTPRequest.findAll();
           expect(requests).toHaveLength(1);
@@ -351,7 +349,7 @@ describe('requester endpoint creator', () => {
         const response = await request(router).post('/123/test/not-a-uuid/validate');
         expect(response.status).toBe(400);
         expect(response.text).toMatchInlineSnapshot(
-          `"{\\"error\\":\\"Params Validation Error\\",\\"message\\":\\"child \\\\\\"requestId\\\\\\" fails because [\\\\\\"requestId\\\\\\" must be a valid GUID]\\"}"`,
+          `"{"error":"Params Validation Error","message":"child \\"requestId\\" fails because [\\"requestId\\" must be a valid GUID]"}"`,
         );
       });
 
@@ -359,7 +357,7 @@ describe('requester endpoint creator', () => {
         const response = await request(router).post(`/bad-project/test/${testUuid}/validate`);
         expect(response.status).toBe(400);
         expect(response.text).toMatchInlineSnapshot(
-          `"{\\"error\\":\\"Params Validation Error\\",\\"message\\":\\"child \\\\\\"projectId\\\\\\" fails because [\\\\\\"projectId\\\\\\" must be a number]\\"}"`,
+          `"{"error":"Params Validation Error","message":"child \\"projectId\\" fails because [\\"projectId\\" must be a number]"}"`,
         );
       });
 
@@ -367,7 +365,7 @@ describe('requester endpoint creator', () => {
         const response = await request(router).post(`/123/test/${testUuid}/validate`);
         expect(response.status).toBe(404);
         expect(response.text).toMatchInlineSnapshot(
-          `"{\\"error\\":\\"That request does not exist or is invalid\\"}"`,
+          `"{"error":"That request does not exist or is invalid"}"`,
         );
       });
 
@@ -390,7 +388,7 @@ describe('requester endpoint creator', () => {
           const response = await request(router).post(`/321/test/${testUuid}/validate`);
           expect(response.status).toBe(404);
           expect(response.text).toMatchInlineSnapshot(
-            `"{\\"error\\":\\"That request does not exist or is invalid\\"}"`,
+            `"{"error":"That request does not exist or is invalid"}"`,
           );
         });
 
@@ -400,7 +398,7 @@ describe('requester endpoint creator', () => {
           expect(mock.isOTPRequestValidForRequester).toBeCalled();
           expect(response.status).toBe(422);
           expect(response.text).toMatchInlineSnapshot(
-            `"{\\"error\\":\\"Project is not configured to use this requester\\"}"`,
+            `"{"error":"Project is not configured to use this requester"}"`,
           );
         });
 
@@ -411,7 +409,7 @@ describe('requester endpoint creator', () => {
           expect(mock.getConfigForProject).toBeCalled();
           expect(response.status).toBe(422);
           expect(response.text).toMatchInlineSnapshot(
-            `"{\\"error\\":\\"Project is missing the required configuration to use this requester\\"}"`,
+            `"{"error":"Project is missing the required configuration to use this requester"}"`,
           );
         });
 
@@ -422,7 +420,7 @@ describe('requester endpoint creator', () => {
           expect(mock.getConfigForProject).toBeCalled();
           expect(response.status).toBe(500);
           expect(response.text).toMatchInlineSnapshot(
-            `"{\\"error\\":\\"getConfigForProject returned a promise-like thing and that is not OK\\"}"`,
+            `"{"error":"getConfigForProject returned a promise-like thing and that is not OK"}"`,
           );
         });
 
@@ -434,7 +432,7 @@ describe('requester endpoint creator', () => {
           const response = await request(router).post(`/123/test/${testUuid}/validate`);
           expect(response.status).toBe(400);
           expect(response.text).toMatchInlineSnapshot(
-            `"{\\"error\\":\\"Expected the request to be in state \\\\\\"requested\\\\\\" but was in state \\\\\\"error\\\\\\"\\"}"`,
+            `"{"error":"Expected the request to be in state \\"requested\\" but was in state \\"error\\""}"`,
           );
         });
 
@@ -446,7 +444,7 @@ describe('requester endpoint creator', () => {
           const response = await request(router).post(`/123/test/${testUuid}/validate`);
           expect(response.status).toBe(400);
           expect(response.text).toMatchInlineSnapshot(
-            `"{\\"error\\":\\"Expected the request to be in state \\\\\\"requested\\\\\\" but was in state \\\\\\"responded\\\\\\"\\"}"`,
+            `"{"error":"Expected the request to be in state \\"requested\\" but was in state \\"responded\\""}"`,
           );
         });
 
@@ -458,7 +456,7 @@ describe('requester endpoint creator', () => {
           const response = await request(router).post(`/123/test/${testUuid}/validate`);
           expect(response.status).toBe(400);
           expect(response.text).toMatchInlineSnapshot(
-            `"{\\"error\\":\\"Expected the request to be in state \\\\\\"requested\\\\\\" but was in state \\\\\\"validated\\\\\\"\\"}"`,
+            `"{"error":"Expected the request to be in state \\"requested\\" but was in state \\"validated\\""}"`,
           );
         });
       });
@@ -482,7 +480,7 @@ describe('requester endpoint creator', () => {
         const response = await request(router).post('/123/test/this-is-a-uuid-i-swear');
         expect(response.status).toBe(400);
         expect(response.text).toMatchInlineSnapshot(
-          `"{\\"error\\":\\"Params Validation Error\\",\\"message\\":\\"child \\\\\\"requestId\\\\\\" fails because [\\\\\\"requestId\\\\\\" must be a valid GUID]\\"}"`,
+          `"{"error":"Params Validation Error","message":"child \\"requestId\\" fails because [\\"requestId\\" must be a valid GUID]"}"`,
         );
       });
 
@@ -490,7 +488,7 @@ describe('requester endpoint creator', () => {
         const response = await request(router).post(`/bad-id/test/${testUuid}`);
         expect(response.status).toBe(400);
         expect(response.text).toMatchInlineSnapshot(
-          `"{\\"error\\":\\"Params Validation Error\\",\\"message\\":\\"child \\\\\\"projectId\\\\\\" fails because [\\\\\\"projectId\\\\\\" must be a number]\\"}"`,
+          `"{"error":"Params Validation Error","message":"child \\"projectId\\" fails because [\\"projectId\\" must be a number]"}"`,
         );
       });
 
@@ -498,7 +496,7 @@ describe('requester endpoint creator', () => {
         const response = await request(router).post(`/123/test/${testUuid}`);
         expect(response.status).toBe(404);
         expect(response.text).toMatchInlineSnapshot(
-          `"{\\"error\\":\\"That request does not exist or you do not have permission to see it\\"}"`,
+          `"{"error":"That request does not exist or you do not have permission to see it"}"`,
         );
       });
 
@@ -516,7 +514,7 @@ describe('requester endpoint creator', () => {
         const response = await request(router).post(`/111/test/${testUuid}`);
         expect(response.status).toBe(404);
         expect(response.text).toMatchInlineSnapshot(
-          `"{\\"error\\":\\"That request does not exist or you do not have permission to see it\\"}"`,
+          `"{"error":"That request does not exist or you do not have permission to see it"}"`,
         );
       });
 

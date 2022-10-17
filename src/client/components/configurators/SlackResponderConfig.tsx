@@ -94,7 +94,6 @@ export function SlackResponderConfig({ project, setProject }: Props) {
           <Avatar
             name={project.responder_slack.teamName}
             size={24}
-            isSolid
             src={project.responder_slack.teamIcon}
             style={{ marginRight: 8 }}
           />
@@ -114,7 +113,7 @@ export function SlackResponderConfig({ project, setProject }: Props) {
               intent="success"
               marginLeft={8}
               isLoading={saving}
-              disabled={updateUsernameToMentionTask.error}
+              disabled={!!updateUsernameToMentionTask.error}
               onClick={() => updateUsernameToMentionTask.start()}
             >
               Save

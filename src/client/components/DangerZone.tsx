@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Alert, Button, Dialog, Pane, toaster } from 'evergreen-ui';
 import { FullProject } from '../../common/types';
 
-import * as styles from './DangerZone.scss';
+import styles from './DangerZone.scss';
 import { useAsyncTaskFetch } from 'react-hooks-async';
 import { defaultBodyReader } from '../utils';
 
@@ -106,7 +106,7 @@ export function DangerZone({ project, setProject }: Props) {
         <Button
           appearance="primary"
           intent="warning"
-          disabled={regeneratePending || disablePending || regenerateSecretTask.error}
+          disabled={regeneratePending || disablePending || !!regenerateSecretTask.error}
           isLoading={regeneratePending}
           onClick={() =>
             setConfirmState({ state: ConfirmState.OPEN, pendingAction: regenerateSecretTask.start })
@@ -117,7 +117,7 @@ export function DangerZone({ project, setProject }: Props) {
         <Button
           appearance="primary"
           intent="danger"
-          disabled={regeneratePending || disablePending || disableTask.error}
+          disabled={regeneratePending || disablePending || !!disableTask.error}
           isLoading={disablePending}
           onClick={() =>
             setConfirmState({ state: ConfirmState.OPEN, pendingAction: disableTask.start })

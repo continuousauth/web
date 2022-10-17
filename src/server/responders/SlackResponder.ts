@@ -59,7 +59,7 @@ export class SlackResponder extends Responder {
         {
           text: 'Submit OTP Token & Confirm Release',
           fallback: 'You are unable to confirm the release',
-          callback_id: uuid.v4(),
+          callback_id: `otp-token/${uuid.v4()}`,
           color: '#00B8D9',
           actions: [
             {
@@ -108,11 +108,11 @@ export class SlackResponder extends Responder {
 bolt.command(
   process.env.NODE_ENV === 'production' ? '/cfa-link' : '/cfa-link-dev',
   async ({ context, respond, ack, payload }) => {
-    ack();
+    await ack();
 
     const linkerId = payload.text;
     if (!linkerId)
-      return respond({
+      return await respond({
         response_type: 'ephemeral',
         text:
           'Missing required argument "link-id", please ensure you followed the instructions on CFA exactly.',
@@ -125,7 +125,7 @@ bolt.command(
         .required(),
     );
     if (result.error) {
-      return respond({
+      return await respond({
         response_type: 'ephemeral',
         text: `The linker ID \`${linkerId}\` provided is invalid, please head back to CFA and try again.`,
       });
@@ -135,7 +135,7 @@ bolt.command(
       include: [Project],
     });
     if (!linker)
-      return respond({
+      return await respond({
         response_type: 'ephemeral',
         text:
           'The linker ID provided has either already been used or does not exist, please head back to CFA and try again.',
@@ -186,63 +186,52 @@ bolt.command(
 /**
  * Handle the "Open Dialog" button
  */
-(bolt as any).use(
-  async ({
-    context,
-    action,
-    ack,
-    body,
-    next,
-  }: SlackActionMiddlewareArgs<InteractiveMessage<ButtonClick>> & {
-    context: Context;
-    next: Function;
-  }) => {
-    if (action && action.type === 'button' && action.value === 'open-otp-dialog') {
-      ack();
+bolt.action(/^otp-token\//g, async ({ context, action, ack, body, next }) => {
+  if (
+    action &&
+    action.type === 'button' &&
+    action.value === 'open-otp-dialog' &&
+    'trigger_id' in body &&
+    'name' in action
+  ) {
+    await ack();
 
-      bolt.client.dialog.open({
-        token: context.botToken,
-        trigger_id: body.trigger_id,
-        dialog: {
-          title: 'Enter 2FA OTP',
-          callback_id: `otp:${action.name}`,
-          elements: [
-            {
-              type: 'text',
-              label: 'OTP',
-              name: 'otp',
-            },
-          ],
-        },
-      });
-    } else {
-      next();
-    }
-  },
-);
+    await bolt.client.dialog.open({
+      token: context.botToken,
+      trigger_id: body.trigger_id,
+      dialog: {
+        title: 'Enter 2FA OTP',
+        callback_id: `otp:${action.name}`,
+        elements: [
+          {
+            type: 'text',
+            label: 'OTP',
+            name: 'otp',
+          },
+        ],
+      },
+    });
+  } else {
+    await next();
+  }
+});
 
 /**
  * Handle dialog submission
  */
-(bolt as any).use(
-  async ({
-    action,
-    ack,
-    body,
-    context,
-    next,
-    respond,
-  }: SlackActionMiddlewareArgs<DialogSubmitAction> & {
-    context: Context;
-    next: Function;
-  }) => {
+bolt.action(
+  {
+    type: 'dialog_submission',
+    callback_id: /^otp:/g,
+  },
+  async ({ action, ack, body, context, next, respond }) => {
     if (
       action &&
       action.type === 'dialog_submission' &&
       action.callback_id &&
       /^otp:.+$/.test(action.callback_id)
     ) {
-      ack();
+      await ack();
       const requestId = action.callback_id.slice(4);
 
       const result = Joi.validate(
@@ -253,7 +242,7 @@ bolt.command(
       );
 
       if (result.error) {
-        return respond({
+        return await respond({
           response_type: 'ephemeral',
           text:
             ':red_circle: CFA experienced an unexpected error while processing your response, please try again later.',
@@ -262,7 +251,7 @@ bolt.command(
 
       const request: OTPRequest<unknown, any> | null = await OTPRequest.findByPk(requestId);
       if (!request) {
-        return respond({
+        return await respond({
           response_type: 'ephemeral',
           text:
             ':red_circle: CFA experienced an unexpected error while finding your request, please try again later.',
@@ -270,7 +259,7 @@ bolt.command(
       }
 
       if (request.state !== 'validated') {
-        return respond({
+        return await respond({
           response_type: 'ephemeral',
           text: ':red_circle: This OTP request is in an invalid state and can not be responded to.',
         });
@@ -308,14 +297,14 @@ bolt.command(
         request.errored = new Date();
         request.errorReason = 'Invalid responseMetadata on the backend';
         await request.save();
-        return respond({
+        return await respond({
           response_type: 'ephemeral',
           text:
             ':red_circle: CFA experienced an unexpected error while updating your request, please try again later.',
         });
       }
     } else {
-      next();
+      await next();
     }
   },
 );

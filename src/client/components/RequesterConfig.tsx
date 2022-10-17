@@ -3,7 +3,7 @@ import { Alert, Heading, Pane, Paragraph, Tab, Tablist } from 'evergreen-ui';
 
 import { FullProject } from '../../common/types';
 
-import * as styles from './ReqResConfig.scss';
+import styles from './ReqResConfig.scss';
 import { CircleCILogo } from './icons/CircleCI';
 import { CircleCIRequesterConfig } from './configurators/CircleCIRequesterConfig';
 import { TravisCILogo } from './icons/TravisCI';

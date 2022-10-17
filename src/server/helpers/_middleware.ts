@@ -1,23 +1,29 @@
-import * as Octokit from '@octokit/rest';
+import { Octokit } from '@octokit/rest';
 import * as debug from 'debug';
 import * as express from 'express';
 import * as Joi from 'joi';
 
 import { createA } from './a';
 import './_joi_extract';
-import { User } from '../../common/types';
+import { User as CFAUser } from '../../common/types';
 
 const d = debug('cfa:server:helpers');
 
-export interface ExpressRequest<CTX = {}> extends express.Request {
+export interface ExpressRequest<CTX = {}>
+  extends Omit<express.Request, 'body' | 'query' | 'params'> {
   ctx: {} & CTX;
-  user: {
-    accessToken: string;
-    profile: User;
-  };
   body: unknown;
   query: unknown;
   params: unknown;
+}
+
+declare global {
+  namespace Express {
+    interface User {
+      accessToken: string;
+      profile: CFAUser;
+    }
+  }
 }
 
 export const requireLogin = (req: ExpressRequest, res: express.Response, next: Function) => {
@@ -115,5 +121,5 @@ export const validate = <V extends ValidationOptionsObject>(
     }
   }
 
-  return options.a(handler)(req, res, next);
+  return options.a(handler)(req as any, res, next);
 };

@@ -10,7 +10,7 @@ import { UserState } from '../../state/user';
 import { BrowserRouter } from 'react-router-dom';
 
 const fakeLocation = (path: string) => {
-  delete window.location;
+  delete (window as any).location;
   window.location = {
     pathname: path,
   } as any;
@@ -25,7 +25,7 @@ describe('<MenuHeader />', () => {
 
   it('should handle the user not being signed in', () => {
     const wrapper = shallow(<MenuHeaderInner />);
-    const avatar = wrapper.find('withTheme(Avatar)');
+    const avatar = wrapper.find('Memo(ForwardRef(Avatar))');
     expect(avatar).toHaveLength(1);
     expect(avatar.prop('name')).toBe('?');
   });
@@ -42,7 +42,7 @@ describe('<MenuHeader />', () => {
     }
     const mounted = mount(<WithUser />);
     mounted.setProps({});
-    expect(mounted.find('Avatar').prop('name')).toBe('My User');
+    expect(mounted.find('ForwardRef(Avatar)').prop('name')).toBe('My User');
   });
 
   it('should highlight the tab for the page that is currently active', () => {

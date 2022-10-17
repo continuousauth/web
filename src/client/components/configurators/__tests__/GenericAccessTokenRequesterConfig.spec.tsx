@@ -26,6 +26,6 @@ describe('<GenericAccessTokenRequesterConfig />', () => {
       </GenericAccessTokenRequesterConfig>,
     );
     expect(wrapper).toMatchSnapshot();
-    expect(wrapper.find('withTheme(TextInput)')).toHaveLength(1);
+    expect(wrapper.find('Memo(ForwardRef(TextInput))')).toHaveLength(1);
   });
 });

@@ -29,17 +29,14 @@ module.exports = {
     rules,
   },
   devServer: {
-    contentBase: './public_out',
-    quiet: false,
-    noInfo: false,
+    static: './public_out',
     hot: true,
-    inline: true,
     historyApiFallback: true,
     port: 3000,
     proxy: {
       '/api': `http://localhost:${SERVER_PORT}`,
     },
-    disableHostCheck: true,
+    allowedHosts: 'all',
     compress: true,
   },
   plugins: [
@@ -50,7 +47,16 @@ module.exports = {
       filename: 'index.html',
       templateParameters: {},
     }),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^\.\/locale$/,
+    }),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /moment$/,
+    }),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /react-dom\/client$/,
+      // contextRegExp: /(app\/react|@storybook\/react)/,
+    }),
     new webpack.EnvironmentPlugin(['SENTRY_FE_DSN']),
   ],
 };

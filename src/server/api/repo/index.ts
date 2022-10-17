@@ -1,6 +1,6 @@
 import * as debug from 'debug';
 import * as express from 'express';
-import * as Octokit from '@octokit/rest';
+import { Octokit, RestEndpointMethodTypes } from '@octokit/rest';
 
 import { Project } from '../../db/models';
 import { createA } from '../../helpers/a';
@@ -10,28 +10,38 @@ import { Op } from 'sequelize';
 const d = debug('cfa:server:api:repo');
 const a = createA(d);
 
+declare module 'express-session' {
+  interface SessionData {
+    cachedRepos: SimpleRepo[];
+  }
+}
+
 export function repoRoutes() {
   const router = express();
 
   router.get(
     '/',
     a(async (req, res) => {
+      if (!req.user?.accessToken) {
+        return res.status(403).json({ error: 'No Auth' });
+      }
+
       // TODO: Should we really be storing this on session, is there a better
       // place to store them in a cache?
-      let reposWithAdmin: SimpleRepo[] = req.session!.cachedRepos;
+      let reposWithAdmin = req.session.cachedRepos;
       if (!reposWithAdmin) {
         const github = new Octokit({
           auth: req.user.accessToken,
         });
 
-        const allRepos: Octokit.ReposListForOrgResponseItem[] = await github.paginate(
-          github.repos.list.endpoint.merge({
+        const allRepos: RestEndpointMethodTypes['repos']['listForAuthenticatedUser']['response']['data'] = await github.paginate(
+          github.repos.listForAuthenticatedUser.endpoint.merge({
             per_page: 100,
           }),
         );
 
         reposWithAdmin = allRepos
-          .filter(r => r.permissions.admin)
+          .filter(r => r.permissions?.admin)
           .map(r => ({
             id: `${r.id}`,
             repoName: r.name,
@@ -59,7 +69,7 @@ export function repoRoutes() {
       // or ID's.
       const configuredMapped: SimpleProject[] = await Promise.all(
         configured.map(async p => {
-          const actualDefaultBranch = reposWithAdmin.find(r => r.id === p.id)!.defaultBranch;
+          const actualDefaultBranch = reposWithAdmin!.find(r => r.id === p.id)!.defaultBranch;
           if (actualDefaultBranch && p.defaultBranch !== actualDefaultBranch) {
             p.defaultBranch = actualDefaultBranch;
             await p.save();

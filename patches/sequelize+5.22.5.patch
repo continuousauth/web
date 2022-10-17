@@ -1,8 +1,8 @@
 diff --git a/node_modules/sequelize/types/lib/model.d.ts b/node_modules/sequelize/types/lib/model.d.ts
-index 6294c3e..2ec173f 100644
+index 330e159..bbb51d5 100644
 --- a/node_modules/sequelize/types/lib/model.d.ts
 +++ b/node_modules/sequelize/types/lib/model.d.ts
-@@ -1936,7 +1936,7 @@ export abstract class Model<T = any, T2 = any> extends Hooks {
+@@ -1937,7 +1937,7 @@ export abstract class Model<T = any, T2 = any> extends Hooks {
    public static create<M extends Model>(
      this: { new (): M } & typeof Model,
      values?: object,

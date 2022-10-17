@@ -6,7 +6,7 @@ import 'joi';
  * Helpers
  */
 type Map<T> = { [P in keyof T]: T[P] };
-type Diff<T, U> = T extends U ? never : T;
+// type Diff<T, U> = T extends U ? never : T;
 
 declare module 'joi' {
   /**
@@ -317,7 +317,7 @@ declare module 'joi' {
   ): AlternativesSchema<Box<extractType<typeof alts[number]>, false>>;
 
   // Required | Optional properties engine
-  type FilterVoid<T extends string | number | symbol, O extends any> = {
+  type FilterVoid<T extends string | number | symbol, O extends MarkRequired<any, boolean>> = {
     [K in T extends string | number | symbol
       ? O[T] extends null | undefined | void
         ? never
@@ -339,9 +339,9 @@ declare module 'joi' {
   type Optional<T> = FilterVoid<keyof T, MarkRequired<T, false>>;
 
   type extractMap<T extends mappedSchemaMap> = Map<
-    { [K in keyof Optional<T>]?: extractType<T[K]> } &
-      { [K in keyof Required<T>]: extractType<T[K]> }
-  >;
+    { [K in keyof Optional<T>]?: extractType<T[K]> }
+  > &
+    Map<{ [K in keyof Required<T>]: extractType<T[K]> }>;
 
   type maybeExtractBox<T> = T extends Box<infer O, infer R> ? O : T;
 
@@ -377,7 +377,9 @@ declare module 'joi' {
          * ```
          */
         T extends Array<infer O> ? (
-            O extends mappedSchema ? extractOne<O> : O
+          O extends SchemaLike ? extractOne<O> :
+          O extends BoxedPrimitive ? extractOne<O> :
+          O
         ) :
 
         /**
@@ -390,7 +392,8 @@ declare module 'joi' {
         /**
          * This is the base case for every schema implemented
          */
-        T extends mappedSchema ? extractOne<T> :
+        T extends SchemaLike ? extractOne<T> :
+        T extends BoxedPrimitive ? extractOne<T> :
 
         /**
          * Default case to handle primitives and schemas

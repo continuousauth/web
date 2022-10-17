@@ -4,7 +4,8 @@ exports[`<CircleCIRequesterConfig /> Should render a GenericAccessTokenRequester
 <GenericAccessTokenRequesterConfig
   originalAccessToken=""
   project={
-    Object {
+    {
+      "defaultBranch": "main",
       "enabled": true,
       "id": "123",
       "repoName": "my-repo",
@@ -19,13 +20,13 @@ exports[`<CircleCIRequesterConfig /> Should render a GenericAccessTokenRequester
   setProject={[Function]}
   slug="circleci"
 >
-  <withTheme(Heading)
+  <Memo(ForwardRef(Heading))
     marginBottom={8}
     size={400}
   >
     Circle CI Access Token
-  </withTheme(Heading)>
-  <withTheme(Paragraph)
+  </Memo(ForwardRef(Heading))>
+  <Memo(ForwardRef(Paragraph))
     marginBottom={4}
   >
     You can generate an access token in your
@@ -38,6 +39,6 @@ exports[`<CircleCIRequesterConfig /> Should render a GenericAccessTokenRequester
       Circle CI Project Settings
     </a>
     . The token must have the "All" scope.
-  </withTheme(Paragraph)>
+  </Memo(ForwardRef(Paragraph))>
 </GenericAccessTokenRequesterConfig>
 `;

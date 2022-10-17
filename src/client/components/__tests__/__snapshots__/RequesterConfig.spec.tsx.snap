@@ -1,31 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<RequesterConfig /> Should render 1`] = `
-<withTheme(Pane)>
-  <withTheme(Heading)
+<Memo(ForwardRef(Pane))>
+  <Memo(ForwardRef(Heading))
     marginBottom={8}
   >
     Requester
-  </withTheme(Heading)>
-  <withTheme(Pane)>
-    <withTheme(Alert)
+  </Memo(ForwardRef(Heading))>
+  <Memo(ForwardRef(Pane))>
+    <Memo(ForwardRef(Alert))
       intent="none"
       isRemoveable={true}
       onRemove={[Function]}
       title="What is a Requester?"
     >
       A Requester is how your automation asks CFA for a 2FA token. This is normally your CI provider, E.g. Circle CI.
-    </withTheme(Alert)>
-  </withTheme(Pane)>
-  <withTheme(Pane)
+    </Memo(ForwardRef(Alert))>
+  </Memo(ForwardRef(Pane))>
+  <Memo(ForwardRef(Pane))
     marginY={8}
   >
-    <Tablist>
-      <withTheme(Tab)
+    <ForwardRef(Tablist)>
+      <Memo(ForwardRef(Tab))
         isSelected={false}
         onSelect={[Function]}
         style={
-          Object {
+          {
             "paddingLeft": 28,
             "position": "relative",
           }
@@ -35,12 +35,12 @@ exports[`<RequesterConfig /> Should render 1`] = `
           className="tabIcon"
         />
          Circle CI
-      </withTheme(Tab)>
-      <withTheme(Tab)
+      </Memo(ForwardRef(Tab))>
+      <Memo(ForwardRef(Tab))
         isSelected={false}
         onSelect={[Function]}
         style={
-          Object {
+          {
             "paddingLeft": 28,
             "position": "relative",
           }
@@ -50,21 +50,21 @@ exports[`<RequesterConfig /> Should render 1`] = `
           className="tabIcon"
         />
          Travis CI
-      </withTheme(Tab)>
-      <withTheme(Tab)
+      </Memo(ForwardRef(Tab))>
+      <Memo(ForwardRef(Tab))
         disabled={true}
       >
         More Coming Soon...
-      </withTheme(Tab)>
-    </Tablist>
-  </withTheme(Pane)>
-  <withTheme(Pane)
+      </Memo(ForwardRef(Tab))>
+    </ForwardRef(Tablist)>
+  </Memo(ForwardRef(Pane))>
+  <Memo(ForwardRef(Pane))
     className="configBox"
     marginY={8}
   >
-    <withTheme(Paragraph)>
+    <Memo(ForwardRef(Paragraph))>
       No Requester has been configured, choose one to get started!
-    </withTheme(Paragraph)>
-  </withTheme(Pane)>
-</withTheme(Pane)>
+    </Memo(ForwardRef(Paragraph))>
+  </Memo(ForwardRef(Pane))>
+</Memo(ForwardRef(Pane))>
 `;
