@@ -110,7 +110,7 @@
     "jwk-to-pem": "^2.0.5",
     "morgan": "^1.9.1",
     "openid-client": "^5.1.10",
-    "passport": "^0.4.1",
+    "passport": "^0.6.0",
     "passport-github": "^1.1.0",
     "patch-package": "^6.2.0",
     "pg": "^8.6.0",
