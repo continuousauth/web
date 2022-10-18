@@ -19,7 +19,7 @@ const a = createA(d);
 
 export async function updateCircleEnvVars(project: Project, accessToken: string) {
   const client = axios.create({
-    baseURL: 'https://circleci.com/api/v2',
+    baseURL: 'https://circleci.com/api/v1.1',
     auth: {
       username: accessToken,
       password: '',
@@ -27,32 +27,28 @@ export async function updateCircleEnvVars(project: Project, accessToken: string)
     validateStatus: () => true,
   });
 
-  const existing = await client.get(`/project/gh/${project.repoOwner}/${project.repoName}/envvar`);
+  const existing = await client.get(`/project/github/${project.repoOwner}/${project.repoName}/envvar`);
   if (existing.status !== 200) return;
 
-  if (existing.data.items.find(item => item.name === 'CFA_SECRET')) {
-    await client.delete(`/project/gh/${project.repoOwner}/${project.repoName}/envvar/CFA_SECRET`);
+  if (existing.data.find(item => item.name === 'CFA_SECRET')) {
+    await client.delete(`/project/github/${project.repoOwner}/${project.repoName}/envvar/CFA_SECRET`);
   }
   await client.post(
-    `/project/gh/${project.repoOwner}/${project.repoName}/envvar`,
+    `/project/github/${project.repoOwner}/${project.repoName}/envvar`,
     {
-      body: {
-        name: 'CFA_SECRET',
-        value: project.secret,
-      },
+      name: 'CFA_SECRET',
+      value: project.secret,
     },
   );
 
-  if (existing.data.items.find(item => item.name === 'CFA_PROJECT_ID')) {
-    await client.delete(`/project/gh/${project.repoOwner}/${project.repoName}/envvar/CFA_PROJECT_ID`);
+  if (existing.data.find(item => item.name === 'CFA_PROJECT_ID')) {
+    await client.delete(`/project/github/${project.repoOwner}/${project.repoName}/envvar/CFA_PROJECT_ID`);
   }
   await client.post(
-    `/project/gh/${project.repoOwner}/${project.repoName}/envvar`,
+    `/project/github/${project.repoOwner}/${project.repoName}/envvar`,
     {
-      body: {
-        name: 'CFA_PROJECT_ID',
-        value: project.id,
-      },
+      name: 'CFA_PROJECT_ID',
+      value: project.id,
     },
   );
 }
@@ -81,7 +77,7 @@ export function configRoutes() {
         if (!project) return;
 
         const response = await axios.get(
-          `https://circleci.com/api/v2/project/gh/${project.repoOwner}/${project.repoName}/checkout-key`,
+          `https://circleci.com/api/v1.1/project/gh/${project.repoOwner}/${project.repoName}/checkout-key`,
           {
             auth: {
               username: req.body.accessToken,

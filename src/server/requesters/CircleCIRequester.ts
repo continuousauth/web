@@ -21,13 +21,10 @@ export const getAxiosForConfig = (config: CircleCIRequesterConfig) =>
     validateStatus: () => true,
   });
 
+// Unauthenticated
 export const getAxiosForConfigV2 = (config: CircleCIRequesterConfig) =>
   axios.create({
     baseURL: 'https://circleci.com/api/v2',
-    auth: {
-      username: config.accessToken,
-      password: '',
-    },
     validateStatus: () => true,
   });
 

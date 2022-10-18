@@ -25,7 +25,7 @@ export function CircleCIRequesterConfig(props: Props) {
       <Paragraph marginBottom={4}>
         You can generate an access token in your{' '}
         <a
-          href={`https://circleci.com/gh/${props.project.repoOwner}/${props.project.repoName}/edit#api`}
+          href={`https://app.circleci.com/settings/project/github/${props.project.repoOwner}/${props.project.repoName}/api`}
           target="_blank"
           rel="noreferrer noopener"
         >
