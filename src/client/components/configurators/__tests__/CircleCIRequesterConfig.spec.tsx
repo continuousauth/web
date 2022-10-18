@@ -18,7 +18,9 @@ describe('<CircleCIRequesterConfig />', () => {
     );
     const link = wrapper.find('a');
     expect(link).toHaveLength(1);
-    expect(link.prop('href')).toBe('https://app.circleci.com/settings/project/github/my-owner/my-repo/api');
+    expect(link.prop('href')).toBe(
+      'https://app.circleci.com/settings/project/github/my-owner/my-repo/api',
+    );
   });
 
   it('should provide an empty original access token if the project is not configured for cirlceci', () => {
