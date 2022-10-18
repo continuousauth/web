@@ -37,7 +37,7 @@ export function repoRoutes() {
         const allRepos: RestEndpointMethodTypes['repos']['listForAuthenticatedUser']['response']['data'] = await github.paginate(
           github.repos.listForAuthenticatedUser.endpoint.merge({
             per_page: 100,
-            visibility: 'all'
+            visibility: 'public'
           }),
         );
 
