@@ -37,6 +37,7 @@ export function repoRoutes() {
         const allRepos: RestEndpointMethodTypes['repos']['listForAuthenticatedUser']['response']['data'] = await github.paginate(
           github.repos.listForAuthenticatedUser.endpoint.merge({
             per_page: 100,
+            visibility: 'all'
           }),
         );
 
@@ -83,9 +84,9 @@ export function repoRoutes() {
             requester_travisCI: !!p.requester_travisCI,
             responder_slack: p.responder_slack
               ? {
-                  team: p.responder_slack.teamName,
-                  channel: p.responder_slack.channelName,
-                }
+                team: p.responder_slack.teamName,
+                channel: p.responder_slack.channelName,
+              }
               : null,
           };
         }),
