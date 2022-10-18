@@ -82,7 +82,11 @@ export class TravisCIRequester
     return null;
   }
 
-  async doOpenIDConnectClaimsMatchProject(_claims: jwt.JwtPayload, _project: Project, _config: TravisCIRequesterConfig) {
+  async doOpenIDConnectClaimsMatchProject(
+    _claims: jwt.JwtPayload,
+    _project: Project,
+    _config: TravisCIRequesterConfig,
+  ) {
     return false;
   }
 

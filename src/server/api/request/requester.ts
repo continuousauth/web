@@ -118,42 +118,53 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
 
         const disoveryUrl = await requester.getOpenIDConnectDiscoveryURL(project, config);
         if (!disoveryUrl)
-          return res.status(422).json({ error: 'Project is not eligible for OIDC credential exchange' });
+          return res
+            .status(422)
+            .json({ error: 'Project is not eligible for OIDC credential exchange' });
         const issuer = await Issuer.discover(disoveryUrl);
 
         if (!issuer.metadata.jwks_uri)
-          return res.status(422).json({ error: 'Project is not eligible for JWKS backed OIDC credential exchange' });
+          return res
+            .status(422)
+            .json({ error: 'Project is not eligible for JWKS backed OIDC credential exchange' });
         const jwks = await axios.get(issuer.metadata.jwks_uri);
 
         if (jwks.status !== 200)
-          return res.status(422).json({ error: 'Project is not eligible for JWKS backed OIDC credential exchange' });
+          return res
+            .status(422)
+            .json({ error: 'Project is not eligible for JWKS backed OIDC credential exchange' });
 
         let claims = jwt.decode(req.body.token, { complete: true }) as jwt.Jwt | null;
-        if (!claims)
-          return res.status(422).json({ error: 'Invalid OIDC token provided' });
+        if (!claims) return res.status(422).json({ error: 'Invalid OIDC token provided' });
         const key = jwks.data.keys.find(key => key.kid === claims!.header.kid);
 
-        if (!key)
-          return res.status(422).json({ error: 'Invalid kid found in the token provided' });
+        if (!key) return res.status(422).json({ error: 'Invalid kid found in the token provided' });
 
         const pem = jwkToPem(key);
         try {
           claims = jwt.verify(req.body.token, pem, { complete: true }) as jwt.Jwt | null;
         } catch {
-          return res.status(422).json({ error: 'Could not verify the provided token against the OIDC provider' });
+          return res
+            .status(422)
+            .json({ error: 'Could not verify the provided token against the OIDC provider' });
         }
 
-        if (!claims)
-          return res.status(422).json({ error: 'Invalid OIDC token provided' });
+        if (!claims) return res.status(422).json({ error: 'Invalid OIDC token provided' });
 
-        if (!(await requester.doOpenIDConnectClaimsMatchProject(claims.payload as jwt.JwtPayload, project, config))) {
+        if (
+          !(await requester.doOpenIDConnectClaimsMatchProject(
+            claims.payload as jwt.JwtPayload,
+            project,
+            config,
+          ))
+        ) {
           return res.status(422).json({ error: 'Provided OIDC token does not match project' });
         }
 
         const appCredentials = {
           appId: process.env.GITHUB_APP_ID!,
           privateKey: process.env.GITHUB_PRIVATE_KEY!,
-        }
+        };
 
         const appOctokit = new Octokit({
           authStrategy: createAppAuth,
@@ -185,9 +196,9 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
         return res.json({
           GITHUB_TOKEN: githubToken,
         });
-      }
-    )
-  )
+      },
+    ),
+  );
 
   router.post(
     `/:projectId/${requester.slug}`,

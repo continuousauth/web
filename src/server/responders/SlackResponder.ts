@@ -186,38 +186,41 @@ bolt.command(
 /**
  * Handle the "Open Dialog" button
  */
-bolt.action({
-  type: 'interactive_message',
-  callback_id: /^otp-token\//g,
-}, async ({ context, action, ack, body, next }) => {
-  if (
-    action &&
-    action.type === 'button' &&
-    action.value === 'open-otp-dialog' &&
-    'trigger_id' in body &&
-    'name' in action
-  ) {
-    await ack();
+bolt.action(
+  {
+    type: 'interactive_message',
+    callback_id: /^otp-token\//g,
+  },
+  async ({ context, action, ack, body, next }) => {
+    if (
+      action &&
+      action.type === 'button' &&
+      action.value === 'open-otp-dialog' &&
+      'trigger_id' in body &&
+      'name' in action
+    ) {
+      await ack();
 
-    await bolt.client.dialog.open({
-      token: context.botToken,
-      trigger_id: body.trigger_id,
-      dialog: {
-        title: 'Enter 2FA OTP',
-        callback_id: `otp:${action.name}`,
-        elements: [
-          {
-            type: 'text',
-            label: 'OTP',
-            name: 'otp',
-          },
-        ],
-      },
-    });
-  } else {
-    await next();
-  }
-});
+      await bolt.client.dialog.open({
+        token: context.botToken,
+        trigger_id: body.trigger_id,
+        dialog: {
+          title: 'Enter 2FA OTP',
+          callback_id: `otp:${action.name}`,
+          elements: [
+            {
+              type: 'text',
+              label: 'OTP',
+              name: 'otp',
+            },
+          ],
+        },
+      });
+    } else {
+      await next();
+    }
+  },
+);
 
 /**
  * Handle dialog submission

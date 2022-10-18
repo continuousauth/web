@@ -6,12 +6,12 @@ import { RequestInformation } from '../responders/Responder';
 
 export type AllowedState =
   | {
-    ok: true;
-  }
+      ok: true;
+    }
   | {
-    ok: false;
-    error: string;
-  };
+      ok: false;
+      error: string;
+    };
 
 export interface Requester<RequesterConfig, MetadataType> {
   /**
@@ -94,5 +94,9 @@ export interface Requester<RequesterConfig, MetadataType> {
   /**
    * This should validate the given JWT claims against the expected project.
    */
-  doOpenIDConnectClaimsMatchProject(claims: jwt.JwtPayload, project: Project, config: RequesterConfig): Promise<boolean>;
+  doOpenIDConnectClaimsMatchProject(
+    claims: jwt.JwtPayload,
+    project: Project,
+    config: RequesterConfig,
+  ): Promise<boolean>;
 }

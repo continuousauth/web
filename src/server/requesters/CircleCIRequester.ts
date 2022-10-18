@@ -58,7 +58,11 @@ export class CircleCIRequester
     return `https://oidc.circleci.com/org/${orgId}`;
   }
 
-  async doOpenIDConnectClaimsMatchProject(claims: jwt.JwtPayload, project: Project, config: CircleCIRequesterConfig) {
+  async doOpenIDConnectClaimsMatchProject(
+    claims: jwt.JwtPayload,
+    project: Project,
+    config: CircleCIRequesterConfig,
+  ) {
     const projectResponse = await getAxiosForConfigV2(config).get(
       `/project/gh/${project.repoOwner}/${project.repoName}`,
     );

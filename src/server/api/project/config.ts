@@ -27,30 +27,30 @@ export async function updateCircleEnvVars(project: Project, accessToken: string)
     validateStatus: () => true,
   });
 
-  const existing = await client.get(`/project/github/${project.repoOwner}/${project.repoName}/envvar`);
+  const existing = await client.get(
+    `/project/github/${project.repoOwner}/${project.repoName}/envvar`,
+  );
   if (existing.status !== 200) return;
 
   if (existing.data.find(item => item.name === 'CFA_SECRET')) {
-    await client.delete(`/project/github/${project.repoOwner}/${project.repoName}/envvar/CFA_SECRET`);
+    await client.delete(
+      `/project/github/${project.repoOwner}/${project.repoName}/envvar/CFA_SECRET`,
+    );
   }
-  await client.post(
-    `/project/github/${project.repoOwner}/${project.repoName}/envvar`,
-    {
-      name: 'CFA_SECRET',
-      value: project.secret,
-    },
-  );
+  await client.post(`/project/github/${project.repoOwner}/${project.repoName}/envvar`, {
+    name: 'CFA_SECRET',
+    value: project.secret,
+  });
 
   if (existing.data.find(item => item.name === 'CFA_PROJECT_ID')) {
-    await client.delete(`/project/github/${project.repoOwner}/${project.repoName}/envvar/CFA_PROJECT_ID`);
+    await client.delete(
+      `/project/github/${project.repoOwner}/${project.repoName}/envvar/CFA_PROJECT_ID`,
+    );
   }
-  await client.post(
-    `/project/github/${project.repoOwner}/${project.repoName}/envvar`,
-    {
-      name: 'CFA_PROJECT_ID',
-      value: project.id,
-    },
-  );
+  await client.post(`/project/github/${project.repoOwner}/${project.repoName}/envvar`, {
+    name: 'CFA_PROJECT_ID',
+    value: project.id,
+  });
 }
 
 export function configRoutes() {

@@ -378,8 +378,8 @@ const create = async () => {
       ssl: process.env.NO_DB_SSL
         ? false
         : {
-          rejectUnauthorized: false,
-        },
+            rejectUnauthorized: false,
+          },
     },
   });
   await initializeInstance(sequelize);
