@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import * as jwt from 'jsonwebtoken';
 
 import { Project, OTPRequest } from '../db/models';
 import { RequestInformation } from '../responders/Responder';
@@ -84,4 +85,18 @@ export interface Requester<RequesterConfig, MetadataType> {
   getRequestInformationToPassOn(
     request: OTPRequest<MetadataType, unknown>,
   ): Promise<RequestInformation>;
+  /**
+   * This returns the OIDC discovery URL for the given provider.
+   *
+   * For providers that don't support OIDC return null and no behavior will change.
+   */
+  getOpenIDConnectDiscoveryURL(project: Project, config: RequesterConfig): Promise<string | null>;
+  /**
+   * This should validate the given JWT claims against the expected project.
+   */
+  doOpenIDConnectClaimsMatchProject(
+    claims: jwt.JwtPayload,
+    project: Project,
+    config: RequesterConfig,
+  ): Promise<boolean>;
 }

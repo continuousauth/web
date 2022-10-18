@@ -32,7 +32,7 @@ exports[`<CircleCIRequesterConfig /> Should render a GenericAccessTokenRequester
     You can generate an access token in your
      
     <a
-      href="https://circleci.com/gh/my-owner/my-repo/edit#api"
+      href="https://app.circleci.com/settings/project/github/my-owner/my-repo/api"
       rel="noreferrer noopener"
       target="_blank"
     >

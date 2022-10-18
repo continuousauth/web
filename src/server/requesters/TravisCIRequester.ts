@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
 import * as Joi from 'joi';
+import * as jwt from 'jsonwebtoken';
 
 import { Requester, AllowedState } from './Requester';
 import { Project, OTPRequest, TravisCIRequesterConfig } from '../db/models';
@@ -75,6 +76,18 @@ export class TravisCIRequester
 
   getConfigForProject(project: Project) {
     return project.requester_travisCI || null;
+  }
+
+  async getOpenIDConnectDiscoveryURL(_project: Project, _config: TravisCIRequesterConfig) {
+    return null;
+  }
+
+  async doOpenIDConnectClaimsMatchProject(
+    _claims: jwt.JwtPayload,
+    _project: Project,
+    _config: TravisCIRequesterConfig,
+  ) {
+    return false;
   }
 
   async metadataForInitialRequest(

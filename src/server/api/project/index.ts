@@ -6,7 +6,7 @@ import { Octokit, RestEndpointMethodTypes } from '@octokit/rest';
 import { createA } from '../../helpers/a';
 import { validate, hasAdminAccessToTargetRepo } from '../../helpers/_middleware';
 import { Project, withTransaction, OTPRequest } from '../../db/models';
-import { configRoutes } from './config';
+import { configRoutes, updateCircleEnvVars } from './config';
 import { sanitizeProject, generateNewSecret, getProjectFromIdAndCheckPermissions } from './_safe';
 
 const d = debug('cfa:server:api:auth');
@@ -159,6 +159,10 @@ export function projectRoutes() {
 
         project.secret = generateNewSecret(256);
         await project.save();
+
+        if (project.requester_circleCI) {
+          await updateCircleEnvVars(project, project.requester_circleCI.accessToken);
+        }
 
         res.json(sanitizeProject(project));
       },

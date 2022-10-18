@@ -17,6 +17,42 @@ import { getProjectFromIdAndCheckPermissions } from './_safe';
 const d = debug('cfa:server:api:project:config');
 const a = createA(d);
 
+export async function updateCircleEnvVars(project: Project, accessToken: string) {
+  const client = axios.create({
+    baseURL: 'https://circleci.com/api/v1.1',
+    auth: {
+      username: accessToken,
+      password: '',
+    },
+    validateStatus: () => true,
+  });
+
+  const existing = await client.get(
+    `/project/github/${project.repoOwner}/${project.repoName}/envvar`,
+  );
+  if (existing.status !== 200) return;
+
+  if (existing.data.find(item => item.name === 'CFA_SECRET')) {
+    await client.delete(
+      `/project/github/${project.repoOwner}/${project.repoName}/envvar/CFA_SECRET`,
+    );
+  }
+  await client.post(`/project/github/${project.repoOwner}/${project.repoName}/envvar`, {
+    name: 'CFA_SECRET',
+    value: project.secret,
+  });
+
+  if (existing.data.find(item => item.name === 'CFA_PROJECT_ID')) {
+    await client.delete(
+      `/project/github/${project.repoOwner}/${project.repoName}/envvar/CFA_PROJECT_ID`,
+    );
+  }
+  await client.post(`/project/github/${project.repoOwner}/${project.repoName}/envvar`, {
+    name: 'CFA_PROJECT_ID',
+    value: project.id,
+  });
+}
+
 export function configRoutes() {
   const router = express();
 
@@ -41,7 +77,7 @@ export function configRoutes() {
         if (!project) return;
 
         const response = await axios.get(
-          `https://circleci.com/api/v1.1/project/github/${project.repoOwner}/${project.repoName}/checkout-key`,
+          `https://circleci.com/api/v1.1/project/gh/${project.repoOwner}/${project.repoName}/checkout-key`,
           {
             auth: {
               username: req.body.accessToken,
@@ -57,6 +93,8 @@ export function configRoutes() {
               'That token is not valid for the current project, or the repository is not configured on CircleCI',
           });
         }
+
+        await updateCircleEnvVars(project, req.body.accessToken);
 
         const newProject = await withTransaction(async t => {
           const config = await CircleCIRequesterConfig.create(
