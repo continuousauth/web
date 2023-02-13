@@ -1,3 +1,4 @@
+import { Octokit } from '@octokit/rest';
 import axios from 'axios';
 import { Request, Response } from 'express';
 import * as Joi from 'joi';
@@ -110,11 +111,43 @@ export class CircleCIRequester
     const build = buildResponse.data;
 
     // Must be on the default branch
-    if (build.branch !== project.defaultBranch)
+    if (build.vcs_tag) {
+      // TODO - What auth to use for Octokit?
+      const github = new Octokit({});
+      const tag = await github.git.getRef({
+        owner: project.repoOwner,
+        repo: project.repoName,
+        ref: `tags/${build.vcs_tag}`,
+      });
+
+      if (tag.status !== 200) {
+        return {
+          ok: false,
+          error: 'CircleCI build is for a tag that was not found',
+        };
+      }
+
+      const branches = await github.repos.listBranchesForHeadCommit({
+        owner: project.repoOwner,
+        repo: project.repoName,
+        commit_sha: tag.data.object.sha,
+      });
+
+      if (
+        branches.status !== 200 ||
+        !branches.data.find(branch => branch.name === project.defaultBranch)
+      ) {
+        return {
+          ok: false,
+          error: 'CircleCI build is for a tag not on the default branch',
+        };
+      }
+    } else if (build.branch !== project.defaultBranch) {
       return {
         ok: false,
         error: 'CircleCI build is not for the default branch',
       };
+    }
 
     // Trigger must be GitHub
     if (build.why !== 'github')
