@@ -6,6 +6,7 @@ import * as jwt from 'jsonwebtoken';
 
 import { Requester, AllowedState } from './Requester';
 import { Project, CircleCIRequesterConfig, OTPRequest } from '../db/models';
+import { getGitHubAppInstallationToken } from '../helpers/auth';
 import { RequestInformation } from '../responders/Responder';
 
 export type CircleCIOTPRequestMetadata = {
@@ -112,8 +113,8 @@ export class CircleCIRequester
 
     // Must be on the default branch
     if (build.vcs_tag) {
-      // TODO - What auth to use for Octokit?
-      const github = new Octokit({});
+      const token = await getGitHubAppInstallationToken(project);
+      const github = new Octokit({ auth: token });
       const tag = await github.git.getRef({
         owner: project.repoOwner,
         repo: project.repoName,
