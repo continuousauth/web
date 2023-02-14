@@ -115,28 +115,16 @@ export class CircleCIRequester
     if (build.vcs_tag) {
       const token = await getGitHubAppInstallationToken(project);
       const github = new Octokit({ auth: token });
-      const tag = await github.git.getRef({
+
+      const comparison = await github.repos.compareCommitsWithBasehead({
         owner: project.repoOwner,
         repo: project.repoName,
-        ref: `tags/${build.vcs_tag}`,
-      });
-
-      if (tag.status !== 200) {
-        return {
-          ok: false,
-          error: 'CircleCI build is for a tag that was not found',
-        };
-      }
-
-      const branches = await github.repos.listBranchesForHeadCommit({
-        owner: project.repoOwner,
-        repo: project.repoName,
-        commit_sha: tag.data.object.sha,
+        basehead: `${build.vcs_tag}...${project.defaultBranch}`,
       });
 
       if (
-        branches.status !== 200 ||
-        !branches.data.find(branch => branch.name === project.defaultBranch)
+        comparison.status !== 200 ||
+        !(comparison.data.behind_by === 0 && comparison.data.ahead_by >= 0)
       ) {
         return {
           ok: false,
