@@ -1,5 +1,3 @@
-import { createAppAuth } from '@octokit/auth-app';
-import { Octokit } from '@octokit/rest';
 import axios from 'axios';
 import * as debug from 'debug';
 import * as express from 'express';
@@ -9,6 +7,7 @@ import * as jwkToPem from 'jwk-to-pem';
 import * as jwt from 'jsonwebtoken';
 
 import { createA } from '../../helpers/a';
+import { getGitHubAppInstallationToken } from '../../helpers/auth';
 import { validate } from '../../helpers/_middleware';
 import { Project, OTPRequest } from '../../db/models';
 import { getResponderFor } from '../../responders';
@@ -161,33 +160,9 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
           return res.status(422).json({ error: 'Provided OIDC token does not match project' });
         }
 
-        const appCredentials = {
-          appId: process.env.GITHUB_APP_ID!,
-          privateKey: process.env.GITHUB_PRIVATE_KEY!,
-        };
-
-        const appOctokit = new Octokit({
-          authStrategy: createAppAuth,
-          auth: {
-            ...appCredentials,
-          },
-        });
-
         let githubToken: string;
         try {
-          const installation = await appOctokit.apps.getRepoInstallation({
-            owner: project.repoOwner,
-            repo: project.repoName,
-          });
-
-          const authOptions = {
-            type: <const>'installation',
-            ...appCredentials,
-            installationId: installation.data.id,
-            repositoryNames: [project.repoName],
-          };
-          const { token } = await createAppAuth(authOptions)(authOptions);
-          githubToken = token;
+          githubToken = await getGitHubAppInstallationToken(project);
         } catch (err) {
           console.error(err);
           return res.status(422).json({ error: 'Failed to obtain access token for project' });

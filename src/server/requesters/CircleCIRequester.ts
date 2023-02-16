@@ -1,3 +1,4 @@
+import { Octokit } from '@octokit/rest';
 import axios from 'axios';
 import { Request, Response } from 'express';
 import * as Joi from 'joi';
@@ -5,6 +6,7 @@ import * as jwt from 'jsonwebtoken';
 
 import { Requester, AllowedState } from './Requester';
 import { Project, CircleCIRequesterConfig, OTPRequest } from '../db/models';
+import { getGitHubAppInstallationToken } from '../helpers/auth';
 import { RequestInformation } from '../responders/Responder';
 
 export type CircleCIOTPRequestMetadata = {
@@ -110,11 +112,31 @@ export class CircleCIRequester
     const build = buildResponse.data;
 
     // Must be on the default branch
-    if (build.branch !== project.defaultBranch)
+    if (build.vcs_tag) {
+      const token = await getGitHubAppInstallationToken(project);
+      const github = new Octokit({ auth: token });
+
+      const comparison = await github.repos.compareCommitsWithBasehead({
+        owner: project.repoOwner,
+        repo: project.repoName,
+        basehead: `${build.vcs_tag}...${project.defaultBranch}`,
+      });
+
+      if (
+        comparison.status !== 200 ||
+        !(comparison.data.behind_by === 0 && comparison.data.ahead_by >= 0)
+      ) {
+        return {
+          ok: false,
+          error: 'CircleCI build is for a tag not on the default branch',
+        };
+      }
+    } else if (build.branch !== project.defaultBranch) {
       return {
         ok: false,
         error: 'CircleCI build is not for the default branch',
       };
+    }
 
     // Trigger must be GitHub
     if (build.why !== 'github')
