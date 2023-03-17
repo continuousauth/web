@@ -1,6 +1,6 @@
 # CFA: Continuous Factor Authentication
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/continuousauth/web/CI?label=CI&logo=github&style=for-the-badge)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/continuousauth/web/ci.yaml?branch=main&label=CI&logo=github&style=for-the-badge)
 
 This service is responsible for safely requesting and delivering a 2FA token to an arbitrary CI job. Typically though a tool like `semantic-release`.
 
