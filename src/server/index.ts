@@ -6,7 +6,7 @@ import * as compression from 'compression';
 import * as debug from 'debug';
 import * as express from 'express';
 import * as session from 'express-session';
-import * as connectRedis from 'connect-redis';
+import RedisStore from 'connect-redis';
 import * as path from 'path';
 import * as redis from 'redis';
 
@@ -15,11 +15,10 @@ import passport = require('passport');
 import { getSequelizeInstance } from './db/models';
 
 const d = debug('cfa:server');
-const RedisStore = connectRedis(session);
 
 app.use(compression());
 
-const REDIS_URL = (process.env.REDIS_URL || '').replace('redis://h:', 'redis://:');
+const REDIS_URL = process.env.REDIS_URL!;
 
 const redisClient = redis.createClient({
   url: REDIS_URL,
