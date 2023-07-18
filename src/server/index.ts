@@ -27,6 +27,10 @@ const redisClient = redis.createClient({
     rejectUnauthorized: false,
   },
 });
+redisClient.connect().catch(err => {
+  console.error(err);
+  process.exit(1);
+});
 redisClient.unref();
 redisClient.on('error', console.error);
 
