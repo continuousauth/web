@@ -22,6 +22,10 @@ const REDIS_URL = process.env.REDIS_URL!;
 
 const redisClient = redis.createClient({
   url: REDIS_URL,
+  socket: {
+    tls: true,
+    rejectUnauthorized: false,
+  },
 });
 redisClient.unref();
 redisClient.on('error', console.error);
