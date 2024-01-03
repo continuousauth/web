@@ -14,7 +14,6 @@ export interface SimpleRepo {
 
 export interface SimpleProject extends SimpleRepo {
   requester_circleCI: boolean;
-  requester_travisCI: boolean;
   responder_slack: {
     team: string;
     channel: string;
@@ -25,9 +24,6 @@ export interface FullProject extends SimpleRepo {
   secret: string;
   enabled: boolean;
   requester_circleCI: {
-    accessToken: string;
-  } | null;
-  requester_travisCI: {
     accessToken: string;
   } | null;
   responder_slack: {
@@ -58,7 +54,7 @@ export const projectIsMissingConfig = (
     >
   >,
 ) => {
-  const hasRequester: boolean = !!project.requester_circleCI || !!project.requester_travisCI;
+  const hasRequester: boolean = !!project.requester_circleCI;
   const hasResponder: boolean = !!project.responder_slack;
   return !hasRequester || !hasResponder;
 };

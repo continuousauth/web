@@ -37,21 +37,6 @@ exports[`<RequesterConfig /> Should render 1`] = `
          Circle CI
       </Memo(ForwardRef(Tab))>
       <Memo(ForwardRef(Tab))
-        isSelected={false}
-        onSelect={[Function]}
-        style={
-          {
-            "paddingLeft": 28,
-            "position": "relative",
-          }
-        }
-      >
-        <TravisCILogo
-          className="tabIcon"
-        />
-         Travis CI
-      </Memo(ForwardRef(Tab))>
-      <Memo(ForwardRef(Tab))
         disabled={true}
       >
         More Coming Soon...

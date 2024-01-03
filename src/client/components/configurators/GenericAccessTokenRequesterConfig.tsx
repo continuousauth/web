@@ -10,7 +10,7 @@ export interface Props {
   setProject: (newProject: FullProject) => void;
   originalAccessToken: string;
   children: React.ReactChild | React.ReactChild[];
-  slug: 'circleci' | 'travisci';
+  slug: 'circleci';
   requesterName: string;
 }
 

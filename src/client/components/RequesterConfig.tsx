@@ -6,9 +6,6 @@ import { FullProject } from '../../common/types';
 import styles from './ReqResConfig.scss';
 import { CircleCILogo } from './icons/CircleCI';
 import { CircleCIRequesterConfig } from './configurators/CircleCIRequesterConfig';
-import { TravisCILogo } from './icons/TravisCI';
-import { TravisCIRequesterConfig } from './configurators/TravisCIRequesterConfig';
-
 export interface Props {
   project: FullProject;
   setProject: (newProject: FullProject) => void;
@@ -17,12 +14,10 @@ export interface Props {
 enum RequesterTab {
   NOTHING_YET,
   CIRCLE_CI,
-  TRAVIS_CI,
 }
 
 const defaultTabForProject = (project: FullProject) => {
   if (project.requester_circleCI) return RequesterTab.CIRCLE_CI;
-  if (project.requester_travisCI) return RequesterTab.TRAVIS_CI;
   return RequesterTab.NOTHING_YET;
 };
 
@@ -66,13 +61,6 @@ export function RequesterConfig({ project, setProject }: Props) {
           >
             <CircleCILogo className={styles.tabIcon} /> Circle CI
           </Tab>
-          <Tab
-            onSelect={() => setActiveTab(RequesterTab.TRAVIS_CI)}
-            isSelected={activeTab === RequesterTab.TRAVIS_CI}
-            style={{ paddingLeft: 28, position: 'relative' }}
-          >
-            <TravisCILogo className={styles.tabIcon} /> Travis CI
-          </Tab>
           <Tab disabled>More Coming Soon...</Tab>
         </Tablist>
       </Pane>
@@ -81,8 +69,6 @@ export function RequesterConfig({ project, setProject }: Props) {
           <Paragraph>No Requester has been configured, choose one to get started!</Paragraph>
         ) : activeTab === RequesterTab.CIRCLE_CI ? (
           <CircleCIRequesterConfig project={project} setProject={setProject} />
-        ) : activeTab === RequesterTab.TRAVIS_CI ? (
-          <TravisCIRequesterConfig project={project} setProject={setProject} />
         ) : null}
       </Pane>
     </Pane>

@@ -6,9 +6,6 @@ jest.mock('../configurators/CircleCIRequesterConfig', () => ({
   CircleCIRequesterConfig: () => null,
 }));
 
-jest.mock('../configurators/TravisCIRequesterConfig', () => ({
-  TravisCIRequesterConfig: () => null,
-}));
 
 import * as React from 'react';
 import { act } from 'react-dom/test-utils';
@@ -76,20 +73,6 @@ describe('<RequesterConfig />', () => {
     expect(mounted.find('CircleCIRequesterConfig')).toHaveLength(1);
   });
 
-  it('Should show the travisci configurator when that tab is selected', () => {
-    const setProject = jest.fn();
-    const mounted = shallow(<RequesterConfig project={mockProject()} setProject={setProject} />);
-    expect(mounted.find('TravisCIRequesterConfig')).toHaveLength(0);
-    act(() =>
-      (mounted
-        .find('Memo(ForwardRef(Tab))')
-        .at(1)
-        .prop('onSelect') as Function)(),
-    );
-    mounted.setProps({});
-    expect(mounted.find('TravisCIRequesterConfig')).toHaveLength(1);
-  });
-
   it('Should show the circleci configurator when circleci has been configured on the provided project', () => {
     const setProject = jest.fn();
     const project = mockProject();
@@ -98,15 +81,5 @@ describe('<RequesterConfig />', () => {
     };
     const mounted = mount(<RequesterConfig project={project} setProject={setProject} />);
     expect(mounted.find('CircleCIRequesterConfig')).toHaveLength(1);
-  });
-
-  it('Should show the travisci configurator when travisci has been configured on the provided project', () => {
-    const setProject = jest.fn();
-    const project = mockProject();
-    project.requester_travisCI = {
-      accessToken: 'test123',
-    };
-    const mounted = mount(<RequesterConfig project={project} setProject={setProject} />);
-    expect(mounted.find('TravisCIRequesterConfig')).toHaveLength(1);
   });
 });
