@@ -22,10 +22,12 @@ const REDIS_URL = process.env.REDIS_URL!;
 
 const redisClient = redis.createClient({
   url: REDIS_URL,
-  socket: {
-    tls: true,
-    rejectUnauthorized: false,
-  },
+  socket: process.env.NO_DB_SSL
+    ? undefined
+    : {
+        tls: true,
+        rejectUnauthorized: false,
+      },
 });
 redisClient.connect().catch(err => {
   console.error(err);

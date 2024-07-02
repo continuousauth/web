@@ -1,9 +1,6 @@
-import axios from 'axios';
 import * as debug from 'debug';
 import * as express from 'express';
 import * as Joi from 'joi';
-import { Issuer } from 'openid-client';
-import * as jwkToPem from 'jwk-to-pem';
 import * as jwt from 'jsonwebtoken';
 
 import { createA } from '../../helpers/a';
@@ -13,6 +10,7 @@ import { Project, OTPRequest } from '../../db/models';
 import { getResponderFor } from '../../responders';
 import { Requester } from '../../requesters/Requester';
 import { projectIsMissingConfig } from '../../../common/types';
+import { getSignatureValidatedOIDCClaims } from '../../helpers/oidc';
 
 const d = debug('cfa:api:request:requester');
 const a = createA(d);
@@ -115,37 +113,20 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
         if (!config)
           return res.status(422).json({ error: 'Project is not configured to use this requester' });
 
-        const disoveryUrl = await requester.getOpenIDConnectDiscoveryURL(project, config);
-        if (!disoveryUrl)
-          return res
-            .status(422)
-            .json({ error: 'Project is not eligible for OIDC credential exchange' });
-        const issuer = await Issuer.discover(disoveryUrl);
-
-        if (!issuer.metadata.jwks_uri)
-          return res
-            .status(422)
-            .json({ error: 'Project is not eligible for JWKS backed OIDC credential exchange' });
-        const jwks = await axios.get(issuer.metadata.jwks_uri);
-
-        if (jwks.status !== 200)
-          return res
-            .status(422)
-            .json({ error: 'Project is not eligible for JWKS backed OIDC credential exchange' });
-
-        let claims = jwt.decode(req.body.token, { complete: true }) as jwt.Jwt | null;
-        if (!claims) return res.status(422).json({ error: 'Invalid OIDC token provided' });
-        const key = jwks.data.keys.find(key => key.kid === claims!.header.kid);
-
-        if (!key) return res.status(422).json({ error: 'Invalid kid found in the token provided' });
-
-        const pem = jwkToPem(key);
+        let claims: jwt.Jwt | null;
         try {
-          claims = jwt.verify(req.body.token, pem, { complete: true }) as jwt.Jwt | null;
-        } catch {
-          return res
-            .status(422)
-            .json({ error: 'Could not verify the provided token against the OIDC provider' });
+          claims = await getSignatureValidatedOIDCClaims(
+            requester,
+            project,
+            config,
+            req.body.token,
+          );
+        } catch (err) {
+          if (typeof err === 'string') {
+            return res.status(422).json({ error: err });
+          } else {
+            throw err;
+          }
         }
 
         if (!claims) return res.status(422).json({ error: 'Invalid OIDC token provided' });
@@ -162,7 +143,12 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
 
         let githubToken: string;
         try {
-          githubToken = await getGitHubAppInstallationToken(project);
+          githubToken = await getGitHubAppInstallationToken(project, {
+            metadata: 'read',
+            issues: 'write',
+            pull_requests: 'write',
+            contents: 'write',
+          });
         } catch (err) {
           console.error(err);
           return res.status(422).json({ error: 'Failed to obtain access token for project' });
@@ -287,7 +273,10 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
           });
         }
 
-        if (!(await requester.validateProofForRequest(request, config))) {
+        if (
+          allowedState.needsLogBasedProof &&
+          !(await requester.validateProofForRequest(request, config))
+        ) {
           request.state = 'error';
           request.errored = new Date();
           request.errorReason =

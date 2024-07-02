@@ -21,6 +21,7 @@ import { CircleCILogo } from './icons/CircleCI';
 import { SlackLogo } from './icons/Slack';
 import { Link } from 'react-router-dom';
 import { cx, projectHasAnyConfig, defaultFetchInit, defaultBodyReader } from '../utils';
+import { GitHubLogo } from './icons/GitHub';
 
 export function Dashboard() {
   const reposFetch = useFetch<ReposResponse>('/api/repos', defaultFetchInit, defaultBodyReader);
@@ -144,6 +145,15 @@ export function Dashboard() {
                   </Tooltip>
                   <CircleCILogo className={styles.configIcon} />
                   <span>CircleCI</span>
+                </Pane>
+              ) : null}
+              {repo.requester_gitHub ? (
+                <Pane className={styles.configRow}>
+                  <Tooltip content="CFA Requester" position={Position.LEFT}>
+                    <CircleArrowRightIcon color="success" />
+                  </Tooltip>
+                  <GitHubLogo className={styles.configIcon} />
+                  <span>GitHub Actions</span>
                 </Pane>
               ) : null}
               {repo.responder_slack ? (

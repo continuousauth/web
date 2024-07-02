@@ -89,6 +89,7 @@ export function repoRoutes() {
             repoOwner: p.repoOwner,
             defaultBranch: p.defaultBranch,
             requester_circleCI: !!p.requester_circleCI,
+            requester_gitHub: !!p.requester_gitHub,
             responder_slack: p.responder_slack
               ? {
                   team: p.responder_slack.teamName,
