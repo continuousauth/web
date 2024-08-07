@@ -6,6 +6,7 @@ describe('projectIsMissingConfig', () => {
       projectIsMissingConfig({
         responder_slack: {},
         requester_circleCI: {},
+        requester_gitHub: null,
       }),
     ).toBe(false);
   });
@@ -15,6 +16,7 @@ describe('projectIsMissingConfig', () => {
       projectIsMissingConfig({
         responder_slack: {},
         requester_circleCI: null,
+        requester_gitHub: null,
       }),
     ).toBe(true);
   });
@@ -24,6 +26,7 @@ describe('projectIsMissingConfig', () => {
       projectIsMissingConfig({
         responder_slack: null,
         requester_circleCI: {},
+        requester_gitHub: null,
       }),
     ).toBe(true);
   });
@@ -33,6 +36,7 @@ describe('projectIsMissingConfig', () => {
       projectIsMissingConfig({
         responder_slack: null,
         requester_circleCI: null,
+        requester_gitHub: null,
       }),
     ).toBe(true);
   });

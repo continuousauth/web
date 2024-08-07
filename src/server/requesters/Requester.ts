@@ -7,6 +7,7 @@ import { RequestInformation } from '../responders/Responder';
 export type AllowedState =
   | {
       ok: true;
+      needsLogBasedProof: boolean;
     }
   | {
       ok: false;

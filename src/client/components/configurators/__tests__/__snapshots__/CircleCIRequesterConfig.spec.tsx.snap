@@ -11,6 +11,7 @@ exports[`<CircleCIRequesterConfig /> Should render a GenericAccessTokenRequester
       "repoName": "my-repo",
       "repoOwner": "my-owner",
       "requester_circleCI": null,
+      "requester_gitHub": null,
       "responder_slack": null,
       "secret": "my_secret",
     }

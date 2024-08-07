@@ -34,7 +34,6 @@ export function MenuHeaderInner() {
         <Avatar
           name={user ? user.displayName : '?'}
           size={24}
-          isSolid
           src={user ? `https://github.com/${user.username}.png` : undefined}
         />
         <span>{user ? user.username : '?'}</span>

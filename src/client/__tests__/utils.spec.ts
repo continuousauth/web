@@ -17,6 +17,10 @@ describe('projectHasAnyConfig', () => {
     expect(projectHasAnyConfig({ requester_circleCI: true } as any)).toBe(true);
   });
 
+  it('should return true if the project has github configured', () => {
+    expect(projectHasAnyConfig({ requester_gitHub: true } as any)).toBe(true);
+  });
+
   it('should return true if the project has slack configured', () => {
     expect(projectHasAnyConfig({ responder_slack: true } as any)).toBe(true);
   });

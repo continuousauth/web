@@ -68,15 +68,23 @@ export class Project extends Model<InferAttributes<Project>, InferCreationAttrib
   requester_circleCI: CircleCIRequesterConfig | null;
   requester_circleCI_id: string | null;
 
+  @BelongsTo(() => GitHubActionsRequesterConfig, 'requester_gitHub_id')
+  requester_gitHub: GitHubActionsRequesterConfig | null;
+  requester_gitHub_id: string | null;
+
   @BelongsTo(() => SlackResponderConfig, 'responder_slack_id')
   responder_slack: SlackResponderConfig | null;
   responder_slack_id: string | null;
 
   public async resetAllRequesters(t: Transaction) {
     this.requester_circleCI_id = null;
+    this.requester_gitHub_id = null;
     await this.save({ transaction: t });
     if (this.requester_circleCI) {
       await this.requester_circleCI.destroy({ transaction: t });
+    }
+    if (this.requester_gitHub) {
+      await this.requester_gitHub.destroy({ transaction: t });
     }
   }
 
@@ -89,8 +97,19 @@ export class Project extends Model<InferAttributes<Project>, InferCreationAttrib
   }
 
   static get allIncludes() {
-    return [CircleCIRequesterConfig, SlackResponderConfig];
+    return [CircleCIRequesterConfig, GitHubActionsRequesterConfig, SlackResponderConfig];
   }
+}
+
+@Table(tableOptions)
+export class GitHubActionsRequesterConfig extends Model<
+  InferAttributes<GitHubActionsRequesterConfig>,
+  InferCreationAttributes<GitHubActionsRequesterConfig>
+> {
+  @PrimaryKey
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
+  id: CreationOptional<string>;
 }
 
 @Table(tableOptions)
@@ -320,12 +339,30 @@ const migrationFns: ((t: Transaction, qI: QueryInterface) => Promise<void>)[] = 
       );
     }
   },
+  async function addGitHubActionsRequester(t: Transaction, queryInterface: QueryInterface) {
+    const table: any = await queryInterface.describeTable(Project.getTableName());
+    if (!table.requester_gitHub_id) {
+      await queryInterface.addColumn(
+        Project.getTableName() as string,
+        'requester_gitHub_id',
+        {
+          type: DataType.UUID,
+          allowNull: true,
+          defaultValue: null,
+        },
+        {
+          transaction: t,
+        },
+      );
+    }
+  },
 ];
 
 const initializeInstance = async (sequelize: Sequelize) => {
   sequelize.addModels([
     Project,
     CircleCIRequesterConfig,
+    GitHubActionsRequesterConfig,
     SlackResponderConfig,
     SlackResponderLinker,
     OTPRequest,

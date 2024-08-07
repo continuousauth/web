@@ -6,6 +6,8 @@ import { FullProject } from '../../common/types';
 import styles from './ReqResConfig.scss';
 import { CircleCILogo } from './icons/CircleCI';
 import { CircleCIRequesterConfig } from './configurators/CircleCIRequesterConfig';
+import { GitHubLogo } from './icons/GitHub';
+import { GitHubActionsRequesterConfig } from './configurators/GitHubActionsRequesterConfig';
 export interface Props {
   project: FullProject;
   setProject: (newProject: FullProject) => void;
@@ -14,10 +16,12 @@ export interface Props {
 enum RequesterTab {
   NOTHING_YET,
   CIRCLE_CI,
+  GITHUB_ACTIONS,
 }
 
 const defaultTabForProject = (project: FullProject) => {
   if (project.requester_circleCI) return RequesterTab.CIRCLE_CI;
+  if (project.requester_gitHub) return RequesterTab.GITHUB_ACTIONS;
   return RequesterTab.NOTHING_YET;
 };
 
@@ -61,6 +65,13 @@ export function RequesterConfig({ project, setProject }: Props) {
           >
             <CircleCILogo className={styles.tabIcon} /> Circle CI
           </Tab>
+          <Tab
+            onSelect={() => setActiveTab(RequesterTab.GITHUB_ACTIONS)}
+            isSelected={activeTab === RequesterTab.GITHUB_ACTIONS}
+            style={{ paddingLeft: 28, position: 'relative' }}
+          >
+            <GitHubLogo className={styles.tabIcon} /> GitHub Actions
+          </Tab>
           <Tab disabled>More Coming Soon...</Tab>
         </Tablist>
       </Pane>
@@ -69,6 +80,8 @@ export function RequesterConfig({ project, setProject }: Props) {
           <Paragraph>No Requester has been configured, choose one to get started!</Paragraph>
         ) : activeTab === RequesterTab.CIRCLE_CI ? (
           <CircleCIRequesterConfig project={project} setProject={setProject} />
+        ) : activeTab === RequesterTab.GITHUB_ACTIONS ? (
+          <GitHubActionsRequesterConfig project={project} setProject={setProject} />
         ) : null}
       </Pane>
     </Pane>

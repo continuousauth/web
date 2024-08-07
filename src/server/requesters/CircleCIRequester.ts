@@ -111,7 +111,10 @@ export class CircleCIRequester
 
     // Must be on the default branch
     if (build.vcs_tag) {
-      const token = await getGitHubAppInstallationToken(project);
+      const token = await getGitHubAppInstallationToken(project, {
+        metadata: 'read',
+        contents: 'read',
+      });
       const github = new Octokit({ auth: token });
 
       const comparison = await github.repos.compareCommitsWithBasehead({
@@ -159,6 +162,7 @@ export class CircleCIRequester
 
     return {
       ok: true,
+      needsLogBasedProof: true,
     };
   }
 
