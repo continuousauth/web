@@ -2,7 +2,7 @@ import { Octokit } from '@octokit/rest';
 import axios from 'axios';
 import { Request, Response } from 'express';
 import * as Joi from 'joi';
-import * as jwt from 'jsonwebtoken';
+import type * as jwt from 'jsonwebtoken';
 
 import { Requester, AllowedState } from './Requester';
 import { Project, CircleCIRequesterConfig, OTPRequest } from '../db/models';
@@ -32,15 +32,13 @@ export const getAxiosForConfigV2 = (config: CircleCIRequesterConfig) =>
 
 const validateMetadataObject = (object: any) => {
   return Joi.validate(object, {
-    buildNumber: Joi.number()
-      .min(1)
-      .integer()
-      .required(),
+    buildNumber: Joi.number().min(1).integer().required(),
   });
 };
 
 export class CircleCIRequester
-  implements Requester<CircleCIRequesterConfig, CircleCIOTPRequestMetadata> {
+  implements Requester<CircleCIRequesterConfig, CircleCIOTPRequestMetadata>
+{
   readonly slug = 'circleci';
 
   getConfigForProject(project: Project) {
@@ -179,7 +177,7 @@ export class CircleCIRequester
       if (attempts <= 0) return false;
 
       const again = async () => {
-        await new Promise(r => setTimeout(r, 5000));
+        await new Promise((r) => setTimeout(r, 5000));
         return attemptToValidateProof(attempts - 1);
       };
 

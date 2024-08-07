@@ -30,7 +30,7 @@ export const getSignatureValidatedOIDCClaims = async <R, M>(
 
   const pem = jwkToPem(key);
   try {
-    claims = jwt.verify(token, pem, { complete: true }) as jwt.Jwt | null;
+    claims = jwt.verify(token, pem, { complete: true, algorithms: [key.alg] }) as jwt.Jwt | null;
   } catch {
     throw 'Could not verify the provided token against the OIDC provider';
   }

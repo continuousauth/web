@@ -8,7 +8,7 @@ const { SubresourceIntegrityPlugin } = require('webpack-subresource-integrity');
 const config = require('./webpack.config');
 
 // Hash all JS assets
-config.output.filename = '[name].[chunkhash].min.js';
+config.output.filename = '[name].[contenthash].min.js';
 
 // Remove devServer config
 delete config.devServer;

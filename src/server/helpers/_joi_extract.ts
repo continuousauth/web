@@ -79,8 +79,8 @@ declare module 'joi' {
     default(value: any, description?: string): this;
     default<T extends string>(value: T, description?: string): StringSchema<BoxType<N, N['T'] | T>>;
 
-    valid<T extends string>(...values: T[]): StringSchema<BoxType<N, typeof values[number]>>;
-    valid<T extends string>(values: T[]): StringSchema<BoxType<N, typeof values[number]>>;
+    valid<T extends string>(...values: T[]): StringSchema<BoxType<N, (typeof values)[number]>>;
+    valid<T extends string>(values: T[]): StringSchema<BoxType<N, (typeof values)[number]>>;
     valid(...values: any[]): this;
     valid(values: any[]): this;
 
@@ -102,8 +102,8 @@ declare module 'joi' {
     default(value: any, description?: string): this;
     default<T extends number>(value: T, description?: string): NumberSchema<BoxType<N, N['T'] | T>>;
 
-    valid<T extends number>(...values: T[]): NumberSchema<BoxType<N, typeof values[number]>>;
-    valid<T extends number>(values: T[]): NumberSchema<BoxType<N, typeof values[number]>>;
+    valid<T extends number>(...values: T[]): NumberSchema<BoxType<N, (typeof values)[number]>>;
+    valid<T extends number>(values: T[]): NumberSchema<BoxType<N, (typeof values)[number]>>;
     valid(...values: any[]): this;
     valid(values: any[]): this;
 
@@ -128,8 +128,8 @@ declare module 'joi' {
       description?: string,
     ): BooleanSchema<BoxType<N, N['T'] | T>>;
 
-    valid<T extends boolean>(...values: T[]): BooleanSchema<BoxType<N, typeof values[number]>>;
-    valid<T extends boolean>(values: T[]): BooleanSchema<BoxType<N, typeof values[number]>>;
+    valid<T extends boolean>(...values: T[]): BooleanSchema<BoxType<N, (typeof values)[number]>>;
+    valid<T extends boolean>(values: T[]): BooleanSchema<BoxType<N, (typeof values)[number]>>;
     valid(...values: any[]): this;
     valid(values: any[]): this;
 
@@ -152,8 +152,8 @@ declare module 'joi' {
     default(value: any, description?: string): this;
     default<T extends Date>(value: T, description?: string): DateSchema<BoxType<N, N['T'] | T>>;
 
-    valid<T extends Date>(...values: T[]): DateSchema<BoxType<N, typeof values[number]>>;
-    valid<T extends Date>(values: T[]): DateSchema<BoxType<N, typeof values[number]>>;
+    valid<T extends Date>(...values: T[]): DateSchema<BoxType<N, (typeof values)[number]>>;
+    valid<T extends Date>(values: T[]): DateSchema<BoxType<N, (typeof values)[number]>>;
     valid(...values: any[]): this;
     valid(values: any[]): this;
 
@@ -291,7 +291,7 @@ declare module 'joi' {
       R,
       T1 extends mappedSchema,
       T2 extends mappedSchema,
-      T extends { then: T1; otherwise: T2 }
+      T extends { then: T1; otherwise: T2 },
     >(
       ref: R,
       defs: T,
@@ -304,17 +304,17 @@ declare module 'joi' {
 
   export function alternatives<T extends mappedSchema[]>(
     ...alts: T
-  ): AlternativesSchema<Box<extractType<typeof alts[number]>, false>>;
+  ): AlternativesSchema<Box<extractType<(typeof alts)[number]>, false>>;
   export function alternatives<T extends mappedSchema[]>(
     alts: T,
-  ): AlternativesSchema<Box<extractType<typeof alts[number]>, false>>;
+  ): AlternativesSchema<Box<extractType<(typeof alts)[number]>, false>>;
 
   export function alt<T extends mappedSchema[]>(
     ...alts: T
-  ): AlternativesSchema<Box<extractType<typeof alts[number]>, false>>;
+  ): AlternativesSchema<Box<extractType<(typeof alts)[number]>, false>>;
   export function alt<T extends mappedSchema[]>(
     alts: T,
-  ): AlternativesSchema<Box<extractType<typeof alts[number]>, false>>;
+  ): AlternativesSchema<Box<extractType<(typeof alts)[number]>, false>>;
 
   // Required | Optional properties engine
   type FilterVoid<T extends string | number | symbol, O extends MarkRequired<any, boolean>> = {
@@ -331,16 +331,16 @@ declare module 'joi' {
         ? T[K]
         : void
       : B extends false
-      ? T[K]
-      : void;
+        ? T[K]
+        : void;
   };
 
   type Required<T> = FilterVoid<keyof T, MarkRequired<T, true>>;
   type Optional<T> = FilterVoid<keyof T, MarkRequired<T, false>>;
 
-  type extractMap<T extends mappedSchemaMap> = Map<
-    { [K in keyof Optional<T>]?: extractType<T[K]> }
-  > &
+  type extractMap<T extends mappedSchemaMap> = Map<{
+    [K in keyof Optional<T>]?: extractType<T[K]>;
+  }> &
     Map<{ [K in keyof Required<T>]: extractType<T[K]> }>;
 
   type maybeExtractBox<T> = T extends Box<infer O, infer R> ? O : T;

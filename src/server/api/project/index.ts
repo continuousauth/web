@@ -21,9 +21,7 @@ export function projectRoutes() {
       {
         a,
         body: {
-          repoId: Joi.number()
-            .integer()
-            .required(),
+          repoId: Joi.number().integer().required(),
         },
       },
       async (req, res) => {
@@ -57,11 +55,12 @@ export function projectRoutes() {
         }
 
         const project = await Project.create({
-          id: req.body.repoId,
+          id: `${req.body.repoId}`,
           repoName: repo.name,
           repoOwner: repo.owner.login,
           secret: generateNewSecret(256),
           defaultBranch: repo.default_branch,
+          enabled: true,
         });
         res.status(201).json(project);
       },
@@ -74,9 +73,7 @@ export function projectRoutes() {
       {
         a,
         params: {
-          id: Joi.number()
-            .integer()
-            .required(),
+          id: Joi.number().integer().required(),
         },
       },
       async (req, res) => {
@@ -112,9 +109,7 @@ export function projectRoutes() {
       {
         a,
         params: {
-          id: Joi.number()
-            .integer()
-            .required(),
+          id: Joi.number().integer().required(),
         },
       },
       async (req, res) => {
@@ -130,7 +125,7 @@ export function projectRoutes() {
             })
           )
             .sort((a, b) => b.requested.getTime() - a.requested.getTime())
-            .map(req => {
+            .map((req) => {
               const simpleReq: Partial<OTPRequest<unknown, unknown>> = req.get();
               delete simpleReq.proof;
               delete simpleReq.requestMetadata;
@@ -148,9 +143,7 @@ export function projectRoutes() {
       {
         a,
         params: {
-          id: Joi.number()
-            .integer()
-            .required(),
+          id: Joi.number().integer().required(),
         },
       },
       async (req, res) => {
@@ -175,16 +168,14 @@ export function projectRoutes() {
       {
         a,
         params: {
-          id: Joi.number()
-            .integer()
-            .required(),
+          id: Joi.number().integer().required(),
         },
       },
       async (req, res) => {
         const project = await getProjectFromIdAndCheckPermissions(req.params.id, req, res);
         if (!project) return;
 
-        await withTransaction(async t => {
+        await withTransaction(async (t) => {
           project.enabled = false;
           await project.resetAllResponders(t);
           await project.resetAllRequesters(t);

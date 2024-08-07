@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as jwt from 'jsonwebtoken';
+import type * as jwt from 'jsonwebtoken';
 
 import { Project, OTPRequest } from '../db/models';
 import { RequestInformation } from '../responders/Responder';

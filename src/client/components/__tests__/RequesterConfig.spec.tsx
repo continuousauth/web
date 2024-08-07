@@ -50,11 +50,7 @@ describe('<RequesterConfig />', () => {
     const project = mockProject();
     const mounted = shallow(<RequesterConfig project={project} setProject={setProject} />);
     expect(
-      mounted
-        .find('Memo(ForwardRef(Paragraph))')
-        .at(0)
-        .text()
-        .includes('choose one'),
+      mounted.find('Memo(ForwardRef(Paragraph))').at(0).text().includes('choose one'),
     ).toBeTruthy();
   });
 
@@ -62,12 +58,7 @@ describe('<RequesterConfig />', () => {
     const setProject = jest.fn();
     const mounted = shallow(<RequesterConfig project={mockProject()} setProject={setProject} />);
     expect(mounted.find('CircleCIRequesterConfig')).toHaveLength(0);
-    act(() =>
-      (mounted
-        .find('Memo(ForwardRef(Tab))')
-        .at(0)
-        .prop('onSelect') as Function)(),
-    );
+    act(() => (mounted.find('Memo(ForwardRef(Tab))').at(0).prop('onSelect') as Function)());
     mounted.setProps({});
     expect(mounted.find('CircleCIRequesterConfig')).toHaveLength(1);
   });

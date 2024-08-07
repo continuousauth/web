@@ -15,9 +15,9 @@ export interface Props {
 export function AddProjectDialog({ isOpen, onClose, repos }: Props) {
   const [selectedOwner, setSelectedOwner] = React.useState<string | undefined>(undefined);
   const [selectedRepo, setSelectedRepo] = React.useState<string | undefined>(undefined);
-  const owners = Array.from(new Set(repos.map(r => r.repoOwner))).sort();
-  const possibleRepos = selectedOwner ? repos.filter(r => r.repoOwner === selectedOwner) : [];
-  const selectedRepoObject = selectedRepo ? repos.find(r => r.id === selectedRepo) : null;
+  const owners = Array.from(new Set(repos.map((r) => r.repoOwner))).sort();
+  const possibleRepos = selectedOwner ? repos.filter((r) => r.repoOwner === selectedOwner) : [];
+  const selectedRepoObject = selectedRepo ? repos.find((r) => r.id === selectedRepo) : null;
   const selectedRepoName = selectedRepoObject ? selectedRepoObject.repoName : null;
 
   const createProjectOptions = React.useMemo(
@@ -71,13 +71,13 @@ export function AddProjectDialog({ isOpen, onClose, repos }: Props) {
         <b className={styles.label}>Owner:</b>
         <SelectMenu
           title="Select Owner"
-          options={owners.map(owner => ({
+          options={owners.map((owner) => ({
             label: owner,
             value: owner,
           }))}
           selected={selectedOwner}
           closeOnSelect
-          onSelect={item => {
+          onSelect={(item) => {
             setSelectedRepo(undefined);
             setSelectedOwner(item.value as string);
           }}
@@ -89,13 +89,13 @@ export function AddProjectDialog({ isOpen, onClose, repos }: Props) {
         <b className={styles.label}>Repository:</b>
         <SelectMenu
           title="Select Repository"
-          options={possibleRepos.map(repo => ({
+          options={possibleRepos.map((repo) => ({
             label: repo.repoName,
             value: repo.id,
           }))}
           selected={selectedRepo}
           closeOnSelect
-          onSelect={item => setSelectedRepo(item.value as string)}
+          onSelect={(item) => setSelectedRepo(item.value as string)}
         >
           <Button disabled={!selectedOwner || creatingProject}>
             {selectedRepoName || 'Select Repository...'}
