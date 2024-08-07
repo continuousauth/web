@@ -2,7 +2,7 @@ import { Octokit } from '@octokit/rest';
 import axios from 'axios';
 import { Request, Response } from 'express';
 import * as Joi from 'joi';
-import * as jwt from 'jsonwebtoken';
+import type * as jwt from 'jsonwebtoken';
 
 import { Requester, AllowedState } from './Requester';
 import { Project, CircleCIRequesterConfig, OTPRequest } from '../db/models';
