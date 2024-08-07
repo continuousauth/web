@@ -41,9 +41,7 @@ describe('requester endpoint creator', () => {
     });
 
     it('should reject requests for projects that do not exist', async () => {
-      const response = await request(router)
-        .delete('/123/test')
-        .auth('abc', { type: 'bearer' });
+      const response = await request(router).delete('/123/test').auth('abc', { type: 'bearer' });
       expect(response.status).toBe(404);
       expect(response.text).toMatchInlineSnapshot(
         `"{"error":"Project not found, disabled or you are not authorizad to access it"}"`,
@@ -59,9 +57,7 @@ describe('requester endpoint creator', () => {
         defaultBranch: 'main',
       });
       await project.save();
-      const response = await request(router)
-        .delete('/123/test')
-        .auth('username', 'password');
+      const response = await request(router).delete('/123/test').auth('username', 'password');
       expect(response.status).toBe(404);
       expect(response.text).toMatchInlineSnapshot(
         `"{"error":"Project not found, disabled or you are not authorizad to access it"}"`,
@@ -270,7 +266,7 @@ describe('requester endpoint creator', () => {
           mock.metadataForInitialRequest.mockImplementationOnce(async (req, res) => ({
             metadata: 321,
           }));
-          mock.isOTPRequestValidForRequester.mockImplementationOnce(request => request);
+          mock.isOTPRequestValidForRequester.mockImplementationOnce((request) => request);
           mock.validateActiveRequest.mockImplementationOnce(async () => ({
             ok: false,
             error: "that isn't a bird, that's a plane",
@@ -296,7 +292,7 @@ describe('requester endpoint creator', () => {
           mock.metadataForInitialRequest.mockImplementationOnce(async (req, res) => ({
             metadata: 321,
           }));
-          mock.isOTPRequestValidForRequester.mockImplementationOnce(request => request);
+          mock.isOTPRequestValidForRequester.mockImplementationOnce((request) => request);
           mock.validateActiveRequest.mockImplementationOnce(async () => ({
             ok: true,
           }));
@@ -318,7 +314,7 @@ describe('requester endpoint creator', () => {
           mock.metadataForInitialRequest.mockImplementation(async (req, res) => ({
             metadata: 321,
           }));
-          mock.isOTPRequestValidForRequester.mockImplementation(request => request);
+          mock.isOTPRequestValidForRequester.mockImplementation((request) => request);
           mock.validateActiveRequest.mockImplementation(async () => ({
             ok: true,
           }));
@@ -405,7 +401,7 @@ describe('requester endpoint creator', () => {
         });
 
         it('should 422 for a request associated with a project that does not have a valid config for this requester', async () => {
-          mock.isOTPRequestValidForRequester.mockImplementation(async r => r);
+          mock.isOTPRequestValidForRequester.mockImplementation(async (r) => r);
           mock.getConfigForProject.mockImplementation(() => null);
           const response = await request(router).post(`/123/test/${testUuid}/validate`);
           expect(mock.getConfigForProject).toBeCalled();
@@ -416,7 +412,7 @@ describe('requester endpoint creator', () => {
         });
 
         it('should 500 for a request associated with a project has a mis-implementeded getConfigForProject as async', async () => {
-          mock.isOTPRequestValidForRequester.mockImplementation(async r => r);
+          mock.isOTPRequestValidForRequester.mockImplementation(async (r) => r);
           mock.getConfigForProject.mockImplementation(async () => null);
           const response = await request(router).post(`/123/test/${testUuid}/validate`);
           expect(mock.getConfigForProject).toBeCalled();
@@ -429,7 +425,7 @@ describe('requester endpoint creator', () => {
         it('should 400 for a request that has errored', async () => {
           req.state = 'error';
           await req.save();
-          mock.isOTPRequestValidForRequester.mockImplementation(async r => r);
+          mock.isOTPRequestValidForRequester.mockImplementation(async (r) => r);
           mock.getConfigForProject.mockImplementation(() => ({ config: 'stuff' }));
           const response = await request(router).post(`/123/test/${testUuid}/validate`);
           expect(response.status).toBe(400);
@@ -441,7 +437,7 @@ describe('requester endpoint creator', () => {
         it('should 400 for a request that has been responded to already', async () => {
           req.state = 'responded';
           await req.save();
-          mock.isOTPRequestValidForRequester.mockImplementation(async r => r);
+          mock.isOTPRequestValidForRequester.mockImplementation(async (r) => r);
           mock.getConfigForProject.mockImplementation(() => ({ config: 'stuff' }));
           const response = await request(router).post(`/123/test/${testUuid}/validate`);
           expect(response.status).toBe(400);
@@ -453,7 +449,7 @@ describe('requester endpoint creator', () => {
         it('should 400 for a request that has been validated already', async () => {
           req.state = 'validated';
           await req.save();
-          mock.isOTPRequestValidForRequester.mockImplementation(async r => r);
+          mock.isOTPRequestValidForRequester.mockImplementation(async (r) => r);
           mock.getConfigForProject.mockImplementation(() => ({ config: 'stuff' }));
           const response = await request(router).post(`/123/test/${testUuid}/validate`);
           expect(response.status).toBe(400);

@@ -6,10 +6,7 @@ import { ExpressRequest, hasAdminAccessToTargetRepo } from '../../helpers/_middl
 
 export const generateNewSecret = (size: number) => {
   if (size > 256) throw new Error('size must be <= 256');
-  return crypto
-    .randomBytes(256)
-    .toString('hex')
-    .slice(0, size);
+  return crypto.randomBytes(256).toString('hex').slice(0, size);
 };
 
 export const sanitizeProject = (project: Project) => project;

@@ -51,9 +51,7 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
       {
         a,
         params: {
-          projectId: Joi.number()
-            .integer()
-            .required(),
+          projectId: Joi.number().integer().required(),
         },
       },
       async (req, res, next) => {
@@ -99,9 +97,7 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
       {
         a,
         params: {
-          projectId: Joi.number()
-            .integer()
-            .required(),
+          projectId: Joi.number().integer().required(),
         },
         body: {
           token: Joi.string().required(),
@@ -135,7 +131,7 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
 
         let claims = jwt.decode(req.body.token, { complete: true }) as jwt.Jwt | null;
         if (!claims) return res.status(422).json({ error: 'Invalid OIDC token provided' });
-        const key = jwks.data.keys.find(key => key.kid === claims!.header.kid);
+        const key = jwks.data.keys.find((key) => key.kid === claims!.header.kid);
 
         if (!key) return res.status(422).json({ error: 'Invalid kid found in the token provided' });
 
@@ -184,9 +180,7 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
       {
         a,
         params: {
-          projectId: Joi.number()
-            .integer()
-            .required(),
+          projectId: Joi.number().integer().required(),
         },
       },
       async (req, res) => {
@@ -241,12 +235,8 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
       {
         a,
         params: {
-          projectId: Joi.number()
-            .integer()
-            .required(),
-          requestId: Joi.string()
-            .uuid({ version: 'uuidv4' })
-            .required(),
+          projectId: Joi.number().integer().required(),
+          requestId: Joi.string().uuid({ version: 'uuidv4' }).required(),
         },
       },
       async (req, res) => {
@@ -325,12 +315,8 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
       {
         a,
         params: {
-          projectId: Joi.number()
-            .integer()
-            .required(),
-          requestId: Joi.string()
-            .uuid({ version: 'uuidv4' })
-            .required(),
+          projectId: Joi.number().integer().required(),
+          requestId: Joi.string().uuid({ version: 'uuidv4' }).required(),
         },
       },
       async (req, res) => {

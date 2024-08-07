@@ -31,7 +31,7 @@ export async function updateCircleEnvVars(project: Project, accessToken: string)
   );
   if (existing.status !== 200) return;
 
-  if (existing.data.find(item => item.name === 'CFA_SECRET')) {
+  if (existing.data.find((item) => item.name === 'CFA_SECRET')) {
     await client.delete(
       `/project/github/${project.repoOwner}/${project.repoName}/envvar/CFA_SECRET`,
     );
@@ -41,7 +41,7 @@ export async function updateCircleEnvVars(project: Project, accessToken: string)
     value: project.secret,
   });
 
-  if (existing.data.find(item => item.name === 'CFA_PROJECT_ID')) {
+  if (existing.data.find((item) => item.name === 'CFA_PROJECT_ID')) {
     await client.delete(
       `/project/github/${project.repoOwner}/${project.repoName}/envvar/CFA_PROJECT_ID`,
     );
@@ -61,14 +61,10 @@ export function configRoutes() {
       {
         a,
         params: {
-          id: Joi.number()
-            .integer()
-            .required(),
+          id: Joi.number().integer().required(),
         },
         body: {
-          accessToken: Joi.string()
-            .min(1)
-            .required(),
+          accessToken: Joi.string().min(1).required(),
         },
       },
       async (req, res) => {
@@ -95,7 +91,7 @@ export function configRoutes() {
 
         await updateCircleEnvVars(project, req.body.accessToken);
 
-        const newProject = await withTransaction(async t => {
+        const newProject = await withTransaction(async (t) => {
           const config = await CircleCIRequesterConfig.create(
             {
               accessToken: req.body.accessToken,
@@ -124,16 +120,14 @@ export function configRoutes() {
       {
         a,
         params: {
-          id: Joi.number()
-            .integer()
-            .required(),
+          id: Joi.number().integer().required(),
         },
       },
       async (req, res) => {
         const project = await getProjectFromIdAndCheckPermissions(req.params.id, req, res);
         if (!project) return;
 
-        const linker = await withTransaction(async t => {
+        const linker = await withTransaction(async (t) => {
           await SlackResponderLinker.destroy({
             where: {
               projectId: project.id,
@@ -165,15 +159,10 @@ export function configRoutes() {
       {
         a,
         params: {
-          id: Joi.number()
-            .integer()
-            .required(),
+          id: Joi.number().integer().required(),
         },
         body: {
-          usernameToMention: Joi.string()
-            .min(1)
-            .max(50)
-            .required(),
+          usernameToMention: Joi.string().min(1).max(50).required(),
         },
       },
       async (req, res) => {

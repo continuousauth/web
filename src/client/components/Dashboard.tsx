@@ -55,7 +55,7 @@ export function Dashboard() {
   const fetchedRepos = reposFetch.result;
 
   const notConfigured = fetchedRepos.all.filter(
-    r => !fetchedRepos.configured.find(configured => `${configured.id}` === `${r.id}`),
+    (r) => !fetchedRepos.configured.find((configured) => `${configured.id}` === `${r.id}`),
   );
 
   const addProject = (
@@ -111,7 +111,7 @@ export function Dashboard() {
             if (ownerCompare === 0) return a.repoName.localeCompare(b.repoName);
             return ownerCompare;
           })
-          .map(repo => (
+          .map((repo) => (
             <Pane key={repo.id} className={styles.projectCard}>
               <Pane className={styles.projectHeader}>
                 <Tooltip content={`Default branch: ${repo.defaultBranch}`} position={Position.LEFT}>

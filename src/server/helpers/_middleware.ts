@@ -87,39 +87,41 @@ export type ValidatedRequest<V extends ValidationOptionsObject> = Pick<
   [Symbol.asyncIterator](): AsyncIterableIterator<any>;
 };
 
-export const validate = <V extends ValidationOptionsObject>(
-  options: V,
-  handler: (req: ValidatedRequest<V>, res: express.Response, next: express.NextFunction) => void,
-): express.RequestHandler => (req: ExpressRequest, res, next) => {
-  if (options.body) {
-    const result = Joi.validate(req.body, options.body);
-    if (result.error) {
-      return res.status(400).json({
-        error: 'Body Validation Error',
-        message: result.error.message,
-      });
+export const validate =
+  <V extends ValidationOptionsObject>(
+    options: V,
+    handler: (req: ValidatedRequest<V>, res: express.Response, next: express.NextFunction) => void,
+  ): express.RequestHandler =>
+  (req: ExpressRequest, res, next) => {
+    if (options.body) {
+      const result = Joi.validate(req.body, options.body);
+      if (result.error) {
+        return res.status(400).json({
+          error: 'Body Validation Error',
+          message: result.error.message,
+        });
+      }
     }
-  }
 
-  if (options.query) {
-    const result = Joi.validate(req.query, options.query);
-    if (result.error) {
-      return res.status(400).json({
-        error: 'Query Validation Error',
-        message: result.error.message,
-      });
+    if (options.query) {
+      const result = Joi.validate(req.query, options.query);
+      if (result.error) {
+        return res.status(400).json({
+          error: 'Query Validation Error',
+          message: result.error.message,
+        });
+      }
     }
-  }
 
-  if (options.params) {
-    const result = Joi.validate(req.params, Joi.object(options.params).unknown(true));
-    if (result.error) {
-      return res.status(400).json({
-        error: 'Params Validation Error',
-        message: result.error.message,
-      });
+    if (options.params) {
+      const result = Joi.validate(req.params, Joi.object(options.params).unknown(true));
+      if (result.error) {
+        return res.status(400).json({
+          error: 'Params Validation Error',
+          message: result.error.message,
+        });
+      }
     }
-  }
 
-  return options.a(handler)(req as any, res, next);
-};
+    return options.a(handler)(req as any, res, next);
+  };

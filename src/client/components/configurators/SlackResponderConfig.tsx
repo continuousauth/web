@@ -105,7 +105,7 @@ export function SlackResponderConfig({ project, setProject }: Props) {
           </Heading>
           <TextInput
             value={usernameToMention}
-            onChange={e => setUsernameToMention(e.currentTarget.value)}
+            onChange={(e) => setUsernameToMention(e.currentTarget.value)}
           />
           {usernameToMention !== project.responder_slack.usernameToMention && usernameToMention ? (
             <Button

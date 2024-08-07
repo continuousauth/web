@@ -114,16 +114,10 @@ bolt.command(
     if (!linkerId)
       return await respond({
         response_type: 'ephemeral',
-        text:
-          'Missing required argument "link-id", please ensure you followed the instructions on CFA exactly.',
+        text: 'Missing required argument "link-id", please ensure you followed the instructions on CFA exactly.',
       });
 
-    const result = Joi.validate(
-      linkerId,
-      Joi.string()
-        .uuid({ version: 'uuidv4' })
-        .required(),
-    );
+    const result = Joi.validate(linkerId, Joi.string().uuid({ version: 'uuidv4' }).required());
     if (result.error) {
       return await respond({
         response_type: 'ephemeral',
@@ -137,8 +131,7 @@ bolt.command(
     if (!linker)
       return await respond({
         response_type: 'ephemeral',
-        text:
-          'The linker ID provided has either already been used or does not exist, please head back to CFA and try again.',
+        text: 'The linker ID provided has either already been used or does not exist, please head back to CFA and try again.',
       });
 
     const info = await bolt.client.team.info({
@@ -148,12 +141,11 @@ bolt.command(
       console.error('Failed to link team', info.error);
       return respond({
         response_type: 'ephemeral',
-        text:
-          'An internal error occurred while trying to link this Slack team to CFA.  Please try again later.',
+        text: 'An internal error occurred while trying to link this Slack team to CFA.  Please try again later.',
       });
     }
 
-    await withTransaction(async t => {
+    await withTransaction(async (t) => {
       const config = await SlackResponderConfig.create(
         {
           teamName: (info as any).team.name,
@@ -240,18 +232,12 @@ bolt.action(
       await ack();
       const requestId = action.callback_id.slice(4);
 
-      const result = Joi.validate(
-        requestId,
-        Joi.string()
-          .uuid({ version: 'uuidv4' })
-          .required(),
-      );
+      const result = Joi.validate(requestId, Joi.string().uuid({ version: 'uuidv4' }).required());
 
       if (result.error) {
         return await respond({
           response_type: 'ephemeral',
-          text:
-            ':red_circle: CFA experienced an unexpected error while processing your response, please try again later.',
+          text: ':red_circle: CFA experienced an unexpected error while processing your response, please try again later.',
         });
       }
 
@@ -259,8 +245,7 @@ bolt.action(
       if (!request) {
         return await respond({
           response_type: 'ephemeral',
-          text:
-            ':red_circle: CFA experienced an unexpected error while finding your request, please try again later.',
+          text: ':red_circle: CFA experienced an unexpected error while finding your request, please try again later.',
         });
       }
 
@@ -305,8 +290,7 @@ bolt.action(
         await request.save();
         return await respond({
           response_type: 'ephemeral',
-          text:
-            ':red_circle: CFA experienced an unexpected error while updating your request, please try again later.',
+          text: ':red_circle: CFA experienced an unexpected error while updating your request, please try again later.',
         });
       }
     } else {

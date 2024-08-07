@@ -93,7 +93,7 @@ app.get(
       return res.redirect('/oauth_result/slack?error=Failed to get bot installation info');
     }
 
-    await withTransaction(async t => {
+    await withTransaction(async (t) => {
       const existingInstall = await SlackInstall.findOne({
         where: {
           teamId: team_id,
@@ -120,10 +120,7 @@ app.get(
   }),
 );
 
-export async function authorizeTeam(opts: {
-  teamId?: string;
-  enterpriseId?: string;
-}): Promise<{
+export async function authorizeTeam(opts: { teamId?: string; enterpriseId?: string }): Promise<{
   botToken: string;
   botId: string;
   botUserId: string;
