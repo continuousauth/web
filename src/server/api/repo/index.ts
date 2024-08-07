@@ -34,16 +34,17 @@ export function repoRoutes() {
           auth: req.user.accessToken,
         });
 
-        const allRepos: RestEndpointMethodTypes['repos']['listForAuthenticatedUser']['response']['data'] = await github.paginate(
-          github.repos.listForAuthenticatedUser.endpoint.merge({
-            per_page: 100,
-            visibility: 'public',
-          }),
-        );
+        const allRepos: RestEndpointMethodTypes['repos']['listForAuthenticatedUser']['response']['data'] =
+          await github.paginate(
+            github.repos.listForAuthenticatedUser.endpoint.merge({
+              per_page: 100,
+              visibility: 'public',
+            }),
+          );
 
         reposWithAdmin = allRepos
-          .filter(r => r.permissions?.admin)
-          .map(r => ({
+          .filter((r) => r.permissions?.admin)
+          .map((r) => ({
             id: `${r.id}`,
             repoName: r.name,
             repoOwner: r.owner.login,
@@ -55,7 +56,7 @@ export function repoRoutes() {
       const configured = await Project.findAll({
         where: {
           id: {
-            [Op.in]: reposWithAdmin.map(r => r.id),
+            [Op.in]: reposWithAdmin.map((r) => r.id),
           },
           enabled: true,
         },
@@ -69,8 +70,8 @@ export function repoRoutes() {
       // configs should be stripped to tiny amounts of information and no API keys
       // or ID's.
       const configuredMapped: SimpleProject[] = await Promise.all(
-        configured.map(async p => {
-          const updatedRepo = reposWithAdmin!.find(r => r.id === p.id)!;
+        configured.map(async (p) => {
+          const updatedRepo = reposWithAdmin!.find((r) => r.id === p.id)!;
           let updated = false;
           if (updatedRepo.defaultBranch && p.defaultBranch !== updatedRepo.defaultBranch) {
             p.defaultBranch = updatedRepo.defaultBranch;

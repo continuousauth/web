@@ -44,7 +44,7 @@ export function authRoutes() {
       if (err) return res.redirect('/api/auth/login');
       delete user.profile._raw;
       delete user.profile._json;
-      req.login(user, err => {
+      req.login(user, (err) => {
         if (err) return res.redirect('/api/auth/login');
         res.redirect('/');
       });

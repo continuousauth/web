@@ -67,7 +67,7 @@ export function GenericAccessTokenRequesterConfig({
         <TextInput
           value={accessToken}
           type="password"
-          onChange={e => setAccesToken(e.currentTarget.value)}
+          onChange={(e) => setAccesToken(e.currentTarget.value)}
           disabled={saving}
         />
         {accessToken !== originalAccessToken && accessToken ? (

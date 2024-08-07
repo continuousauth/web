@@ -5,7 +5,7 @@ import { mockProject } from '../../../../__mocks__/project';
 
 describe('<GenericAccessTokenRequesterConfig />', () => {
   beforeEach(() => {
-    (global as any).Headers = function(o) {
+    (global as any).Headers = function (o) {
       return o;
     } as any;
   });

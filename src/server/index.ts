@@ -27,7 +27,7 @@ const redisClient = redis.createClient({
     rejectUnauthorized: false,
   },
 });
-redisClient.connect().catch(err => {
+redisClient.connect().catch((err) => {
   console.error(err);
   process.exit(1);
 });
@@ -77,7 +77,7 @@ if (process.mainModule === module) {
         d('CFA server running on port:', port);
       });
     })
-    .catch(err => {
+    .catch((err) => {
       d('Failed to connect to DB', err);
       process.exit(1);
     });

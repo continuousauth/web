@@ -60,9 +60,7 @@ describe('validate middleware', () => {
         successHandler,
       ),
     );
-    const response = await request(router)
-      .post('/')
-      .send({ bad: true });
+    const response = await request(router).post('/').send({ bad: true });
     expect(response.status).toBe(400);
     expect(response.body).toMatchInlineSnapshot(`
       {
@@ -136,9 +134,7 @@ describe('validate middleware', () => {
         successHandler,
       ),
     );
-    const response = await request(router)
-      .post('/foo?bar=1')
-      .send({ foo: 'hey' });
+    const response = await request(router).post('/foo?bar=1').send({ foo: 'hey' });
     expect(response.status).toBe(321);
     expect(response.body).toMatchInlineSnapshot(`
       {

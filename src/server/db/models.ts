@@ -187,10 +187,7 @@ export class SlackInstall extends Model<SlackInstall> {
 @Table(tableOptions)
 export class OTPRequest<Req = unknown, Res = unknown> extends Model<OTPRequest<Req, Res>> {
   static generateProof() {
-    return crypto
-      .randomBytes(2048)
-      .toString('hex')
-      .toLowerCase();
+    return crypto.randomBytes(2048).toString('hex').toLowerCase();
   }
   @PrimaryKey
   @Default(DataType.UUIDV4)
@@ -317,7 +314,7 @@ const initializeInstance = async (sequelize: Sequelize) => {
   await sequelize.sync();
 
   for (const migrationFn of migrationFns) {
-    await sequelize.transaction(async t => {
+    await sequelize.transaction(async (t) => {
       await migrationFn(t, sequelize.getQueryInterface());
     });
   }
@@ -364,7 +361,7 @@ export const __overrideSequelizeInstanceForTesting = async (_instance: Sequelize
 
 export const withTransaction = async <T>(fn: (t: Transaction) => Promise<T>) => {
   const instance = await getSequelizeInstance();
-  return instance.transaction(async t => {
+  return instance.transaction(async (t) => {
     return await fn(t);
   });
 };

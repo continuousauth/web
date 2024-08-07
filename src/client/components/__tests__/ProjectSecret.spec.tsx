@@ -18,12 +18,7 @@ describe('<ProjectSecret />', () => {
 
   it('should initially dispplay asterix (not the secret)', () => {
     const mounted = mount(<ProjectSecret project={mockProject()} />);
-    expect(
-      mounted
-        .find('ForwardRef(Button)')
-        .children()
-        .text(),
-    ).toMatchInlineSnapshot(`"Show"`);
+    expect(mounted.find('ForwardRef(Button)').children().text()).toMatchInlineSnapshot(`"Show"`);
     expect(mounted.find('ForwardRef(TextInput)').prop('value')).toMatchInlineSnapshot(
       `"••••••••••••••••••••••••••••••••••••••••••••••••••"`,
     );
@@ -32,12 +27,7 @@ describe('<ProjectSecret />', () => {
   it('should toggle to display the secret when the button is clicked', () => {
     const mounted = mount(<ProjectSecret project={mockProject()} />);
     mounted.find('ForwardRef(Button)').simulate('click');
-    expect(
-      mounted
-        .find('ForwardRef(Button)')
-        .children()
-        .text(),
-    ).toMatchInlineSnapshot(`"Hide"`);
+    expect(mounted.find('ForwardRef(Button)').children().text()).toMatchInlineSnapshot(`"Hide"`);
     expect(mounted.find('ForwardRef(TextInput)').prop('value')).toBe(mockProject().secret);
   });
 });
