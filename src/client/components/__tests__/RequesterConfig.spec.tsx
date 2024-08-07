@@ -6,7 +6,6 @@ jest.mock('../configurators/CircleCIRequesterConfig', () => ({
   CircleCIRequesterConfig: () => null,
 }));
 
-
 import * as React from 'react';
 import { act } from 'react-dom/test-utils';
 import { shallow, mount } from 'enzyme';
