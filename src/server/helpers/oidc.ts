@@ -24,7 +24,7 @@ export const getSignatureValidatedOIDCClaims = async <R, M>(
 
   let claims = jwt.decode(token, { complete: true }) as jwt.Jwt | null;
   if (!claims) throw 'Invalid OIDC token provided';
-  const key = jwks.data.keys.find(key => key.kid === claims!.header.kid);
+  const key = jwks.data.keys.find((key) => key.kid === claims!.header.kid);
 
   if (!key) throw 'Invalid kid found in the token provided';
 

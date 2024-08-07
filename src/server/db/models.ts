@@ -102,7 +102,10 @@ export class Project extends Model<InferAttributes<Project>, InferCreationAttrib
 }
 
 @Table(tableOptions)
-export class GitHubActionsRequesterConfig extends Model<InferAttributes<GitHubActionsRequesterConfig>, InferCreationAttributes<GitHubActionsRequesterConfig>> {
+export class GitHubActionsRequesterConfig extends Model<
+  InferAttributes<GitHubActionsRequesterConfig>,
+  InferCreationAttributes<GitHubActionsRequesterConfig>
+> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)

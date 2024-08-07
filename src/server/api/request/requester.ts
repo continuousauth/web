@@ -49,9 +49,7 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
       {
         a,
         params: {
-          projectId: Joi.number()
-            .integer()
-            .required(),
+          projectId: Joi.number().integer().required(),
         },
       },
       async (req, res, next) => {
@@ -97,9 +95,7 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
       {
         a,
         params: {
-          projectId: Joi.number()
-            .integer()
-            .required(),
+          projectId: Joi.number().integer().required(),
         },
         body: {
           token: Joi.string().required(),
@@ -167,9 +163,7 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
       {
         a,
         params: {
-          projectId: Joi.number()
-            .integer()
-            .required(),
+          projectId: Joi.number().integer().required(),
         },
       },
       async (req, res) => {
@@ -224,12 +218,8 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
       {
         a,
         params: {
-          projectId: Joi.number()
-            .integer()
-            .required(),
-          requestId: Joi.string()
-            .uuid({ version: 'uuidv4' })
-            .required(),
+          projectId: Joi.number().integer().required(),
+          requestId: Joi.string().uuid({ version: 'uuidv4' }).required(),
         },
       },
       async (req, res) => {
@@ -311,12 +301,8 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
       {
         a,
         params: {
-          projectId: Joi.number()
-            .integer()
-            .required(),
-          requestId: Joi.string()
-            .uuid({ version: 'uuidv4' })
-            .required(),
+          projectId: Joi.number().integer().required(),
+          requestId: Joi.string().uuid({ version: 'uuidv4' }).required(),
         },
       },
       async (req, res) => {

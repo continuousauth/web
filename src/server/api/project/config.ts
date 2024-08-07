@@ -86,7 +86,7 @@ export async function updateGitHubActionsEnvironment(
       repo: project.repoName,
     });
     const cfaReleaseEnv = allEnvs.data.environments?.find(
-      e => e.name === CFA_RELEASE_GITHUB_ENVIRONMENT_NAME,
+      (e) => e.name === CFA_RELEASE_GITHUB_ENVIRONMENT_NAME,
     );
     if (!cfaReleaseEnv) {
       await github.repos.createOrUpdateEnvironment({
@@ -216,9 +216,7 @@ export function configRoutes() {
       {
         a,
         params: {
-          id: Joi.number()
-            .integer()
-            .required(),
+          id: Joi.number().integer().required(),
         },
         body: {},
       },
@@ -233,7 +231,7 @@ export function configRoutes() {
           return res.status(500).json({ error: 'Unknown Error' });
         }
 
-        const newProject = await withTransaction(async t => {
+        const newProject = await withTransaction(async (t) => {
           const config = await GitHubActionsRequesterConfig.create(
             {},
             {
