@@ -12,13 +12,19 @@ import {
   ForeignKey,
   Unique,
 } from 'sequelize-typescript';
-import { QueryInterface, Transaction } from 'sequelize';
+import {
+  CreationOptional,
+  InferAttributes,
+  InferCreationAttributes,
+  QueryInterface,
+  Transaction,
+} from 'sequelize';
 import * as url from 'url';
 
 const tableOptions = { freezeTableName: true, timestamps: false };
 
 @Table(tableOptions)
-export class Project extends Model<Project> {
+export class Project extends Model<InferAttributes<Project>, InferCreationAttributes<Project>> {
   /**
    * Project ID maps to GitHub repository id
    */
@@ -48,7 +54,7 @@ export class Project extends Model<Project> {
   @AllowNull(false)
   @Default(true)
   @Column(DataType.BOOLEAN)
-  enabled: boolean;
+  enabled: CreationOptional<boolean>;
 
   @AllowNull(false)
   @Column(DataType.STRING({ length: 256 }))
@@ -88,11 +94,14 @@ export class Project extends Model<Project> {
 }
 
 @Table(tableOptions)
-export class CircleCIRequesterConfig extends Model<CircleCIRequesterConfig> {
+export class CircleCIRequesterConfig extends Model<
+  InferAttributes<CircleCIRequesterConfig>,
+  InferCreationAttributes<CircleCIRequesterConfig>
+> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
-  id: string;
+  id: CreationOptional<string>;
 
   @AllowNull(false)
   @Column(DataType.STRING)
@@ -100,11 +109,14 @@ export class CircleCIRequesterConfig extends Model<CircleCIRequesterConfig> {
 }
 
 @Table(tableOptions)
-export class SlackResponderConfig extends Model<SlackResponderConfig> {
+export class SlackResponderConfig extends Model<
+  InferAttributes<SlackResponderConfig>,
+  InferCreationAttributes<SlackResponderConfig>
+> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
-  id: string;
+  id: CreationOptional<string>;
 
   @AllowNull(false)
   @Column(DataType.STRING)
@@ -139,11 +151,14 @@ export class SlackResponderConfig extends Model<SlackResponderConfig> {
  * Used as a middle-table to create a SlackResponderConfig
  */
 @Table(tableOptions)
-export class SlackResponderLinker extends Model<SlackResponderLinker> {
+export class SlackResponderLinker extends Model<
+  InferAttributes<SlackResponderLinker>,
+  InferCreationAttributes<SlackResponderLinker>
+> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
-  id: string;
+  id: CreationOptional<string>;
 
   @AllowNull(false)
   @ForeignKey(() => Project)
@@ -151,15 +166,18 @@ export class SlackResponderLinker extends Model<SlackResponderLinker> {
   projectId: string;
 
   @BelongsTo(() => Project, 'projectId')
-  project: Project;
+  project: CreationOptional<Project>;
 }
 
 @Table(tableOptions)
-export class SlackInstall extends Model<SlackInstall> {
+export class SlackInstall extends Model<
+  InferAttributes<SlackInstall>,
+  InferCreationAttributes<SlackInstall>
+> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
-  id: string;
+  id: CreationOptional<string>;
 
   @AllowNull(false)
   @Column(DataType.STRING)
@@ -185,14 +203,17 @@ export class SlackInstall extends Model<SlackInstall> {
 }
 
 @Table(tableOptions)
-export class OTPRequest<Req = unknown, Res = unknown> extends Model<OTPRequest<Req, Res>> {
+export class OTPRequest<Req = unknown, Res = unknown> extends Model<
+  InferAttributes<OTPRequest<Req, Res>>,
+  InferCreationAttributes<OTPRequest<Req, Res>>
+> {
   static generateProof() {
     return crypto.randomBytes(2048).toString('hex').toLowerCase();
   }
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
-  id: string;
+  id: CreationOptional<string>;
 
   /**
    * The project the OTP request is for
@@ -215,11 +236,11 @@ export class OTPRequest<Req = unknown, Res = unknown> extends Model<OTPRequest<R
    */
   @AllowNull(true)
   @Column(DataType.TEXT)
-  response: string;
+  response: string | null;
 
   @AllowNull(true)
   @Column(DataType.TEXT)
-  errorReason: string;
+  errorReason: string | null;
 
   /**
    * The time this request was, well... requested
@@ -233,14 +254,14 @@ export class OTPRequest<Req = unknown, Res = unknown> extends Model<OTPRequest<R
    */
   @AllowNull(true)
   @Column(DataType.DATE)
-  validated: Date;
+  validated: Date | null;
 
   /**
    * The time this request was responded to by a Responder
    */
   @AllowNull(true)
   @Column(DataType.DATE)
-  responded: Date;
+  responded: Date | null;
 
   @AllowNull(true)
   @Column(DataType.TEXT)
@@ -251,7 +272,7 @@ export class OTPRequest<Req = unknown, Res = unknown> extends Model<OTPRequest<R
    */
   @AllowNull(true)
   @Column(DataType.DATE)
-  errored: Date;
+  errored: Date | null;
 
   @AllowNull(false)
   @Column(DataType.JSON)
@@ -262,7 +283,7 @@ export class OTPRequest<Req = unknown, Res = unknown> extends Model<OTPRequest<R
   responseMetadata: Res;
 
   @BelongsTo(() => Project, 'projectId')
-  project: Project;
+  project: CreationOptional<Project>;
 }
 
 const migrationFns: ((t: Transaction, qI: QueryInterface) => Promise<void>)[] = [

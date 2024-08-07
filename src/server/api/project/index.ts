@@ -55,11 +55,12 @@ export function projectRoutes() {
         }
 
         const project = await Project.create({
-          id: req.body.repoId,
+          id: `${req.body.repoId}`,
           repoName: repo.name,
           repoOwner: repo.owner.login,
           secret: generateNewSecret(256),
           defaultBranch: repo.default_branch,
+          enabled: true,
         });
         res.status(201).json(project);
       },

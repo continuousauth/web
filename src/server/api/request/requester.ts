@@ -299,7 +299,7 @@ export function createRequesterRoutes<R, M>(requester: Requester<R, M>) {
         // metadata
         const newRequest = (await OTPRequest.findByPk(request.id))!;
 
-        await getResponderFor(request.project).requestOtp(
+        await getResponderFor<M>(request.project).requestOtp(
           request,
           await requester.getRequestInformationToPassOn(request),
         );

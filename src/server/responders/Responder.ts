@@ -5,8 +5,11 @@ export type RequestInformation = {
   url: string;
 };
 
-export abstract class Responder {
+export abstract class Responder<Req = unknown, Res = unknown> {
   constructor(protected project: Project) {}
 
-  abstract requestOtp(request: OTPRequest, info: RequestInformation | null): Promise<void>;
+  abstract requestOtp(
+    request: OTPRequest<Req, Res>,
+    info: RequestInformation | null,
+  ): Promise<void>;
 }
