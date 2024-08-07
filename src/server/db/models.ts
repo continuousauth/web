@@ -12,7 +12,13 @@ import {
   ForeignKey,
   Unique,
 } from 'sequelize-typescript';
-import { CreationOptional, InferAttributes, InferCreationAttributes, QueryInterface, Transaction } from 'sequelize';
+import {
+  CreationOptional,
+  InferAttributes,
+  InferCreationAttributes,
+  QueryInterface,
+  Transaction,
+} from 'sequelize';
 import * as url from 'url';
 
 const tableOptions = { freezeTableName: true, timestamps: false };
@@ -88,7 +94,10 @@ export class Project extends Model<InferAttributes<Project>, InferCreationAttrib
 }
 
 @Table(tableOptions)
-export class CircleCIRequesterConfig extends Model<InferAttributes<CircleCIRequesterConfig>, InferCreationAttributes<CircleCIRequesterConfig>> {
+export class CircleCIRequesterConfig extends Model<
+  InferAttributes<CircleCIRequesterConfig>,
+  InferCreationAttributes<CircleCIRequesterConfig>
+> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
@@ -100,7 +109,10 @@ export class CircleCIRequesterConfig extends Model<InferAttributes<CircleCIReque
 }
 
 @Table(tableOptions)
-export class SlackResponderConfig extends Model<InferAttributes<SlackResponderConfig>, InferCreationAttributes<SlackResponderConfig>> {
+export class SlackResponderConfig extends Model<
+  InferAttributes<SlackResponderConfig>,
+  InferCreationAttributes<SlackResponderConfig>
+> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
@@ -139,7 +151,10 @@ export class SlackResponderConfig extends Model<InferAttributes<SlackResponderCo
  * Used as a middle-table to create a SlackResponderConfig
  */
 @Table(tableOptions)
-export class SlackResponderLinker extends Model<InferAttributes<SlackResponderLinker>, InferCreationAttributes<SlackResponderLinker>> {
+export class SlackResponderLinker extends Model<
+  InferAttributes<SlackResponderLinker>,
+  InferCreationAttributes<SlackResponderLinker>
+> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
@@ -155,7 +170,10 @@ export class SlackResponderLinker extends Model<InferAttributes<SlackResponderLi
 }
 
 @Table(tableOptions)
-export class SlackInstall extends Model<InferAttributes<SlackInstall>, InferCreationAttributes<SlackInstall>> {
+export class SlackInstall extends Model<
+  InferAttributes<SlackInstall>,
+  InferCreationAttributes<SlackInstall>
+> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
@@ -185,7 +203,10 @@ export class SlackInstall extends Model<InferAttributes<SlackInstall>, InferCrea
 }
 
 @Table(tableOptions)
-export class OTPRequest<Req = unknown, Res = unknown> extends Model<InferAttributes<OTPRequest<Req, Res>>, InferCreationAttributes<OTPRequest<Req, Res>>> {
+export class OTPRequest<Req = unknown, Res = unknown> extends Model<
+  InferAttributes<OTPRequest<Req, Res>>,
+  InferCreationAttributes<OTPRequest<Req, Res>>
+> {
   static generateProof() {
     return crypto.randomBytes(2048).toString('hex').toLowerCase();
   }
