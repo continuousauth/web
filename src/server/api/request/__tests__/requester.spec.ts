@@ -50,11 +50,12 @@ describe('requester endpoint creator', () => {
 
     it('should reject requests with an incorrect auth header (non-bearer)', async () => {
       const project = new Project({
-        id: 123,
+        id: '123',
         repoName: 'cfa',
         repoOwner: 'electron',
         secret: 'very scret thing',
         defaultBranch: 'main',
+        enabled: true,
       });
       await project.save();
       const response = await request(router).delete('/123/test').auth('username', 'password');
@@ -66,11 +67,12 @@ describe('requester endpoint creator', () => {
 
     it('should reject requests with an incorrect bearer token', async () => {
       const project = new Project({
-        id: 123,
+        id: '123',
         repoName: 'cfa',
         repoOwner: 'electron',
         secret: 'very scret thing',
         defaultBranch: 'main',
+        enabled: true,
       });
       await project.save();
       const response = await request(router)
@@ -84,11 +86,12 @@ describe('requester endpoint creator', () => {
 
     it('should reject requests for a project that has not been completely configured', async () => {
       const project = new Project({
-        id: 123,
+        id: '123',
         repoName: 'cfa',
         repoOwner: 'electron',
         secret: 'very scret thing',
         defaultBranch: 'main',
+        enabled: true,
       });
       await project.save();
       const response = await request(router)
@@ -102,11 +105,12 @@ describe('requester endpoint creator', () => {
 
     it('should passthrough authed requests for a project that has been configured', async () => {
       const project = new Project({
-        id: 123,
+        id: '123',
         repoName: 'cfa',
         repoOwner: 'electron',
         secret: 'very scret thing',
         defaultBranch: 'main',
+        enabled: true,
       });
       await project.save();
       const circleConfig = await CircleCIRequesterConfig.create(
@@ -200,11 +204,12 @@ describe('requester endpoint creator', () => {
       describe('with an existing project', () => {
         beforeEach(async () => {
           const project = new Project({
-            id: 123,
+            id: '123',
             repoName: 'cfa',
             repoOwner: 'electron',
             secret: 'very scret thing',
             defaultBranch: 'main',
+            enabled: true,
           });
           await project.save();
         });
@@ -334,11 +339,12 @@ describe('requester endpoint creator', () => {
 
       beforeEach(async () => {
         const project = new Project({
-          id: 123,
+          id: '123',
           repoName: 'cfa',
           repoOwner: 'electron',
           secret: 'very scret thing',
           defaultBranch: 'main',
+          enabled: true,
         });
         await project.save();
       });
@@ -465,11 +471,12 @@ describe('requester endpoint creator', () => {
 
       beforeEach(async () => {
         const project = new Project({
-          id: 123,
+          id: '123',
           repoName: 'cfa',
           repoOwner: 'electron',
           secret: 'very scret thing',
           defaultBranch: 'main',
+          enabled: true,
         });
         await project.save();
       });

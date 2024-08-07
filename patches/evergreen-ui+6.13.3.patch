@@ -1,5 +1,5 @@
 diff --git a/node_modules/evergreen-ui/index.d.ts b/node_modules/evergreen-ui/index.d.ts
-index 865ad6a..94046c6 100644
+index ab8d9bd..ef184ea 100644
 --- a/node_modules/evergreen-ui/index.d.ts
 +++ b/node_modules/evergreen-ui/index.d.ts
 @@ -324,7 +324,7 @@ export type StyleProps<T extends Components = Components> = {

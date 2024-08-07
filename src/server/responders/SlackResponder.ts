@@ -27,7 +27,7 @@ type SlackResponderMetadata = {
   attachments: any[];
 };
 
-export class SlackResponder extends Responder {
+export class SlackResponder extends Responder<unknown, SlackResponderMetadata> {
   async requestOtp(
     request: OTPRequest<unknown, SlackResponderMetadata>,
     info: RequestInformation | null,
