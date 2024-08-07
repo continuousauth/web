@@ -8,6 +8,10 @@ const rules = require('./webpack.rules');
 
 const SERVER_PORT = process.env.PORT || 3001;
 
+if (!process.env.SENTRY_FE_DSN) {
+  process.env.SENTRY_FE_DSN = 'missing_dsn';
+}
+
 module.exports = {
   mode: 'development',
   entry: [

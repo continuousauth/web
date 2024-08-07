@@ -122,5 +122,8 @@
   "heroku-run-build-script": true,
   "resolutions": {
     "@types/react": "^16.0.0"
-  }
+  },
+  "browserslist": [
+    "last 2 versions, not dead, > 0.2%"
+  ]
 }
