@@ -139,7 +139,7 @@ export class GitHubActionsRequester
     } catch {
       isStillRunning = false;
     }
-    if (isStillRunning)
+    if (!isStillRunning)
       return {
         ok: false,
         error: 'GitHub Actions build is not running',
