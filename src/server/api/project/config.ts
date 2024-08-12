@@ -130,6 +130,17 @@ export async function updateGitHubActionsEnvironment(
       ),
     });
 
+    await github.actions.createOrUpdateEnvironmentSecret({
+      repository_id: parseInt(project.id, 10),
+      environment_name: CFA_RELEASE_GITHUB_ENVIRONMENT_NAME,
+      key_id: publicKey.data.key_id,
+      secret_name: 'CFA_PROJECT_ID',
+      encrypted_value: sodium.to_base64(
+        sodium.crypto_box_seal(sodiumProjectId, sodiumKey),
+        sodium.base64_variants.ORIGINAL,
+      ),
+    });
+
     const npmTokenToUse = process.env[`npm_token_credential_${project.repoOwner}`];
     if (npmTokenToUse) {
       const sodiumNpmToken = sodium.from_string(npmTokenToUse);
@@ -145,17 +156,6 @@ export async function updateGitHubActionsEnvironment(
         ),
       });
     }
-
-    await github.actions.createOrUpdateEnvironmentSecret({
-      repository_id: parseInt(project.id, 10),
-      environment_name: CFA_RELEASE_GITHUB_ENVIRONMENT_NAME,
-      key_id: publicKey.data.key_id,
-      secret_name: 'CFA_PROJECT_ID',
-      encrypted_value: sodium.to_base64(
-        sodium.crypto_box_seal(sodiumProjectId, sodiumKey),
-        sodium.base64_variants.ORIGINAL,
-      ),
-    });
 
     return GitHubActionsEnvironmentResult.SUCCESS;
   } catch (err) {
