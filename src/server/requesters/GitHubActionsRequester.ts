@@ -61,6 +61,9 @@ export class GitHubActionsRequester
     claims: jwt.JwtPayload,
     project: Project,
   ): Promise<AllowedState> {
+    if (claims.aud !== 'continuousauth.dev') {
+      return { ok: false, error: 'Token audience is not correct' };
+    }
     // Wrong repository
     if (claims.repository_id !== project.id)
       return { ok: false, error: 'GitHub Actions build is for incorrect repository id' };

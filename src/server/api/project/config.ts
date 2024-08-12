@@ -35,7 +35,7 @@ export async function updateCircleEnvVars(project: Project, accessToken: string)
   );
   if (existing.status !== 200) return;
 
-  if (existing.data.find((item) => item.name === 'CFA_SECRET')) {
+  if (existing.data.find(item => item.name === 'CFA_SECRET')) {
     await client.delete(
       `/project/github/${project.repoOwner}/${project.repoName}/envvar/CFA_SECRET`,
     );
@@ -45,7 +45,7 @@ export async function updateCircleEnvVars(project: Project, accessToken: string)
     value: project.secret,
   });
 
-  if (existing.data.find((item) => item.name === 'CFA_PROJECT_ID')) {
+  if (existing.data.find(item => item.name === 'CFA_PROJECT_ID')) {
     await client.delete(
       `/project/github/${project.repoOwner}/${project.repoName}/envvar/CFA_PROJECT_ID`,
     );
@@ -62,7 +62,7 @@ enum GitHubActionsEnvironmentResult {
   UNKNOWN_ERROR,
 }
 
-export const CFA_RELEASE_GITHUB_ENVIRONMENT_NAME = 'cfa-release';
+export const CFA_RELEASE_GITHUB_ENVIRONMENT_NAME = 'npm';
 
 export async function updateGitHubActionsEnvironment(
   project: Project,
@@ -86,7 +86,7 @@ export async function updateGitHubActionsEnvironment(
       repo: project.repoName,
     });
     const cfaReleaseEnv = allEnvs.data.environments?.find(
-      (e) => e.name === CFA_RELEASE_GITHUB_ENVIRONMENT_NAME,
+      e => e.name === CFA_RELEASE_GITHUB_ENVIRONMENT_NAME,
     );
     if (!cfaReleaseEnv) {
       await github.repos.createOrUpdateEnvironment({
@@ -130,6 +130,22 @@ export async function updateGitHubActionsEnvironment(
       ),
     });
 
+    const npmTokenToUse = process.env[`npm_token_credential_${project.repoOwner}`];
+    if (npmTokenToUse) {
+      const sodiumNpmToken = sodium.from_string(npmTokenToUse);
+
+      await github.actions.createOrUpdateEnvironmentSecret({
+        repository_id: parseInt(project.id, 10),
+        environment_name: CFA_RELEASE_GITHUB_ENVIRONMENT_NAME,
+        key_id: publicKey.data.key_id,
+        secret_name: 'NPM_TOKEN',
+        encrypted_value: sodium.to_base64(
+          sodium.crypto_box_seal(sodiumNpmToken, sodiumKey),
+          sodium.base64_variants.ORIGINAL,
+        ),
+      });
+    }
+
     await github.actions.createOrUpdateEnvironmentSecret({
       repository_id: parseInt(project.id, 10),
       environment_name: CFA_RELEASE_GITHUB_ENVIRONMENT_NAME,
@@ -157,10 +173,14 @@ export function configRoutes() {
       {
         a,
         params: {
-          id: Joi.number().integer().required(),
+          id: Joi.number()
+            .integer()
+            .required(),
         },
         body: {
-          accessToken: Joi.string().min(1).required(),
+          accessToken: Joi.string()
+            .min(1)
+            .required(),
         },
       },
       async (req, res) => {
@@ -187,7 +207,7 @@ export function configRoutes() {
 
         await updateCircleEnvVars(project, req.body.accessToken);
 
-        const newProject = await withTransaction(async (t) => {
+        const newProject = await withTransaction(async t => {
           const config = await CircleCIRequesterConfig.create(
             {
               accessToken: req.body.accessToken,
@@ -216,7 +236,9 @@ export function configRoutes() {
       {
         a,
         params: {
-          id: Joi.number().integer().required(),
+          id: Joi.number()
+            .integer()
+            .required(),
         },
         body: {},
       },
@@ -231,7 +253,7 @@ export function configRoutes() {
           return res.status(500).json({ error: 'Unknown Error' });
         }
 
-        const newProject = await withTransaction(async (t) => {
+        const newProject = await withTransaction(async t => {
           const config = await GitHubActionsRequesterConfig.create(
             {},
             {
@@ -258,14 +280,16 @@ export function configRoutes() {
       {
         a,
         params: {
-          id: Joi.number().integer().required(),
+          id: Joi.number()
+            .integer()
+            .required(),
         },
       },
       async (req, res) => {
         const project = await getProjectFromIdAndCheckPermissions(req.params.id, req, res);
         if (!project) return;
 
-        const linker = await withTransaction(async (t) => {
+        const linker = await withTransaction(async t => {
           await SlackResponderLinker.destroy({
             where: {
               projectId: project.id,
@@ -297,10 +321,15 @@ export function configRoutes() {
       {
         a,
         params: {
-          id: Joi.number().integer().required(),
+          id: Joi.number()
+            .integer()
+            .required(),
         },
         body: {
-          usernameToMention: Joi.string().min(1).max(50).required(),
+          usernameToMention: Joi.string()
+            .min(1)
+            .max(50)
+            .required(),
         },
       },
       async (req, res) => {
