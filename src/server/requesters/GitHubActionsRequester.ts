@@ -136,8 +136,12 @@ export class GitHubActionsRequester
         attempt_number: claims.run_attempt,
       });
       isStillRunning = workflowRunAttempt.data.status === 'in_progress';
-    } catch {
+      if (!isStillRunning) {
+        console.error('workflow data:', workflowRunAttempt.data);
+      }
+    } catch (err) {
       isStillRunning = false;
+      console.error('bad workflow data', err);
     }
     if (isStillRunning)
       return {
