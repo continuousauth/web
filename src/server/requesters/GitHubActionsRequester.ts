@@ -18,9 +18,7 @@ type GitHubActionsOTPRequestMetadata = {
 
 const validateMetadataObject = (object: any) => {
   return Joi.validate(object, {
-    oidcToken: Joi.string()
-      .min(1)
-      .required(),
+    oidcToken: Joi.string().min(1).required(),
     buildUrl: Joi.string()
       .uri({
         scheme: 'https:',
@@ -30,7 +28,8 @@ const validateMetadataObject = (object: any) => {
 };
 
 export class GitHubActionsRequester
-  implements Requester<GitHubActionsRequesterConfig, GitHubActionsOTPRequestMetadata> {
+  implements Requester<GitHubActionsRequesterConfig, GitHubActionsOTPRequestMetadata>
+{
   readonly slug = 'github';
 
   getConfigForProject(project: Project) {
