@@ -72,4 +72,12 @@ describe('<RequesterConfig />', () => {
     const mounted = mount(<RequesterConfig project={project} setProject={setProject} />);
     expect(mounted.find('CircleCIRequesterConfig')).toHaveLength(1);
   });
+
+  it('Should show the github configurator when github has been configured on the provided project', () => {
+    const setProject = jest.fn();
+    const project = mockProject();
+    project.requester_gitHub = {};
+    const mounted = mount(<RequesterConfig project={project} setProject={setProject} />);
+    expect(mounted.find('GitHubActionsRequesterConfig')).toHaveLength(1);
+  });
 });

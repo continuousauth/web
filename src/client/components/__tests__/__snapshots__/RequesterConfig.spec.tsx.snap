@@ -37,6 +37,21 @@ exports[`<RequesterConfig /> Should render 1`] = `
          Circle CI
       </Memo(ForwardRef(Tab))>
       <Memo(ForwardRef(Tab))
+        isSelected={false}
+        onSelect={[Function]}
+        style={
+          {
+            "paddingLeft": 28,
+            "position": "relative",
+          }
+        }
+      >
+        <GitHubLogo
+          className="tabIcon"
+        />
+         GitHub Actions
+      </Memo(ForwardRef(Tab))>
+      <Memo(ForwardRef(Tab))
         disabled={true}
       >
         More Coming Soon...

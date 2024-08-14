@@ -38,7 +38,6 @@ exports[`<MenuHeader /> Should render a logo 1`] = `
     className="right"
   >
     <Memo(ForwardRef(Avatar))
-      isSolid={true}
       name="?"
       size={24}
     />
