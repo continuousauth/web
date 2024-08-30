@@ -21,7 +21,7 @@ const validateMetadataObject = (object: any) => {
     oidcToken: Joi.string().min(1).required(),
     buildUrl: Joi.string()
       .uri({
-        scheme: 'https:',
+        scheme: 'https',
       })
       .required(),
   });
