@@ -210,7 +210,10 @@ export class GitHubActionsRequester
       };
     }
 
-    const claimsEvaluation = await this.doOpenIDConnectClaimsMatchProjectInternal(claims, project);
+    const claimsEvaluation = await this.doOpenIDConnectClaimsMatchProjectInternal(
+      claims.payload as jwt.JwtPayload,
+      project,
+    );
     if (!claimsEvaluation.ok) {
       return {
         ok: false,
