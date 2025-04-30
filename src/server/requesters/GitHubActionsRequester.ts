@@ -105,6 +105,12 @@ export class GitHubActionsRequester
           error: 'GitHub Actions build is for a tag not on the default branch',
         };
       }
+    } else if (
+      claims.repository_owner === 'electron' &&
+      claims.repository === 'electron/node-abi' &&
+      claims.ref === 'refs/heads/3-x-y'
+    ) {
+      // Temporary hack to allow the 3-x-y branch to be used for releases on the node-abi repo
     } else if (claims.ref !== `refs/heads/${project.defaultBranch}`) {
       return {
         ok: false,
