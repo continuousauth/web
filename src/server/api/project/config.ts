@@ -99,6 +99,29 @@ export async function updateGitHubActionsEnvironment(
           custom_branch_policies: true,
         },
       });
+    }
+
+    for (let attempt = 0; attempt < 4; attempt++) {
+      if (attempt > 0) {
+        // Wait a bit before retrying
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      }
+
+      if (attempt === 3) {
+        return GitHubActionsEnvironmentResult.UNKNOWN_ERROR;
+      }
+
+      const existingPolicy = (
+        await github.repos.listDeploymentBranchPolicies({
+          owner: project.repoOwner,
+          repo: project.repoName,
+          environment_name: CFA_RELEASE_GITHUB_ENVIRONMENT_NAME,
+        })
+      ).data.branch_policies.find((p) => p.name === project.defaultBranch);
+
+      if (existingPolicy) {
+        break;
+      }
 
       await github.repos.createDeploymentBranchPolicy({
         owner: project.repoOwner,
