@@ -88,7 +88,7 @@ export async function updateGitHubActionsEnvironment(
     const cfaReleaseEnv = allEnvs.data.environments?.find(
       (e) => e.name === CFA_RELEASE_GITHUB_ENVIRONMENT_NAME,
     );
-    if (!cfaReleaseEnv) {
+    if (!cfaReleaseEnv || !cfaReleaseEnv?.deployment_branch_policy?.custom_branch_policies) {
       await github.repos.createOrUpdateEnvironment({
         owner: project.repoOwner,
         repo: project.repoName,
