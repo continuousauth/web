@@ -1,5 +1,10 @@
 # CFA: Continuous Factor Authentication
 
+> [!WARNING]
+> **In light of [planned changes to npm token management](https://github.blog/changelog/2025-09-29-strengthening-npm-security-important-changes-to-authentication-and-token-management/) announced by GitHub, the Electron team has decided to deprecate the Continuous Factor Authentication project.**
+>
+> **We recommend migrating your projects to [Trusted publishing for npm packages](https://docs.npmjs.com/trusted-publishers).**
+
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/continuousauth/web/ci.yaml?branch=main&label=CI&logo=github&style=for-the-badge)](https://github.com/continuousauth/web/actions/workflows/ci.yaml)
 
 This service is responsible for safely requesting and delivering a 2FA token to an arbitrary CI job. Typically though a tool like `semantic-release`.
