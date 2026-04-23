@@ -118,7 +118,7 @@
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.37.3",
     "sequelize-typescript": "^2.1.6",
-    "uuid": "^9.0.0"
+    "uuid": "^14.0.0"
   },
   "heroku-run-build-script": true,
   "resolutions": {
